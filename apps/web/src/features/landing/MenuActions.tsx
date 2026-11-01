@@ -78,6 +78,12 @@ export const MenuActions = () => {
         Các kết thúc
       </Link>
       <Link
+        href="/settings"
+        className="bg-surface-700 flex min-h-11 items-center justify-center rounded-xl px-4 font-bold"
+      >
+        Cài đặt
+      </Link>
+      <Link
         href="/about"
         className="bg-surface-700 flex min-h-11 items-center justify-center rounded-xl px-4 font-bold"
       >

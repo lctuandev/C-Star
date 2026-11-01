@@ -31,6 +31,16 @@
     -webkit-tap-highlight-color: transparent;
   }
 
+  /* Tailwind's text sizes are in rem: this scales the whole game (FEAT-027). */
+  html[data-text-size='large'] {
+    font-size: 118.75%;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-fluorescent);
+    outline-offset: 2px;
+  }
+
   body {
     @apply bg-surface-950 text-ink-primary font-sans antialiased;
   }
