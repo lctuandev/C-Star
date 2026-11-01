@@ -35,7 +35,7 @@ Chuyển trạng thái sai bị từ chối. Không dùng nhiều boolean rời 
 
 ## 3. Story engine
 
-Cốt truyện là đồ thị dữ liệu.
+Cốt truyện là đồ thị dữ liệu, kiểu ở `packages/game-core/src/story/story-types.ts`.
 
 ```text
 Node:      id, speaker, text, choices | next

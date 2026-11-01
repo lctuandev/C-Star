@@ -13,13 +13,14 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "build": "tsc -p tsconfig.build.json && node scripts/validate-content.mjs",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint .",
     "test": "vitest run"
   },
   "dependencies": {
+    "@cstar/game-core": "workspace:*",
     "zod": "^4.6.7"
   },
   "devDependencies": {
