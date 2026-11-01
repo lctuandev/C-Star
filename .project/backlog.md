@@ -22,6 +22,12 @@ Rà soát lần cuối: 2026-11-01 (sau M6).
 | Nền 2D không đổi theo tháng                           | FEAT-032 | Nếu nhiều người chơi 2D |
 | Nhân vật chưa có biểu cảm theo lời thoại              | FEAT-029 | Nếu game được đón nhận |
 
+## Âm thanh
+
+| Mục                                              | Từ       | Xử lý ở |
+| ------------------------------------------------ | -------- | ------- |
+| Nghe thử, cân âm lượng giữa các tiếng và nhạc     | FEAT-036 | Owner   |
+
 ## Nội dung
 
 | Mục                                                     | Từ       | Xử lý ở |

@@ -91,3 +91,8 @@ Toàn bộ art sinh từ `tools/art-pipeline` (Blender), kết quả được co
 - Luật và trạng thái: `architecture/gameplay.md`
 - Hợp đồng: `contracts/gameplay.md`, `contracts/save.md`, `contracts/content.md`
 - Quyết định: `decisions/`
+
+## 8. Âm thanh
+
+`features/audio` (ADR-006). Chỉ nghe state: `cueFor` suy ra tiếng từ thay đổi của `GameState` và hành động vừa gửi, `trackFor` chọn nhạc. Rules không biết gì về
+âm thanh. Nhạc viết bằng dữ liệu ở `score.ts`, `music.ts` đọc và phát. Nhạc, tiếng gõ chữ và tiếng văn phòng tắt riêng được trong Cài đặt.
