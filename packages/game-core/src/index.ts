@@ -8,12 +8,13 @@ export { createGameState } from './state/game-state.js';
 export type { GameState, StoryProgress } from './state/game-state.js';
 export { viewOf } from './story/story-engine.js';
 export type { ChoiceView, NodeView } from './story/story-engine.js';
-export { isRouteNode } from './story/story-types.js';
+export { isRouteNode, PLACES } from './story/story-types.js';
 export type {
   Choice,
   Condition,
   Effect,
   LineNode,
+  Place,
   RouteNode,
   Scene,
   StoryGraph,

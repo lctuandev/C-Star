@@ -1,3 +1,4 @@
+import { PLACES } from '@cstar/game-core';
 import type { Condition, Effect, Scene, StoryGraph, StoryNode } from '@cstar/game-core';
 import { z } from 'zod';
 
@@ -45,6 +46,7 @@ const nodeSchema: z.ZodType<StoryNode> = z.union([routeSchema, lineSchema]);
 
 const sceneSchema: z.ZodType<Scene> = z.strictObject({
   id,
+  place: z.enum(PLACES),
   start: id,
   nodes: z.record(id, nodeSchema),
 });

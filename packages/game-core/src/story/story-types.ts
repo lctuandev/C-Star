@@ -35,8 +35,13 @@ export interface RouteNode {
 
 export type StoryNode = LineNode | RouteNode;
 
+export const PLACES = ['home', 'office', 'meeting', 'desk', 'hallway'] as const;
+export type Place = (typeof PLACES)[number];
+
 export interface Scene {
   id: string;
+  /** Where it happens: the backdrop. */
+  place: Place;
   start: string;
   nodes: Record<string, StoryNode>;
 }

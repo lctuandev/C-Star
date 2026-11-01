@@ -88,7 +88,7 @@ test('the whole game opens with no network (SCENARIO-002)', async ({ page, conte
   await page.getByRole('link', { name: 'Quay lại' }).click();
   await page.getByRole('button', { name: 'Game mới' }).click();
   await page.getByRole('button', { name: disclaimer.confirmLabel }).click();
-  await expect(page.getByRole('heading', { name: 'Văn phòng đang được dọn dẹp' })).toBeVisible();
+  await expect(page.getByRole('status')).toContainText('Thứ Hai, 7 giờ 12 phút');
   expect(failed).toEqual([]);
 
   await page.goto('/about');

@@ -7,6 +7,7 @@ const catalog = { characters: ['boss'] };
 
 const sceneOf = (nodes: Record<string, StoryNode>, start = 'a'): Scene => ({
   id: 's',
+  place: 'office',
   start,
   nodes,
 });
@@ -120,6 +121,7 @@ describe('validateStory', () => {
         s: sceneOf({ a: { text: 'x', effects: [{ type: 'setFlag', flag: 'done' }] } }),
         t: {
           id: 't',
+          place: 'office',
           start: 'a',
           nodes: {
             a: { routes: [{ when: { type: 'flag', flag: 'done' }, next: 'z' }], otherwise: 'z' },
@@ -168,7 +170,7 @@ describe('validateStory', () => {
 describe('storySchema', () => {
   it('refuses an empty line, and an effect it does not know', () => {
     const scene = (node: unknown) => ({
-      scenes: { s: { id: 's', start: 'a', nodes: { a: node } } },
+      scenes: { s: { id: 's', place: 'office', start: 'a', nodes: { a: node } } },
     });
     expect(storySchema.safeParse(scene({ text: '   ' })).success).toBe(false);
     expect(

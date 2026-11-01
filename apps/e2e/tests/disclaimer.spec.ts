@@ -40,13 +40,13 @@ test('a new game asks again, then starts (SCENARIO-008)', async ({ page }) => {
 test('a direct link cannot go around it (SCENARIO-009)', async ({ page }) => {
   await page.goto('/play');
   await expect(text(page)).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Văn phòng đang được dọn dẹp' })).toBeHidden();
+  await expect(page.getByRole('status')).toBeHidden();
 
   await page.reload();
   await expect(text(page)).toBeVisible();
 
   await confirm(page).click();
-  await expect(page.getByRole('heading', { name: 'Văn phòng đang được dọn dẹp' })).toBeVisible();
+  await expect(page.getByRole('status')).toContainText('Thứ Hai, 7 giờ 12 phút');
 });
 
 test('a changed text is asked again (SCENARIO-010)', async ({ page }) => {

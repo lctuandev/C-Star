@@ -11,12 +11,15 @@
   --color-surface-900: #131a1d;
   --color-surface-800: #1b2428;
   --color-surface-700: #263236;
+  --color-surface-600: #344448;
 
   --color-ink-primary: #eef3f2;
   --color-ink-secondary: #aebbba;
   --color-ink-muted: #7f8e8d;
 
   --color-fluorescent: #c8f0e4;
+  --color-paycheck: #f2c879;
+  --color-ally: #9fd0f5;
 }
 
 @layer base {

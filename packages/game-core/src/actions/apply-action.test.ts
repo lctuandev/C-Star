@@ -10,6 +10,7 @@ const story: StoryGraph = {
   scenes: {
     meeting: {
       id: 'meeting',
+      place: 'meeting',
       start: 'hello',
       nodes: {
         hello: { speaker: 'boss', text: 'Chào em.', next: 'ask' },
@@ -41,7 +42,7 @@ const story: StoryGraph = {
         cold: { speaker: 'boss', text: 'Ừ.' },
       },
     },
-    empty: { id: 'empty', start: 'only', nodes: { only: { text: 'Hết.' } } },
+    empty: { id: 'empty', place: 'home', start: 'only', nodes: { only: { text: 'Hết.' } } },
   },
 };
 

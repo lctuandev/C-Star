@@ -20,7 +20,7 @@ tháng. Web, PWA chơi được offline, điện thoại dọc là chính. Khôn
 
 ## Active Task
 
-**FEAT-004-dialogue-ui** — đang làm. M0 xong, FEAT-003 xong.
+**FEAT-005-weekly-loop** — đang làm. M0 xong, FEAT-003, 004 xong.
 
 ## Blockers
 
