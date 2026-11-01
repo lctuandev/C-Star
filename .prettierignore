@@ -1,0 +1,10 @@
+pnpm-lock.yaml
+dist
+out
+.next
+.turbo
+coverage
+.claude
+.mcp.json
+apps/e2e/test-results
+apps/e2e/playwright-report

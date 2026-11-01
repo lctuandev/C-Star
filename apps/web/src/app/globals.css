@@ -1,0 +1,30 @@
+@import 'tailwindcss';
+
+/*
+ * Cold office light (GDD §7). Use these utilities (bg-surface-900, text-ink-secondary, ...)
+ * instead of raw hex values.
+ */
+@theme {
+  --font-sans: var(--font-be-vietnam-pro), ui-sans-serif, system-ui, sans-serif;
+
+  --color-surface-950: #0c1113;
+  --color-surface-900: #131a1d;
+  --color-surface-800: #1b2428;
+
+  --color-ink-primary: #eef3f2;
+  --color-ink-secondary: #aebbba;
+  --color-ink-muted: #7f8e8d;
+
+  --color-fluorescent: #c8f0e4;
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-surface-950 text-ink-primary font-sans antialiased;
+  }
+}

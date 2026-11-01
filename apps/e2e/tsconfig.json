@@ -1,0 +1,8 @@
+{
+  "extends": "@cstar/config/tsconfig/node.json",
+  "compilerOptions": {
+    // Code inside page.evaluate runs in the browser.
+    "lib": ["ES2023", "DOM"]
+  },
+  "include": ["*.ts", "tests"]
+}

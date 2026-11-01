@@ -1,0 +1,34 @@
+# Claude local/runtime files
+.claude/local/
+.claude/cache/
+.claude/worktrees/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Dependencies
+node_modules/
+
+# Build
+.next/
+out/
+dist/
+coverage/
+
+# Logs
+*.log
+
+# Monorepo tooling
+.turbo/
+*.tsbuildinfo
+next-env.d.ts
+
+# Playwright
+apps/e2e/test-results/
+apps/e2e/playwright-report/
