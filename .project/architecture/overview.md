@@ -72,10 +72,19 @@ reload. Save không đi qua cache. Phát triển không dùng service worker.
 
 ## 7. Văn phòng 3D
 
-`features/office` (ADR-004). Chỉ là lớp hiển thị: đọc `GameState`, gửi đúng các `GameAction` như nút bấm. `officeMood` suy ra
-văn phòng từ state, không lưu gì. Chunk 3D chỉ tải khi cần. Không có WebGL hoặc quá chậm thì `Stage` không vẽ gì.
+`features/office` (ADR-004, ADR-005). Chỉ là lớp hiển thị: đọc `GameState`, gửi đúng các `GameAction` như nút bấm. `officeMood`
+suy ra văn phòng từ state, không lưu gì. Chunk 3D chỉ tải khi cần.
 
----
+Cảnh tĩnh và đồ đổi theo tháng nằm chung `public/art/office.glb`, ánh sáng đã bake: runtime chỉ cần `MeshBasicMaterial` + `lightMap`,
+ẩn hiện node `DYN_*`, và một cặp uniform để rút màu theo tháng. Nhân vật ở `characters.glb`, skinned, xương đứng thẳng, cử động bằng
+`poseOf`. Đường đi tìm bằng `findPath` trên danh sách vùng rắn trong `office-plan.json`.
+
+Cảnh tràn màn hình, `fitView` giữ khung hình trong phần HUD và bảng chừa lại, đo bằng `ResizeObserver` ở `PlayScreen`.
+
+Lùi cấp: dưới 30 FPS bỏ bụi và hạ DPR; dưới 18 FPS, mất context, không có WebGL hoặc không tải được model thì `Stage` không vẽ gì,
+và `Backdrop` là ảnh render sẵn của cùng địa điểm.
+
+Toàn bộ art sinh từ `tools/art-pipeline` (Blender), kết quả được commit. Xem README trong đó.
 
 ## 8. Tài liệu liên quan
 

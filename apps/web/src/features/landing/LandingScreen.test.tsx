@@ -15,14 +15,14 @@ describe('LandingScreen', () => {
     expect(screen.getByText(disclaimer.reminder)).toBeInTheDocument();
   });
 
-  it('goes to the game only after the disclaimer', async () => {
+  it('goes to the application form only after the disclaimer', async () => {
     render(<LandingScreen />);
     await userEvent.click(screen.getByRole('button', { name: 'Game mới' }));
     expect(useDisclaimerStore.getState().gate).toBe('asking');
     expect(push).not.toHaveBeenCalled();
 
     useDisclaimerStore.getState().accept();
-    await waitFor(() => expect(push).toHaveBeenCalledWith('/play'));
+    await waitFor(() => expect(push).toHaveBeenCalledWith('/apply'));
   });
 
   it('links to the full text', () => {

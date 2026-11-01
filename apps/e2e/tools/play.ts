@@ -7,7 +7,7 @@ import { asReturningPlayer } from './accepted-disclaimer.js';
  * From the menu into a new run, with text shown at once. In 2D unless a spec is about the office:
  * software WebGL would slow everything else down by minutes.
  */
-export const startGame = async (page: Page, graphics: '2d' | '3d' = '2d') => {
+export const startGame = async (page: Page, graphics: '2d' | '3d' = '2d', name = '') => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await asReturningPlayer(page);
   await page.addInitScript((value) => {
@@ -17,12 +17,19 @@ export const startGame = async (page: Page, graphics: '2d' | '3d' = '2d') => {
   await page.goto('/');
   await page.getByRole('button', { name: 'Game mới' }).click();
   await page.getByRole('button', { name: disclaimer.confirmLabel }).click();
+  await submitApplication(page, name);
   await expect(page).toHaveURL(/\/play$/);
+};
+
+/** The form between the disclaimer and the first scene. */
+export const submitApplication = async (page: Page, name = '') => {
+  await page.getByLabel('Tên của bạn').fill(name);
+  await page.getByRole('button', { name: 'Nộp hồ sơ' }).click();
 };
 
 /**
  * Reads through scenes until `target` shows, always taking the first choice open, or the last.
- * Never the choice to quit, which ends the run.
+ * Never a choice to quit or to leave, which ends the run.
  */
 export const playUntil = async (page: Page, target: Locator, pick: 'first' | 'last' = 'first') => {
   const box = page.getByRole('button', { name: 'Đọc tiếp' });
@@ -35,7 +42,9 @@ export const playUntil = async (page: Page, target: Locator, pick: 'first' | 'la
           return true;
         }
         if ((await choices.count()) > 0) {
-          const open = choices.and(page.locator(':enabled')).filter({ hasNotText: 'Nghỉ việc' });
+          const open = choices
+            .and(page.locator(':enabled'))
+            .filter({ hasNotText: /Nghỉ việc|Rời đi ngay/ });
           await (pick === 'first' ? open.first() : open.last()).click();
         } else if (await box.isVisible()) {
           await box.click();

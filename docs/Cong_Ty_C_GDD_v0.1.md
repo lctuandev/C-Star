@@ -43,12 +43,15 @@ bảo vệ mình? Game làm người chơi cười trước, nghĩ sau.
 
 ## 2. Nhân vật `[Nguồn]`
 
-Nhân vật là kiểu người biểu tượng, không mô phỏng ai có thật.
+Nhân vật là kiểu người biểu tượng, không mô phỏng ai có thật. Lãnh đạo chỉ có chức danh, không có tên riêng.
 
 | Nhân vật                | Vai trò                                                                      |
 | ----------------------- | ---------------------------------------------------------------------------- |
 | Nhân viên mới (Player)  | Vào công ty với nhiều kỳ vọng, dần bị cuốn vào vòng xoáy chậm lương          |
-| Sếp (The Visionary)     | Luôn nói tầm nhìn và dự án triệu đô, luôn lái sang chuyện lớn hơn tiền lương |
+| Chủ tịch                | Chủ của công ty này và nhiều công ty khác, rất ít khi xuất hiện              |
+| Phó giám đốc (The Visionary) | Chuyên hứa, cứ 5–6 tháng lại kéo mọi người ở lại bằng tin đã "đào được 1–2 triệu đô" |
+| Anh Tín, trưởng phòng   | Tin vào tầm nhìn của Chủ tịch một cách mù quán, kêu gọi cấp dưới ở lại, không đọc hợp đồng hay luật |
+| Anh Minh, phó phòng     | Yêu công ty, liêm chính, nhưng tỉnh táo; hòa đồng và hiểu nhân viên          |
 | HR (The Messenger)      | Đưa tin bằng giọng ngoại giao, câu nào cũng là công ty đang cố gắng          |
 | Kế toán (The Calculator) | Giữ những con số chẳng ai hiểu: lương đợt 1, đợt 2, KPI, phụ cấp            |
 | Đồng nghiệp (The Survivor) | Cùng chờ lương: người muốn nghỉ, người muốn kiện, người vẫn tin tuần sau có |
@@ -68,6 +71,12 @@ riêng ở Chương 4, để việc họ rời đi có sức nặng.
 | 4      | Six Months Later  | Tháng 5–6  | Người nghỉ dần; lời hứa đổi liên tục; mỗi người được nợ một kiểu; xuất hiện nhóm muốn cùng tìm cách       | Quyết định ở lại hay bắt đầu hành động                       |
 | 5      | The Awakening     | Khủng hoảng | Gom hợp đồng, chấm công, chứng từ; đối chiếu các khoản; chọn yêu cầu chính thức, tìm tư vấn hay thương lượng | Tập hợp bằng chứng, phối hợp, ra quyết định                  |
 | 6      | The Last Day      | Chương cuối | Đối mặt lựa chọn cuối: làm tiếp, rời đi, hay theo đuổi quyền lợi; lựa chọn trước đó quyết định kết thúc    | Hoàn thành hành trình                                        |
+
+Các chi tiết xuyên suốt: lời hứa "this week", "next week" trên mỗi phiếu lương chưa trả; chiến dịch "Vượt thác hóa rồng" ở
+tháng 4, với "benefit" là được nhận một phần lương sớm; lời hứa IPO và cổ phiếu nội bộ kèm "1–2 triệu đô" ở tháng 6; mọi người
+phải vay người thân và vay tín dụng; rời đi trước tháng 6 thì Phó giám đốc nhắn "tiếc cho em"; công ty thỉnh thoảng trả một phần ba
+hoặc hai phần ba tháng lương để giữ niềm tin rồi nợ tiếp; tiền KPI bị giữ; có tháng không có bảng lương; weekly sync thứ Sáu nào anh
+Tín cũng trả lời "next week, hopefully".
 
 ---
 

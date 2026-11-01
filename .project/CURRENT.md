@@ -10,14 +10,15 @@ tháng. Web, PWA chơi được offline, điện thoại dọc là chính. Khôn
 
 ## State (2026-11-01)
 
-- **Game hoàn chỉnh**: 37 cảnh, 6 kết thúc, văn phòng 3D có lùi về 2D, âm thanh, cài đặt, save, PWA offline, màn cảnh báo.
+- **Game hoàn chỉnh**: 44 cảnh, 6 kết thúc, văn phòng 3D bake ánh sáng, 10 nhân vật có tên, âm thanh, cài đặt, save v4, PWA offline, màn cảnh báo, điền tên người chơi, bố cục riêng cho điện thoại, tablet và PC.
+- Art dựng bằng Blender từ code: `tools/art-pipeline`, ADR-005.
 - Repo: <https://github.com/lctuandev/C-Star>, nhánh `main`, **public**. Chưa deploy.
 - Toàn bộ roadmap xong trừ phần cần owner, ghi ở `backlog.md`.
 - Số liệu, điều kiện ending, giọng văn, câu chữ cảnh báo đều chưa được owner duyệt.
 
 ## Active Task
 
-Không có. Đang chờ owner.
+Không có. M6 xong.
 
 ## Blockers
 
@@ -26,6 +27,7 @@ Deploy thật (TECH-004) chờ owner chọn tên miền và xác nhận `docs/co
 ## Open Decisions (owner)
 
 - Xác nhận sáu mục ở `docs/content-review.md`, nhất là tên "C\*".
+- Bốn cái tên owner đưa cho lãnh đạo (FEAT-034, Fiction Check) chưa dùng: game dùng chức danh và tên hư cấu cho tới khi owner xác nhận chúng hoàn toàn do tưởng tượng.
 - Chọn tên miền để deploy (`deploy/` đã sẵn sàng).
 - Chơi thử trên điện thoại thật: giọng văn, số liệu, 3D có mượt không.
 

@@ -1,28 +1,69 @@
 @import 'tailwindcss';
 
+/* Room for the scene beside the panels: tablets, desktops, and a phone on its side. */
+@custom-variant wide (@media (min-width: 64rem), (min-width: 40rem) and (orientation: landscape));
+
 /*
- * Cold office light (GDD §7). Use these utilities (bg-surface-900, text-ink-secondary, ...)
- * instead of raw hex values.
+ * Night ink, payslip gold, stamp red, paper (.project/ux-direction.md §6). Use these utilities
+ * (bg-surface-900, text-ink-secondary, ...) instead of raw hex values.
  */
 @theme {
   --font-sans: var(--font-be-vietnam-pro), ui-sans-serif, system-ui, sans-serif;
 
-  --color-surface-950: #0c1113;
-  --color-surface-900: #131a1d;
-  --color-surface-800: #1b2428;
-  --color-surface-700: #263236;
-  --color-surface-600: #344448;
+  --color-surface-950: #0d1220;
+  --color-surface-900: #141a2e;
+  --color-surface-800: #1d2541;
+  --color-surface-700: #2a3358;
+  --color-surface-600: #3c4774;
 
-  --color-ink-primary: #eef3f2;
-  --color-ink-secondary: #aebbba;
-  --color-ink-muted: #7f8e8d;
+  --color-ink-primary: #f6f1e7;
+  --color-ink-secondary: #bdc1d6;
+  --color-ink-muted: #8f94b3;
 
-  --color-fluorescent: #c8f0e4;
-  --color-paycheck: #f2c879;
-  --color-ally: #9fd0f5;
-  --color-alarm: #f08a7a;
-  --color-paper: #ece6d6;
-  --color-ink-paper: #2b2a26;
+  --color-fluorescent: #9ff0dc;
+  --color-paycheck: #ffc83d;
+  --color-paycheck-deep: #c78f12;
+  --color-ally: #7fc4ff;
+  --color-alarm: #ff7a5c;
+  --color-paper: #f6efdf;
+  --color-paper-edge: #dccfb4;
+  --color-ink-paper: #23202b;
+
+  --animate-rise: rise 0.35s ease-out both;
+  --animate-fade: fade 0.45s ease-out both;
+  --animate-chapter: chapter 2.6s ease-in-out both;
+  --animate-float-away: float-away 1.4s ease-out both;
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+  }
+
+  @keyframes fade {
+    from {
+      opacity: 0;
+    }
+  }
+
+  @keyframes chapter {
+    0%,
+    100% {
+      opacity: 0;
+    }
+    15%,
+    80% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes float-away {
+    to {
+      opacity: 0;
+      transform: translateY(-18px);
+    }
+  }
 }
 
 @layer base {
@@ -44,4 +85,26 @@
   body {
     @apply bg-surface-950 text-ink-primary font-sans antialiased;
   }
+
+  /* Movement explains, it is never required (FEAT-027). */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@utility paper-card {
+  @apply bg-paper text-ink-paper border-paper-edge border-b-4;
+}
+
+/* The torn bottom of a till receipt, on the payslip. */
+@utility receipt-edge {
+  mask:
+    conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / 18px 51%
+      repeat-x,
+    linear-gradient(#000 0 0) top / 100% calc(100% - 8px) no-repeat;
 }

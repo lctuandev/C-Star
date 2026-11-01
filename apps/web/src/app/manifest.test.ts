@@ -5,11 +5,11 @@ import { describe, expect, it } from 'vitest';
 import manifest from './manifest';
 
 describe('manifest', () => {
-  it('opens as a portrait app in Vietnamese', () => {
+  it('opens in any orientation, in Vietnamese', () => {
     expect(manifest()).toMatchObject({
       lang: 'vi',
       display: 'standalone',
-      orientation: 'portrait',
+      orientation: 'any',
       start_url: '/',
     });
   });

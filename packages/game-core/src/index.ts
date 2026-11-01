@@ -18,6 +18,7 @@ export type {
 } from './calendar/world-types.js';
 export { shouldShowDisclaimer } from './disclaimer/disclaimer-rule.js';
 export type { DisclaimerCheck } from './disclaimer/disclaimer-rule.js';
+export { cleanPlayerName, MAX_PLAYER_NAME, withPlayerName } from './player/player-name.js';
 export { drawRandom, seedRng } from './rng/seeded-rng.js';
 export type { RngDraw, RngState } from './rng/seeded-rng.js';
 export { createGameState } from './state/game-state.js';

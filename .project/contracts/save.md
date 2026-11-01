@@ -13,6 +13,7 @@ Save là thứ duy nhất của người chơi mà ta không thể khôi phục 
 
 - Mỗi save có `saveVersion` và `contentVersion`.
 - Chỉ lưu state gốc (kèm seed RNG), không lưu giá trị suy ra được, không lưu state UI.
+- Tên người chơi nằm trong save (từ v4) và chỉ ở trên thiết bị, không gửi đi đâu.
 - Save được kiểm tra bằng schema trước khi nạp.
 
 ## 3. Đổi định dạng

@@ -76,6 +76,8 @@ export interface CrisisRecord {
 /** The whole of a run (contracts/gameplay.md §1). Plain JSON, so a save is just this. */
 export interface GameState {
   seed: number;
+  /** As the player typed it, cleaned. Empty if they gave none. */
+  playerName: string;
   rng: RngState;
   phase: Phase;
   calendar: Calendar;
@@ -106,8 +108,9 @@ export interface RunStart {
   startingStress: number;
 }
 
-export const createGameState = (seed: number, start: RunStart): GameState => ({
+export const createGameState = (seed: number, start: RunStart, playerName = ''): GameState => ({
   seed,
+  playerName,
   rng: seedRng(seed),
   phase: 'scene',
   calendar: { month: 1, week: 1, actionsLeft: start.actionsPerWeek, payday: false },

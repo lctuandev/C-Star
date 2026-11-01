@@ -7,6 +7,7 @@ import {
 } from '../calendar/calendar.js';
 import { answerTicket } from '../calendar/tickets.js';
 import type { GameWorld, TicketAnswer } from '../calendar/world-types.js';
+import { cleanPlayerName } from '../player/player-name.js';
 import { createGameState } from '../state/game-state.js';
 import type { GameState } from '../state/game-state.js';
 import { advance, choose, startScene } from '../story/story-engine.js';
@@ -41,7 +42,7 @@ const renewContract = (state: GameState, world: GameWorld): GameState | null => 
   if (state.phase !== 'ended' || !ending?.loops) {
     return null;
   }
-  const fresh = createGameState(state.seed + 1, world.rules);
+  const fresh = createGameState(state.seed + 1, world.rules, state.playerName);
   const renewed: GameState = {
     ...fresh,
     loops: state.loops + 1,
@@ -82,8 +83,13 @@ export const applyAction = (
   return next === null ? { ok: false, state } : { ok: true, state: next };
 };
 
-export const beginRun = (seed: number, world: GameWorld): GameState =>
-  startScene(createGameState(seed, world.rules), world.story, world.openingScene, world.evidence);
+export const beginRun = (seed: number, world: GameWorld, playerName = ''): GameState =>
+  startScene(
+    createGameState(seed, world.rules, cleanPlayerName(playerName)),
+    world.story,
+    world.openingScene,
+    world.evidence,
+  );
 
 /**
  * Takes up a loaded run. A save can outlive a scene a later version renamed: it must not strand the

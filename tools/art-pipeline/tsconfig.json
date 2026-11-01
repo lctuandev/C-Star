@@ -1,0 +1,10 @@
+{
+  "extends": "@cstar/config/tsconfig/library.json",
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "lib": ["ES2023"],
+    "types": ["node"]
+  },
+  "include": ["src"]
+}

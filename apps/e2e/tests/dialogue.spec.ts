@@ -2,12 +2,14 @@ import { disclaimer } from '@cstar/content';
 import { expect, test } from '@playwright/test';
 import type { Page } from '@playwright/test';
 import { asReturningPlayer } from '../tools/accepted-disclaimer.js';
+import { playUntil, startGame as playStartGame, submitApplication } from '../tools/play.js';
 
 const startGame = async (page: Page) => {
   await asReturningPlayer(page);
   await page.goto('/');
   await page.getByRole('button', { name: 'Game mới' }).click();
   await page.getByRole('button', { name: disclaimer.confirmLabel }).click();
+  await submitApplication(page);
   await expect(page).toHaveURL(/\/play$/);
 };
 
@@ -72,4 +74,19 @@ test('reduced motion shows the line at once (SCENARIO-022)', async ({ page }) =>
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await startGame(page);
   await expect(page.getByRole('button', { name: 'Đọc tiếp' })).toBeVisible();
+});
+
+test('the name on the form is the name the story uses, after a reload too (SCENARIO-075)', async ({
+  page,
+}) => {
+  await playStartGame(page, '2d', 'Hoa');
+  await playUntil(page, page.getByRole('status').filter({ hasText: 'Chào mừng Hoa' }));
+  await page.reload();
+  await expect(page.getByRole('status')).toContainText('Chào mừng Hoa');
+});
+
+test('a stray link to the form leads back to the menu (SCENARIO-075)', async ({ page }) => {
+  await asReturningPlayer(page);
+  await page.goto('/apply');
+  await expect(page.getByRole('button', { name: 'Game mới' })).toBeVisible();
 });

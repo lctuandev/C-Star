@@ -15,7 +15,7 @@ export const TicketScreen = ({ state }: { state: GameState }) => {
   const { ticket, last, number, total } = view;
 
   return (
-    <section className="bg-surface-950 flex flex-col gap-3 p-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]">
+    <section className="bg-surface-900/95 animate-rise flex flex-col gap-3 rounded-t-3xl border-t border-white/10 p-4 pb-[calc(env(safe-area-inset-bottom)+1rem)] wide:rounded-3xl wide:border wide:pb-4">
       {last && (
         <p role="status" className="text-ink-secondary text-base leading-7">
           <span className={`font-bold ${last.correct ? 'text-fluorescent' : 'text-alarm'}`}>
@@ -27,7 +27,7 @@ export const TicketScreen = ({ state }: { state: GameState }) => {
 
       {ticket ? (
         <>
-          <article className="bg-paper text-ink-paper flex flex-col gap-2 rounded-xl p-4">
+          <article className="paper-card flex flex-col gap-2 rounded-xl p-4">
             <p className="text-sm font-bold opacity-70">
               Ticket {number}/{total} · Từ: {ticket.from}
             </p>

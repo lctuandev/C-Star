@@ -9,11 +9,29 @@ export const chapter6Scenes = {
     nodes: {
       morning: {
         text: 'Sáng thứ Hai. Dòng chữ inox ở sảnh đã rơi mất hai ký tự. Cái bức tường cây thì đã thành bức tường.',
+        next: 'visit',
+      },
+      visit: {
+        text: 'Giữa buổi sáng, cả tầng bỗng đứng dậy. Một người tóc bạc bước vào, sau lưng là hai trợ lý. Lần đầu tiên bạn thấy Chủ tịch ngoài màn hình.',
+        next: 'chairman',
+      },
+      chairman: {
+        speaker: 'chairman',
+        text: 'Văn phòng đẹp. Công ty này... làm về mảng nào nhỉ? Thôi, cố lên nhé các bạn. Tôi có cuộc họp ở công ty khác.',
+        next: 'tin-moved',
+      },
+      'tin-moved': {
+        speaker: 'manager',
+        text: 'Các em thấy chưa? Chủ tịch đích thân đến động viên mình. Chừng đó là đủ rồi.',
+        next: 'minh-looks',
+      },
+      'minh-looks': {
+        text: 'Anh Minh nhìn theo cánh cửa thang máy đang đóng, rồi quay lại nhìn bạn. Anh không nói gì. Có những câu không cần nói.',
         next: 'boss',
       },
       boss: {
         speaker: 'boss',
-        text: 'Em vào anh bảo. Tình hình rồi sẽ ổn thôi. Chúng ta còn nhiều dự án lớn lắm. Em nghĩ kỹ chưa?',
+        text: 'Em vào anh bảo. Next week thôi, 1–2 triệu đô đang về, IPO cũng sắp rồi. Chúng ta còn nhiều dự án lớn lắm. Em nghĩ kỹ chưa?',
         next: 'choice',
       },
       choice: {
@@ -109,6 +127,10 @@ export const chapter6Scenes = {
       deal: {
         text: 'Công ty chốt lộ trình trả dần cho cả nhóm. Không trọn vẹn, nhưng có văn bản, và lần này là chung một văn bản.',
         effects: [{ type: 'companyPays', amount: 30_000_000 }],
+        next: 'minh',
+      },
+      minh: {
+        text: 'Anh Minh ký tên đầu tiên trong danh sách. Anh vẫn nói mình yêu công ty này, và chính vì thế anh muốn nó trả lương.',
         next: 'dan',
       },
       dan: {
@@ -153,6 +175,30 @@ export const chapter6Scenes = {
       },
       ting: {
         text: 'Ting. Bạn đứng giữa siêu thị và mỉm cười với một cái điện thoại. Không ai hiểu vì sao.',
+        next: 'left-before',
+      },
+      'left-before': {
+        routes: [
+          {
+            when: { type: 'not', condition: { type: 'flag', flag: 'heardDollars' } },
+            next: 'the-slide',
+          },
+        ],
+        otherwise: 'on-time',
+      },
+      'on-time': {
+        text: 'Hôm nay là mùng 5. Bạn mua thêm một hộp sữa, chỉ vì mua được.',
+      },
+      'the-slide': {
+        text: 'Hai tháng sau, một đồng nghiệp cũ gửi bạn ảnh chụp: công ty họp toàn thể, trên slide chỉ có một dòng "$1–2 TRIỆU".',
+        next: 'what-a-pity',
+      },
+      'what-a-pity': {
+        text: 'Rồi Phó giám đốc nhắn: "Nghe nói em đi rồi. Tiếc quá. Tiếc cho em thật sự. Em đi đúng trước đợt anh đào được 1–2 triệu đô, mà sắp IPO rồi, cổ phiếu nội bộ cũng không có phần em."',
+        next: 'also-a-pity',
+      },
+      'also-a-pity': {
+        text: 'Bạn đọc tin nhắn trong giờ nghỉ trưa, bên phần cơm mua bằng lương tháng này. Bạn cũng thấy tiếc. Tiếc là đã không đi sớm hơn.',
       },
     },
   },
@@ -173,6 +219,11 @@ export const chapter6Scenes = {
       },
       seat: {
         text: 'Phòng họp chỉ còn lại mười hai người vỗ tay. Bạn nhìn tấm bằng khen, rồi nhìn sổ nợ. Con số đã dài thêm một chữ số.',
+        next: 'tin',
+      },
+      tin: {
+        speaker: 'manager',
+        text: 'Anh đã bảo mà. Next week là có thôi, rồi còn cổ phiếu nữa. Anh em mình chỉ cần tin thêm một chút.',
       },
     },
   },
@@ -184,6 +235,10 @@ export const chapter6Scenes = {
     nodes: {
       nothing: {
         text: 'Sáng thứ Hai. Bạn mở máy. Có một ticket mới. Có một thông báo: lộ trình thanh toán tiếp tục được điều chỉnh.',
+        next: 'by-heart',
+      },
+      'by-heart': {
+        text: 'Ở hành lang, Phó giám đốc vỗ vai bạn: "This week nhé em. Chậm nhất next week." Bạn gật đầu. Bạn đã thuộc lòng câu đó.',
         next: 'same',
       },
       same: {
@@ -198,7 +253,7 @@ export const chapter6Scenes = {
     start: 'mail',
     nodes: {
       mail: {
-        text: 'Thứ Hai, 7 giờ 12 phút. Điện thoại rung. Một email có tiêu đề: "Chúc mừng! Hợp đồng của bạn đã được tự động gia hạn".',
+        text: 'Thứ Hai, 7 giờ 12 phút. Điện thoại rung. Một email gửi {name}, tiêu đề: "Chúc mừng! Hợp đồng của bạn đã được tự động gia hạn".',
         next: 'detail',
       },
       detail: {

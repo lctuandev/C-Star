@@ -19,7 +19,10 @@ interface GameStore {
   state: GameState | null;
   /** Lines already shown: UI state, never saved (contracts/save.md §2). */
   history: readonly HistoryLine[];
-  newRun: (seed: number) => void;
+  /** Set by the menu on the way to the application form: a new run replaces the one saved. */
+  startingNewGame: boolean;
+  setStartingNewGame: (starting: boolean) => void;
+  newRun: (seed: number, playerName?: string) => void;
   /** Takes up a saved run. */
   resume: (state: GameState) => void;
   dispatch: (action: GameAction) => void;
@@ -42,10 +45,12 @@ const withLine = (history: readonly HistoryLine[], state: GameState) => {
 export const useGameStore = create<GameStore>((set, get) => ({
   state: null,
   history: [],
+  startingNewGame: false,
+  setStartingNewGame: (startingNewGame) => set({ startingNewGame }),
 
-  newRun: (seed) => {
-    const state = beginRun(seed, world);
-    set({ state, history: withLine([], state) });
+  newRun: (seed, playerName) => {
+    const state = beginRun(seed, world, playerName);
+    set({ state, history: withLine([], state), startingNewGame: false });
     useSaveStore.getState().autosave(state);
   },
 

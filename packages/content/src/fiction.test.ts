@@ -1,5 +1,7 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { disclaimer } from './disclaimer.js';
+import { promises, syncLines } from './promises.js';
 import { world } from './world.js';
 
 /** Every string in a value, however deep. Ids go through too, which is harmless and simpler. */
@@ -13,7 +15,15 @@ const stringsIn = (value: unknown): string[] => {
   return typeof value === 'object' && value !== null ? Object.values(value).flatMap(stringsIn) : [];
 };
 
-const playerText = stringsIn(world);
+/** The words on the office walls are read by players too, and they are drawn in a picture. */
+const wallText: unknown = JSON.parse(
+  readFileSync(
+    new URL('../../../tools/art-pipeline/textures/decal-text.json', import.meta.url),
+    'utf8',
+  ),
+);
+
+const playerText = [...stringsIn(world), ...stringsIn(wallText), ...promises, ...syncLines];
 
 /** contracts/content.md §1: products and companies that exist, by name. */
 const REAL_BRANDS =

@@ -1,4 +1,5 @@
 import type { GameState } from '@cstar/game-core';
+import { DESK_OF, DESKS } from './office-layout';
 
 export type FruitTray = 'full' | 'half' | 'bananas' | 'empty';
 
@@ -12,8 +13,15 @@ export interface OfficeMood {
   people: readonly string[];
   /** Of the twelve desks in the room. */
   occupiedDesks: number;
+  /** Desks whose screen is on: the ones still taken, and anyone named who is still here. */
+  litDesks: readonly number[];
   flicker: boolean;
+  /** 0 to 1: how much colour the months have taken out of the room. */
+  drain: number;
 }
+
+const DRAIN_PER_MONTH = 0.11;
+const MAX_DRAIN = 0.72;
 
 const fruitOf = (month: number): FruitTray => {
   if (month <= 1) {
@@ -29,12 +37,28 @@ const fruitOf = (month: number): FruitTray => {
 export const officeMood = (state: GameState): OfficeMood => {
   const { month } = state.calendar;
   const khoaLeft = state.story.seenScenes.includes('ch4-khoa-leaves');
+  const people = [
+    'boss',
+    'manager',
+    'deputy',
+    'hr',
+    'accountant',
+    'dan',
+    'uyen',
+    ...(khoaLeft ? [] : ['khoa']),
+  ];
+  const occupiedDesks = Math.max(2, 11 - month);
+  const named = people.flatMap((id) => DESK_OF[id] ?? []);
   return {
     coffeeMachine: month < 2,
     fruit: fruitOf(month),
     plants: Math.max(0, 1 - (month - 1) * 0.2),
-    people: ['boss', 'hr', 'accountant', 'dan', 'uyen', ...(khoaLeft ? [] : ['khoa'])],
-    occupiedDesks: Math.max(2, 11 - month),
+    people,
+    occupiedDesks,
+    litDesks: DESKS.map((_, index) => index).filter(
+      (index) => index < occupiedDesks || named.includes(index),
+    ),
     flicker: state.mood.stress >= 70,
+    drain: Math.min(MAX_DRAIN, (month - 1) * DRAIN_PER_MONTH),
   };
 };

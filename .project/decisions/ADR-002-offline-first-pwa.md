@@ -16,7 +16,7 @@ có thể đi xa hơn: đã mở một lần là chơi hết game không cần m
   file của bản build. Một script chạy sau build sinh danh sách file và gắn phiên bản build vào tên cache.
 - Tải mới bằng service worker chờ sẵn: **không tự reload giữa lượt chơi**. Người chơi thấy lời mời cập nhật
   ở menu, bấm mới áp dụng.
-- `manifest` đặt `display: standalone`, `orientation: portrait`, `lang: vi`, có icon thường và maskable.
+- `manifest` đặt `display: standalone`, `orientation: any` (đổi từ `portrait` ở FEAT-033, để tablet và PC xoay được), `lang: vi`, có icon thường và maskable.
 - Save nằm trên IndexedDB, không bao giờ qua cache của service worker (`.project/contracts/save.md`).
 
 ## Why

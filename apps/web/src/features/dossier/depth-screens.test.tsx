@@ -46,7 +46,7 @@ describe('DossierSheet (SCENARIO-037, 039)', () => {
     render(<DossierSheet state={state} onClose={() => {}} />);
     expect(screen.getByText('Hợp đồng lao động')).toBeInTheDocument();
     expect(screen.getByText('Uyên').parentElement).toHaveTextContent('Tin bạn');
-    expect(screen.getByText('Sếp').parentElement).toHaveTextContent('Bình thường');
+    expect(screen.getByText('Phó giám đốc').parentElement).toHaveTextContent('Bình thường');
   });
 });
 

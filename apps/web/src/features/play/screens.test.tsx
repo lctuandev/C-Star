@@ -114,4 +114,21 @@ describe('PayslipScreen (SCENARIO-026)', () => {
     rerender(<PayslipScreen payslip={{ ...slip, arrears: 500_000 }} />);
     expect(screen.getByText('Còn thiếu')).toBeInTheDocument();
   });
+
+  it('holds the KPI money back, whatever the points say (SCENARIO-082)', () => {
+    render(<PayslipScreen payslip={{ ...slip, kpi: { points: 8, target: 8 } }} />);
+    expect(screen.getByText('Đang giữ')).toBeInTheDocument();
+  });
+
+  it("comes with this month's promise when it is not paid (SCENARIO-077)", () => {
+    render(<PayslipScreen payslip={{ ...slip, month: 2, salaryPaid: 0 }} />);
+    expect(screen.getByText(/this week nhé em/i)).toBeInTheDocument();
+  });
+
+  it("some months there is no slip, and the figures are the player's own (SCENARIO-083)", () => {
+    render(<PayslipScreen payslip={{ ...slip, month: 5, salaryPaid: 0 }} playerName="Hoa" />);
+    expect(screen.getByRole('heading')).toHaveTextContent('KHÔNG CÓ PHIẾU LƯƠNG THÁNG 5');
+    expect(screen.queryByText(/Người nhận/)).not.toBeInTheDocument();
+    expect(screen.getByText('Công ty đang nợ bạn')).toBeInTheDocument();
+  });
 });

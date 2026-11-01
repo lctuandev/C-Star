@@ -8,3 +8,6 @@ coverage
 .mcp.json
 apps/e2e/test-results
 apps/e2e/playwright-report
+tools/art-pipeline/textures/decals.json
+apps/web/src/features/office/office-plan.json
+tools/art-pipeline/cameras.json

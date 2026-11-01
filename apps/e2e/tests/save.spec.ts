@@ -4,7 +4,7 @@ import path from 'node:path';
 import { expect, test } from '@playwright/test';
 import type { Page } from '@playwright/test';
 import { asReturningPlayer } from '../tools/accepted-disclaimer.js';
-import { doTask, playUntil, startGame, weekHeading } from '../tools/play.js';
+import { doTask, playUntil, startGame, submitApplication, weekHeading } from '../tools/play.js';
 
 const continueButton = (page: Page) => page.getByRole('button', { name: 'Tiếp tục' });
 const newGame = (page: Page) => page.getByRole('button', { name: 'Game mới' });
@@ -134,6 +134,7 @@ test('a broken save is reported, kept, and can be taken out (SCENARIO-032)', asy
 
   await newGame(page).click();
   await page.getByRole('button', { name: /Tôi đã hiểu/ }).click();
+  await submitApplication(page);
   await expect(page).toHaveURL(/\/play$/);
 
   const kept = await page.evaluate(

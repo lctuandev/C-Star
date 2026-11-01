@@ -46,6 +46,17 @@ export const crisisScenes = {
             next: 'called',
           },
           {
+            id: 'credit',
+            text: 'Vay tiêu dùng trên điện thoại, không cần hỏi ai',
+            effects: [
+              { type: 'takeLoan', amount: 8_000_000 },
+              { type: 'payArrears' },
+              { type: 'addStress', amount: 10 },
+              { type: 'setFlag', flag: 'tookCredit' },
+            ],
+            next: 'credited',
+          },
+          {
             id: 'quit',
             text: 'Đủ rồi. Nghỉ việc, về quê làm lại từ đầu',
             requires: { type: 'crisisCount', crisis: 'broke', min: 3 },
@@ -66,6 +77,9 @@ export const crisisScenes = {
       },
       called: {
         text: 'Mẹ không hỏi nhiều, chỉ bảo "có gì về nhà ăn cơm". Bạn nói "dạ" rồi nhìn trần nhà một lúc lâu.',
+      },
+      credited: {
+        text: 'Tiền về sau bốn phút, nhanh hơn mọi lời hứa của công ty. Dòng lãi suất viết rất nhỏ, tính theo ngày. Bạn đọc rồi, và vẫn bấm "Đồng ý".',
       },
       'quit-line': {
         speaker: 'player',

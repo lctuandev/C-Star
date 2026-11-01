@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="C*">
+  <!-- C as a fluorescent tube, and the asterisk from the bottom of a contract, in payslip gold. -->
+  <g fill="none" stroke-linecap="round">
+    <path
+      stroke="#9ff0dc"
+      stroke-width="62"
+      d="M 292.5 144.7 A 148 148 0 1 0 322.0 385.0"
+    />
+    <g stroke-width="30" transform="translate(399 131)">
+      <path stroke="#ffc83d" d="M 0 0 L 0 -60" />
+      <path stroke="#ffc83d" d="M 0 0 L 57 -18.5" />
+      <path stroke="#8d6a1c" d="M 0 0 L 35.3 48.5" />
+      <path stroke="#ffc83d" d="M 0 0 L -35.3 48.5" />
+      <path stroke="#ffc83d" d="M 0 0 L -57 -18.5" />
+    </g>
+  </g>
+</svg>

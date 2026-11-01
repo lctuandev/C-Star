@@ -6,11 +6,13 @@
   "scripts": {
     "test:e2e": "playwright test",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "shots": "playwright test --config playwright.shots.config.ts"
   },
   "devDependencies": {
     "@cstar/config": "workspace:*",
     "@cstar/content": "workspace:*",
+    "@cstar/game-core": "workspace:*",
     "@playwright/test": "^1.63.0",
     "@types/node": "^24.19.1",
     "eslint": "^9.39.5",

@@ -4,5 +4,5 @@
     // Code inside page.evaluate runs in the browser.
     "lib": ["ES2023", "DOM"]
   },
-  "include": ["*.ts", "tests", "tools"]
+  "include": ["*.ts", "tests", "tools", "shots"]
 }

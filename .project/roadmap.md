@@ -3,7 +3,7 @@
 Nguồn: `docs/Cong_Ty_C_GDD_v0.1.md`. File này chia GDD thành các cột mốc và Task ID. Chi tiết từng task nằm
 trong `.tasks/`, trạng thái hiện tại ở `.project/CURRENT.md`.
 
-Cập nhật: 2026-11-01. **Toàn bộ đã xong trừ deploy thật (TECH-004) và các việc cần owner, xem `.project/backlog.md`.**
+Cập nhật: 2026-11-01. **M0–M6 xong. Xem `.project/CURRENT.md`.**
 
 ---
 
@@ -116,7 +116,25 @@ Xong khi: người ngoài dùng link công khai, cài được, chơi hết đư
 
 ---
 
-## 8. Để sau, chưa lên lịch
+## 8. M6 — Nâng cấp đồ họa (ADR-005)
+
+Owner yêu cầu sau khi game hoàn chỉnh. Xong khi: nhìn ảnh chụp là biết đây là game văn phòng có art direction, không phải khối hình.
+
+| Task                        | Mục tiêu                                                     | Nghiệm thu                                                   | Cần có    |
+| --------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | --------- |
+| TECH-005-art-pipeline       | Blender → GLB → tối ưu → ngân sách → web, tái lập được       | Một lệnh dựng lại; vượt ngân sách thì đỏ                     | ADR-005   |
+| FEAT-028-baked-office       | Văn phòng và nhà riêng, ánh sáng bake bằng Cycles            | Đọc ra từng khu GDD §7 từ mọi camera                         | TECH-005  |
+| FEAT-029-rigged-characters  | 7 nhân vật có xương, đồng nghiệp ngồi ở bàn, hoạt ảnh bằng code | Nhận ra vai trò không cần tên                                | TECH-005  |
+| FEAT-030-office-navigation  | Va chạm và tìm đường                                         | Không đi xuyên đồ; mọi điểm đều tới được                     | FEAT-028  |
+| FEAT-031-office-in-game     | Đưa cảnh vào game, cấp đồ họa, tông màu theo tháng           | Không chặn truyện khi tải; offline chạy                      | FEAT-028, 029 |
+| FEAT-032-rendered-2d-art    | Chân dung, nền 2D, màn mở đầu render bằng Blender            | Chế độ 2D thấy cùng một thế giới                             | FEAT-028, 029 |
+| FEAT-033-game-ui-pass       | HUD, khung thoại, thẻ chương, chuyển cảnh, tablet và PC      | Đạt ux-direction, đọc được ở 360 px, không vỡ ở mọi cỡ       | FEAT-031  |
+| FEAT-034-leadership-cast    | Chủ tịch, Phó giám đốc, Trưởng và Phó phòng, lời hứa, chuyện vay mượn | Có trong đủ các chương; bot vẫn tới đủ sáu ending    | FEAT-029  |
+| FEAT-035-player-name        | Người chơi điền tên khi bắt đầu                              | Tên đi vào truyện và save; save cũ không hỏng                | FEAT-033  |
+
+---
+
+## 9. Để sau, chưa lên lịch
 
 - AI NPC (GDD §8): cần ADR riêng về dịch vụ, chi phí và kiểm soát nội dung.
 - Bản tiếng Anh.

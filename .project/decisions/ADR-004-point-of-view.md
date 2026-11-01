@@ -11,11 +11,11 @@ Visual Novel, Management. 3D thêm yêu cầu hiệu năng điện thoại và d
 
 ## Decision
 
-- **Third Person 3D low-poly**, bằng React Three Fiber, dựng hoàn toàn từ khối hình trong code: không có file asset.
+- **Third Person 3D low-poly**, bằng React Three Fiber. Mô hình dựng bằng Blender từ code, xem ADR-005 (thay cho khối hình trong code ở bản đầu).
 - **Chạm để đi thay cho joystick**: chạm nhãn một địa điểm, nhân vật đi tới và làm hành động đó. Một ngón tay trên điện thoại dọc.
 - **3D chỉ là lớp hiển thị.** Luật ở `game-core` không đổi. Danh sách hành động dạng nút luôn còn đó.
-- **3D chỉ chiếm vùng giữa HUD và bảng điều khiển**, không nằm dưới UI.
-- **Ba chế độ:** Tự động (mặc định), Luôn 3D, 2D. Tự động sẽ lùi về 2D nếu không có WebGL hoặc dưới 18 FPS.
+- **Cảnh tràn màn hình, nhưng khung hình nằm gọn trong phần giao diện chừa lại** (`fitView`, đổi ở FEAT-033). Bản đầu cắt canvas giữa HUD và bảng điều khiển.
+- **Ba chế độ:** Tự động (mặc định), Luôn 3D, 2D. Tự động sẽ giảm chi tiết dưới 30 FPS, lùi về 2D dưới 18 FPS hoặc khi không có WebGL, không tải được model.
 
 ## Why
 
@@ -43,9 +43,9 @@ Visual Novel, Management. 3D thêm yêu cầu hiệu năng điện thoại và d
 
 ## Consequences
 
-- Precache từ 1,1 MB lên 2 MB. Chunk 3D 904 KB, gzip 238 KB, chỉ tải khi cần ở lần chạy đầu, nhưng service worker vẫn precache nó.
+- Chunk 3D 904 KB, gzip 238 KB, chỉ tải khi cần ở lần chạy đầu, nhưng service worker vẫn precache nó. Tổng precache xem ADR-005.
 - Chưa đo trên điện thoại thật: lý do phải có chế độ Tự động. Xem TECH-002.
-- Nhân vật không có khuôn mặt: vừa rẻ, vừa đúng tinh thần "biểu tượng, không phải người thật".
+- Nhân vật là hình đồ chơi với mặt tối giản (đổi ở FEAT-029): vẫn đúng tinh thần "biểu tượng, không phải người thật", và có hồn hơn hẳn.
 
 ## Affected Systems
 

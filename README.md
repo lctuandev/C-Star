@@ -8,7 +8,7 @@ không nhắm vào cá nhân hay tổ chức nào.
 
 ## Trạng thái
 
-Chơi trọn được: 37 cảnh, 6 kết thúc, PWA offline, văn phòng 3D có lùi về 2D. Chưa deploy. Xem [.project/CURRENT.md](.project/CURRENT.md).
+Chơi trọn được: 37 cảnh, 6 kết thúc, PWA offline, văn phòng 3D có ánh sáng bake, nhân vật có xương, chạy trên điện thoại, tablet và PC. Chưa deploy. Xem [.project/CURRENT.md](.project/CURRENT.md).
 
 ## Chạy dự án
 
@@ -21,6 +21,8 @@ pnpm dev
 
 Mở <http://localhost:5200>. Kiểm tra: `pnpm typecheck`, `pnpm lint`, `pnpm test`, `pnpm test:e2e`. Lần đầu chạy E2E
 cần `pnpm --filter @cstar/e2e exec playwright install chromium`.
+
+Đồ họa dựng bằng Blender từ code, xem [tools/art-pipeline](tools/art-pipeline/README.md). Kết quả đã commit, không cần Blender để chạy game.
 
 ## Tài liệu
 

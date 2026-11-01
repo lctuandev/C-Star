@@ -3,6 +3,8 @@
 import { world } from '@cstar/content';
 import Link from 'next/link';
 import { useEffect } from 'react';
+import { buttonClass } from '@/components/ui/Button';
+import { PageFrame } from '@/components/ui/PageFrame';
 import { useProgressStore } from './progress-store';
 
 /** Why anyone plays again: what is still locked says how to reach it, not what is in it. */
@@ -17,18 +19,15 @@ export const EndingsList = () => {
   const reached = world.endings.filter(({ id }) => counts[id]).length;
 
   return (
-    <main className="mx-auto flex min-h-dvh max-w-md flex-col gap-4 px-6 pt-[calc(env(safe-area-inset-top)+1.5rem)] pb-[calc(env(safe-area-inset-bottom)+1rem)]">
-      <h1 className="text-2xl font-extrabold">
-        Đã mở {reached}/{world.endings.length}
-      </h1>
-      <ul className="flex flex-1 flex-col gap-3">
+    <PageFrame title={`Đã mở ${reached}/${world.endings.length}`} wide>
+      <ul className="grid gap-3 lg:grid-cols-2">
         {world.endings.map(({ id, title, summary, hint }) => {
           const count = counts[id];
           return (
-            <li key={id} className="bg-surface-800 rounded-xl p-4">
+            <li key={id} className="bg-surface-800/90 rounded-2xl p-4">
               {count ? (
                 <>
-                  <p className="font-bold">{title}</p>
+                  <p className="text-paycheck font-bold">{title}</p>
                   <p className="text-ink-secondary text-sm">{summary}</p>
                   <p className="text-ink-muted mt-1 text-xs">Đã đạt {count} lần</p>
                 </>
@@ -42,12 +41,9 @@ export const EndingsList = () => {
           );
         })}
       </ul>
-      <Link
-        href="/"
-        className="bg-surface-700 flex min-h-11 items-center justify-center rounded-xl px-4 font-bold"
-      >
+      <Link href="/" className={buttonClass('quiet')}>
         Quay lại
       </Link>
-    </main>
+    </PageFrame>
   );
 };

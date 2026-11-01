@@ -7,5 +7,7 @@ export default defineConfig([
   ...nextVitals,
   ...nextTypeScript,
   prettier,
+  // A static export has no image server, and the art is already sized WebP in the precache.
+  { rules: { '@next/next/no-img-element': 'off' } },
   globalIgnores(['.next/**', 'out/**', 'next-env.d.ts', 'coverage/**']),
 ]);

@@ -1,0 +1,38 @@
+{
+  "name": "@cstar/art-pipeline",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "textures": "python3 textures/make_decals.py",
+    "office:build": "blender --background --factory-startup --python blender/build_office.py -- --out out",
+    "office:export": "blender --background out/office.blend --python blender/export_office.py -- --out out",
+    "people:build": "blender --background --factory-startup --python blender/build_characters.py -- --out out",
+    "people:export": "blender --background out/characters.blend --python blender/export_characters.py -- --out out",
+    "optimize": "node src/optimize.ts",
+    "validate": "node src/validate.ts",
+    "publish:art": "node src/publish.ts",
+    "art": "pnpm textures && pnpm office:build && pnpm office:denoise && pnpm office:export && pnpm people:build && pnpm people:export && pnpm optimize && pnpm validate && pnpm publish:art && pnpm render && pnpm encode",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "office:denoise": "blender --background --factory-startup --python blender/denoise.py -- --image out/lightmap.exr --out out/lightmap.clean.exr",
+    "render": "blender --background out/office.blend --python blender/render_art.py -- --out out/rendered",
+    "encode": "node src/encode.ts",
+    "icons": "node src/icons.ts"
+  },
+  "dependencies": {
+    "@gltf-transform/core": "4.5.1",
+    "@gltf-transform/extensions": "4.5.1",
+    "@gltf-transform/functions": "4.5.1",
+    "meshoptimizer": "1.2.0",
+    "sharp": "0.35.5"
+  },
+  "devDependencies": {
+    "@cstar/config": "workspace:*",
+    "@types/node": "^24.19.1",
+    "eslint": "^9.39.5",
+    "typescript": "~6.0.3",
+    "vitest": "^5.0.3"
+  }
+}

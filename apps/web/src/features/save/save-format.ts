@@ -1,8 +1,9 @@
+import { MAX_PLAYER_NAME } from '@cstar/game-core';
 import type { GameState } from '@cstar/game-core';
 import { z } from 'zod';
 
 /** Raise it with every change to the shape below, and add the step in `MIGRATIONS` (contracts/save.md §3). */
-export const SAVE_VERSION = 3;
+export const SAVE_VERSION = 4;
 
 const money = z.number().int().nonnegative();
 const mood = z.number().int().min(0).max(100);
@@ -23,6 +24,7 @@ const payslipSchema = z.strictObject({
 
 const gameStateSchema: z.ZodType<GameState> = z.strictObject({
   seed: z.number(),
+  playerName: z.string().max(MAX_PLAYER_NAME),
   rng: z.number().int().nonnegative(),
   phase: z.enum(['scene', 'week', 'kpi', 'payslip', 'ended']),
   calendar: z.strictObject({
@@ -95,6 +97,11 @@ const MIGRATIONS: Record<number, Migration> = {
   2: (file) => ({
     ...file,
     state: { ...(file.state as object), ending: null, loops: 0 },
+  }),
+  /** M6: the player's name. Nobody was asked yet, and "bạn" reads fine. */
+  3: (file) => ({
+    ...file,
+    state: { ...(file.state as object), playerName: '' },
   }),
 };
 

@@ -57,7 +57,7 @@ export const chapter1Scenes = {
       },
       reply: {
         speaker: 'hr',
-        text: 'Chào mừng bạn đến với đại gia đình C*! Thứ Hai tuần sau đi làm nhé. Nhớ mang theo đam mê!',
+        text: 'Chào mừng {name} đến với đại gia đình C*! Thứ Hai tuần sau đi làm nhé. Nhớ mang theo đam mê!',
       },
     },
   },
@@ -143,6 +143,16 @@ export const chapter1Scenes = {
       },
       'all-three': {
         text: 'Cả ba bắt tay bạn. Ai cũng tử tế theo một kiểu hơi mệt mỏi.',
+        next: 'manager-hello',
+      },
+      'manager-hello': {
+        speaker: 'manager',
+        text: 'Chào em, anh là Tín, trưởng phòng. Em vào đúng công ty, đúng thời điểm rồi đấy. Chủ tịch có một tầm nhìn mà người thường phải mất mười năm mới hiểu. Anh mất tám năm.',
+        next: 'deputy-hello',
+      },
+      'deputy-hello': {
+        speaker: 'deputy',
+        text: 'Chào {name}, anh là Minh, phó phòng. Cần gì cứ hỏi anh, từ chỗ để xe tới cách xin nghỉ phép. Giờ nghỉ trưa thì nghỉ thật nhé, đừng ăn ở bàn.',
         next: 'first-task',
       },
       'first-task': {
@@ -159,6 +169,18 @@ export const chapter1Scenes = {
     nodes: {
       room: {
         text: 'Cả công ty chen vào phòng họp lớn. Máy chiếu hiện chữ TẦM NHÌN 2030, cỡ chữ to hơn cả bạn.',
+        next: 'chairman-call',
+      },
+      'chairman-call': {
+        text: 'Anh Tín xin cả phòng yên lặng. Màn hình chuyển sang cuộc gọi video: Chủ tịch, chủ của công ty này và nhiều công ty khác, đang ngồi trên xe.',
+        next: 'chairman-greets',
+      },
+      'chairman-greets': {
+        text: '"Chào các bạn ở..." Ông liếc sang người bên cạnh. "...C*! Tôi rất tự hào về các bạn. Tôi phải sang công ty khác bây giờ."',
+        next: 'chairman-gone',
+      },
+      'chairman-gone': {
+        text: 'Cuộc gọi dài mười một giây. Anh Tín lau mắt. Phó giám đốc bước lên trước màn hình.',
         next: 'boss-opens',
       },
       'boss-opens': {

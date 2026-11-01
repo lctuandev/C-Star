@@ -7,6 +7,7 @@ import { chromium, devices, expect, test } from '@playwright/test';
 import type { Page } from '@playwright/test';
 import { asReturningPlayer } from '../tools/accepted-disclaimer.js';
 import { startReleaseServer, WEB_OUT } from '../tools/release-server.js';
+import { submitApplication } from '../tools/play.js';
 
 const RELEASE_PORT = Number(process.env.E2E_RELEASE_PORT ?? 5301);
 const heading = (page: Page) => page.getByRole('heading', { name: 'Công ty C*' });
@@ -88,6 +89,7 @@ test('the whole game opens with no network (SCENARIO-002)', async ({ page, conte
   await page.getByRole('link', { name: 'Quay lại' }).click();
   await page.getByRole('button', { name: 'Game mới' }).click();
   await page.getByRole('button', { name: disclaimer.confirmLabel }).click();
+  await submitApplication(page);
   await expect(page.getByRole('status')).toContainText('Thứ Hai, 7 giờ 12 phút');
   expect(failed).toEqual([]);
 

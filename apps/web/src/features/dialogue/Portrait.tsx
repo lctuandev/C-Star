@@ -1,18 +1,23 @@
-import type { CharacterInfo } from '@cstar/content';
+import { characterInfo } from '@cstar/content';
+import type { CharacterId } from '@cstar/content';
 
-const TONES: Record<CharacterInfo['tone'], string> = {
-  player: 'bg-fluorescent text-surface-950',
-  power: 'bg-paycheck text-surface-950',
-  paper: 'bg-surface-600 text-ink-primary',
-  ally: 'bg-ally text-surface-950',
-};
+const SIZES = { small: 'size-10 rounded-xl', large: 'size-16 rounded-2xl lg:size-20' };
 
-/** A stand-in until the art pass: colour says which side someone is on. */
-export const Portrait = ({ character }: { character: CharacterInfo }) => (
-  <span
+interface PortraitProps {
+  id: CharacterId;
+  size?: keyof typeof SIZES;
+}
+
+/** Who is talking, in the label above a line. The player goes by what they typed in the form. */
+export const speakerLabel = (id: CharacterId, playerName: string) =>
+  id === 'player' && playerName ? playerName : characterInfo[id].name;
+
+/** Rendered from the same model that walks the office (ADR-005). */
+export const Portrait = ({ id, size = 'large' }: PortraitProps) => (
+  <img
+    src={`/art/portraits/${id}.webp`}
+    alt=""
     aria-hidden
-    className={`flex size-10 shrink-0 items-center justify-center rounded-xl font-extrabold ${TONES[character.tone]}`}
-  >
-    {character.initial}
-  </span>
+    className={`bg-surface-700 shrink-0 object-cover ${SIZES[size]}`}
+  />
 );

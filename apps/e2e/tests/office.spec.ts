@@ -80,6 +80,45 @@ test.describe('with WebGL', () => {
   });
 });
 
+test.describe('when the model is slow or missing', () => {
+  // The worker would answer from its cache, and the request would never reach the route.
+  test.use({ serviceWorkers: 'block' });
+
+  test('a model that will not load leaves the 2D game (SCENARIO-069)', async ({ page }) => {
+    await page.route('**/art/office.glb', (route) => route.abort());
+    await startGame(page, '3d');
+    await expect(page.getByTestId('office-3d')).toBeHidden();
+    await playUntil(page, weekHeading(page));
+    await page.getByRole('button', { name: /Nghỉ ngơi/ }).click();
+    await expect(page.getByRole('heading', { name: 'Tuần này còn 2 lượt' })).toBeVisible();
+  });
+
+  test('the story does not wait for the model (SCENARIO-068)', async ({ page }) => {
+    let release = () => {};
+    const held = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    await page.route('**/art/office.glb', async (route) => {
+      await held;
+      await route.continue();
+    });
+    await startGame(page, '3d');
+    await playUntil(page, weekHeading(page));
+    await page.getByRole('button', { name: /Nghỉ ngơi/ }).click();
+    await expect(page.getByRole('heading', { name: 'Tuần này còn 2 lượt' })).toBeVisible();
+    release();
+  });
+});
+
+test('the 2D screens show the place, not a blank (SCENARIO-071)', async ({ page }) => {
+  await startGame(page);
+  const place = page.locator('main img[src*="/art/places/"]');
+  await expect(place).toBeAttached();
+  await expect
+    .poll(() => place.evaluate((image: HTMLImageElement) => image.naturalWidth))
+    .toBeGreaterThan(0);
+});
+
 test('without WebGL the game simply has no office (SCENARIO-054)', async ({ page }) => {
   await page.addInitScript(() => {
     HTMLCanvasElement.prototype.getContext = () => null;

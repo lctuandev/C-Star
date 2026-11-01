@@ -28,6 +28,7 @@ jobs:
       - run: pnpm format:check
       - run: pnpm typecheck
       - run: pnpm lint
+      - run: pnpm --filter @cstar/art-pipeline validate --public
       - run: pnpm test
       - run: pnpm build
       - run: pnpm --filter @cstar/e2e exec playwright install --with-deps chromium

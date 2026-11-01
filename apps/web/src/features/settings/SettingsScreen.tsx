@@ -1,6 +1,8 @@
 'use client';
 
 import Link from 'next/link';
+import { buttonClass } from '@/components/ui/Button';
+import { PageFrame } from '@/components/ui/PageFrame';
 import { useSettingsStore } from './settings-store';
 import type { Settings } from './settings-store';
 
@@ -19,7 +21,7 @@ const Options = <T extends string>({ label, value, options, onChange }: OptionsP
         <label
           key={option.value}
           className={`flex min-h-11 flex-1 cursor-pointer items-center justify-center rounded-xl px-2 text-center text-sm font-bold ${
-            option.value === value ? 'bg-fluorescent text-surface-950' : 'bg-surface-700'
+            option.value === value ? 'bg-paycheck text-surface-950' : 'bg-surface-700'
           }`}
         >
           <input
@@ -57,8 +59,7 @@ export const SettingsScreen = () => {
   const { textSize, textSpeed, volume, ambience, graphics, change } = useSettingsStore();
 
   return (
-    <main className="mx-auto flex min-h-dvh max-w-md flex-col justify-center gap-6 px-6 pt-[env(safe-area-inset-top)] pb-[calc(env(safe-area-inset-bottom)+1rem)]">
-      <h1 className="text-2xl font-extrabold">Cài đặt</h1>
+    <PageFrame title="Cài đặt">
       <Options
         label="Cỡ chữ"
         value={textSize}
@@ -85,7 +86,7 @@ export const SettingsScreen = () => {
           max={100}
           value={Math.round(volume * 100)}
           onChange={(event) => change({ volume: Number(event.target.value) / 100 })}
-          className="accent-fluorescent h-11"
+          className="accent-paycheck h-11"
         />
       </label>
       <label className="flex min-h-11 items-center justify-between gap-3 font-bold">
@@ -94,15 +95,12 @@ export const SettingsScreen = () => {
           type="checkbox"
           checked={ambience}
           onChange={(event) => change({ ambience: event.target.checked })}
-          className="accent-fluorescent size-6"
+          className="accent-paycheck size-6"
         />
       </label>
-      <Link
-        href="/"
-        className="bg-surface-700 flex min-h-11 items-center justify-center rounded-xl px-4 font-bold"
-      >
+      <Link href="/" className={buttonClass('quiet')}>
         Quay lại
       </Link>
-    </main>
+    </PageFrame>
   );
 };

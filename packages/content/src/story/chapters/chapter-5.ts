@@ -130,7 +130,7 @@ export const chapter5Scenes = {
     nodes: {
       boss: {
         speaker: 'boss',
-        text: 'Em ngồi đi. Anh để ý em lâu rồi. Anh muốn em làm Trưởng nhóm. Danh thiếp mới, ghế mới, và một vị trí trong chương trình lãnh đạo tương lai.',
+        text: 'Em ngồi đi, em... Thôi không sao, anh nhớ mặt. Anh để ý em lâu rồi. Anh muốn em làm Trưởng nhóm. Danh thiếp mới, ghế mới, và một vị trí trong chương trình lãnh đạo tương lai.',
         next: 'detail',
       },
       detail: {
@@ -171,6 +171,24 @@ export const chapter5Scenes = {
       refused: {
         speaker: 'boss',
         text: 'Em còn trẻ. Rồi em sẽ hiểu tầm nhìn là gì.',
+        next: 'tin-pleads',
+      },
+      'tin-pleads': {
+        speaker: 'manager',
+        text: 'Em đừng nghe nhóm kia. Luật với giấy tờ làm gì, anh có đọc bao giờ đâu. Chủ tịch đã nói thì tiền sẽ về. Ở lại với anh đi, rồi cả phòng mình cùng hưởng.',
+        next: 'minh-check',
+      },
+      'minh-check': {
+        routes: [{ when: { type: 'relation', npc: 'deputy', min: 8 }, next: 'minh-signs' }],
+        otherwise: 'minh-nods',
+      },
+      'minh-signs': {
+        speaker: 'deputy',
+        text: 'Anh Tín tin thật lòng đấy, em đừng giận anh ấy. Còn em làm gì là quyền của em. Cần xác nhận em đã đi làm những tháng nào, anh ký cho.',
+        effects: [{ type: 'addEvidence', evidence: 'timesheet' }],
+      },
+      'minh-nods': {
+        text: 'Anh Minh đi ngang, không nói gì, chỉ khẽ gật đầu với bạn. Từ anh ấy, thế là đã nhiều.',
       },
     },
   },
@@ -182,6 +200,11 @@ export const chapter5Scenes = {
     nodes: {
       quiet: {
         text: 'Ngày lương thứ bảy. Bạn không còn đặt điện thoại ngửa mặt lên bàn nữa.',
+        next: 'crumb',
+      },
+      crumb: {
+        text: 'Ting. 5.000.000 đ, lại một phần ba tháng lương, đúng tuần mọi người bắt đầu đòi giấy tờ. Phần còn lại được nợ tiếp.',
+        effects: [{ type: 'companyPays', amount: 5_000_000 }],
         next: 'mom',
       },
       mom: {

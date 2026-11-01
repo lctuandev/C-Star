@@ -24,7 +24,7 @@ Primary stack (ADR-001):
 - Before entering the game the player sees a note: the content is not real and targets no one
   (ADR-003, `.project/contracts/content.md`). This must never be skipped or removed.
 - Everything in the game is fiction. No real company, person, logo or figure.
-- Mobile-first, **portrait (vertical) orientation** is the primary target. Laptop and PC are supported.
+- Phone portrait is where most players are, and tablet and PC are first-class layouts, not stretched phones (`.project/ux-direction.md` §2).
 - UX quality bar: design as the player, optimize for ease of use and delight, and build something to be proud of. No admin-dashboard UI.
 - Player money can never be negative.
 - Details: `docs/Cong_Ty_C_GDD_v0.1.md`, `.project/ux-direction.md`, `.project/roadmap.md`.

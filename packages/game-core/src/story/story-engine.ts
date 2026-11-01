@@ -1,3 +1,4 @@
+import { withPlayerName } from '../player/player-name.js';
 import type { GameState } from '../state/game-state.js';
 import { meets } from './conditions.js';
 import { applyEffects } from './effects.js';
@@ -129,12 +130,12 @@ export const viewOf = (state: GameState, story: StoryGraph): NodeView | null => 
     sceneId: state.story.sceneId as string,
     nodeId: state.story.nodeId as string,
     speaker: line.speaker ?? null,
-    text: line.text,
+    text: withPlayerName(line.text, state.playerName),
     choices: (line.choices ?? []).map((choice) => {
       const available = isOpen(state, choice);
       return {
         id: choice.id,
-        text: choice.text,
+        text: withPlayerName(choice.text, state.playerName),
         available,
         ...(!available && { lockedReason: choice.lockedReason }),
       };

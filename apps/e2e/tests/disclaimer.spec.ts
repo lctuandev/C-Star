@@ -2,6 +2,7 @@ import { disclaimer } from '@cstar/content';
 import { expect, test } from '@playwright/test';
 import type { Page } from '@playwright/test';
 import { asReturningPlayer } from '../tools/accepted-disclaimer.js';
+import { submitApplication } from '../tools/play.js';
 
 const KEY = 'cstar.disclaimer-accepted-version';
 const text = (page: Page) => page.getByText(disclaimer.body);
@@ -33,6 +34,7 @@ test('a new game asks again, then starts (SCENARIO-008)', async ({ page }) => {
   await menu(page).click();
   await expect(text(page)).toBeVisible();
   await confirm(page).click();
+  await submitApplication(page);
   await expect(page).toHaveURL(/\/play$/);
   await expect(text(page)).toBeHidden();
 });

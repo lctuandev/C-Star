@@ -1,0 +1,60 @@
+{
+  "saveVersion": 4,
+  "savedAt": "2026-11-01T08:00:00.000Z",
+  "state": {
+    "seed": 42,
+    "playerName": "An",
+    "rng": 12345,
+    "phase": "kpi",
+    "calendar": {
+      "month": 2,
+      "week": 3,
+      "actionsLeft": 2,
+      "payday": false
+    },
+    "money": {
+      "cash": 12000000,
+      "arrears": 0,
+      "companyDebt": 0,
+      "loans": 5000000
+    },
+    "mood": {
+      "energy": 60,
+      "stress": 30
+    },
+    "story": {
+      "sceneId": null,
+      "nodeId": null,
+      "flags": {
+        "readContract": true
+      },
+      "seenScenes": ["ch1-offer"]
+    },
+    "payslip": null,
+    "lastOutcome": "Bạn ngủ một giấc không mơ về Excel.",
+    "relations": {
+      "boss": -4,
+      "uyen": 18
+    },
+    "kpi": 3,
+    "kpiRound": {
+      "actionId": "work",
+      "tickets": ["logo-bigger", "data-loss", "team-song", "server-full"],
+      "index": 1,
+      "score": 1,
+      "last": {
+        "ticketId": "logo-bigger",
+        "correct": true
+      }
+    },
+    "evidence": ["contract", "bank-history"],
+    "crises": {
+      "broke": {
+        "count": 1,
+        "lastMonth": 2
+      }
+    },
+    "ending": null,
+    "loops": 1
+  }
+}

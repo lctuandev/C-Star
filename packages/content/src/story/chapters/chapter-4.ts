@@ -6,8 +6,8 @@ export const chapter4Scenes = {
     start: 'ting',
     nodes: {
       ting: {
-        text: 'Ting. 3.000.000 đ. Nội dung: "UNG DOT 1 CUA DOT 2 LUONG T2 BU T3". Bạn đọc ba lần và hiểu ít hơn sau mỗi lần.',
-        effects: [{ type: 'companyPays', amount: 3_000_000 }],
+        text: 'Ting. 10.000.000 đ, hai phần ba của một tháng lương. Nội dung: "UNG DOT 1 CUA DOT 2 LUONG T2 BU T3". Bạn đọc ba lần và hiểu ít hơn sau mỗi lần.',
+        effects: [{ type: 'companyPays', amount: 10_000_000 }],
         next: 'accountant',
       },
       accountant: {
@@ -18,6 +18,11 @@ export const chapter4Scenes = {
       dan: {
         speaker: 'dan',
         text: 'Thấy chưa, dòng tiền bắt đầu chảy lại. Đây là chữ V, ông nhìn đáy rồi đấy.',
+        next: 'minh',
+      },
+      minh: {
+        speaker: 'deputy',
+        text: 'Cứ lúc mọi người định nghỉ là lại có một ít. Đủ để mình ở lại, không đủ để mình sống. Tháng sau chắc lại nợ tiếp thôi, em nhớ ghi lại nhé.',
       },
     },
   },
@@ -44,7 +49,7 @@ export const chapter4Scenes = {
       },
       'khoa-tells': {
         speaker: 'khoa',
-        text: 'Mình đi nha. Về quê phụ ba mẹ một thời gian. Bạn đừng nói với ai, mình... không muốn người ta thấy mình bỏ cuộc.',
+        text: 'Mình đi nha, {name}. Về quê phụ ba mẹ một thời gian. Bạn đừng nói với ai, mình... không muốn người ta thấy mình bỏ cuộc.',
         next: 'khoa-box',
       },
       'khoa-box': {
@@ -83,6 +88,15 @@ export const chapter4Scenes = {
       mail: {
         speaker: 'hr',
         text: 'Thông báo chung: nhằm đảm bảo quyền lợi tốt nhất, lộ trình thanh toán được điều chỉnh linh hoạt. Công ty trân trọng sự đồng hành của cả nhà!',
+        next: 'dragon-check',
+      },
+      'dragon-check': {
+        routes: [{ when: { type: 'flag', flag: 'joinedDragons' }, next: 'dragon-note' }],
+        otherwise: 'uyen',
+      },
+      'dragon-note': {
+        speaker: 'hr',
+        text: 'Riêng nhóm Vượt Thác Hóa Rồng: benefit tháng này tạm dời sang đợt sau. Rồng thì phải kiên nhẫn cả nhà ơi!',
         next: 'uyen',
       },
       uyen: {
@@ -246,6 +260,190 @@ export const chapter4Scenes = {
       },
       waiting: {
         text: 'Bạn đóng laptop. "Biết đâu" là từ đắt nhất bạn từng dùng, tính theo lãi suất.',
+      },
+    },
+  },
+
+  'ch4-borrowing': {
+    id: 'ch4-borrowing',
+    place: 'hallway',
+    start: 'lunch',
+    nodes: {
+      lunch: {
+        text: 'Giờ nghỉ trưa, pantry im hơn thường ngày. Ai cũng ăn cơm mang từ nhà, và không ai hỏi nhau ăn gì nữa.',
+        next: 'dan',
+      },
+      dan: {
+        speaker: 'dan',
+        text: 'Tôi vừa mở cái thẻ tín dụng thứ ba. Gọi là đòn bẩy tài chính. Đợt gọi vốn này về là tôi tất toán hết, ông xem.',
+        next: 'minh',
+      },
+      minh: {
+        speaker: 'deputy',
+        text: 'Hôm qua một bạn trong phòng mượn anh tiền đóng học cho con. Bạn ấy đứng khóc ở thang máy. Anh đưa được một ít, mà anh cũng đang vay bên nhà vợ.',
+        next: 'uyen',
+      },
+      uyen: {
+        speaker: 'uyen',
+        text: 'Mình hỏi mười một người thì chín người đang vay. Vay bố mẹ, vay bạn, vay trên điện thoại, lãi tính theo ngày.',
+        next: 'weather',
+      },
+      weather: {
+        text: 'Không ai than. Họ nói về nợ như nói về thời tiết. Bạn nghĩ tới những người ở quê, đang trả thay cho một công ty họ chưa từng nghe tên.',
+        choices: [
+          {
+            id: 'keep-it',
+            text: 'Gật đầu, giữ chuyện của mình cho riêng mình',
+            effects: [{ type: 'addStress', amount: 3 }],
+            next: 'kept',
+          },
+          {
+            id: 'share',
+            text: 'Kể thật khoản mình đang thiếu',
+            effects: [
+              { type: 'addRelation', npc: 'deputy', amount: 6 },
+              { type: 'addRelation', npc: 'uyen', amount: 6 },
+              { type: 'addStress', amount: -4 },
+            ],
+            next: 'shared',
+          },
+        ],
+      },
+      kept: {
+        text: 'Tối đó bạn mở ứng dụng vay trên điện thoại, đọc dòng lãi suất, rồi tắt đi. Chưa phải hôm nay.',
+      },
+      shared: {
+        speaker: 'deputy',
+        text: 'Cảm ơn em đã nói. Không ai ở đây phải xấu hổ vì chuyện này cả. Người đang nợ lương đâu phải là mình.',
+      },
+    },
+  },
+
+  'ch4-the-dollars': {
+    id: 'ch4-the-dollars',
+    place: 'meeting',
+    start: 'summon',
+    nodes: {
+      summon: {
+        text: 'Cả công ty được gọi lên phòng họp, lần đầu sau nhiều tháng. Trái cây quay lại, đúng một đĩa. Trên slide chỉ có một dòng: "$1–2 TRIỆU".',
+        effects: [{ type: 'setFlag', flag: 'heardDollars' }],
+        next: 'boss',
+      },
+      boss: {
+        speaker: 'boss',
+        text: 'Các bạn. Anh báo tin vui. Anh vừa đào được 1–2 triệu đô. Anh nhắc lại: 1–2 triệu đô. Các bạn hiểu điều đó nghĩa là gì không?',
+        next: 'uyen',
+      },
+      uyen: {
+        speaker: 'uyen',
+        text: 'Dạ anh ơi, là 1 triệu hay 2 triệu ạ? Và bao giờ tiền về ạ?',
+        next: 'boss-2',
+      },
+      'boss-2': {
+        speaker: 'boss',
+        text: 'Cái đó nằm ở khâu thủ tục. Quan trọng là đã có. Và đây mới là tin lớn: công ty đang hướng tới IPO.',
+        next: 'boss-shares',
+      },
+      'boss-shares': {
+        speaker: 'boss',
+        text: 'Sau IPO, anh em sẽ được phát cổ phiếu nội bộ. Ai ráng ở lại là cổ đông của công ty mình đấy. Ai đi bây giờ thì rất tiếc.',
+        next: 'tin',
+      },
+      tin: {
+        speaker: 'manager',
+        text: 'Phòng mình không ai đi cả! Cổ đông tương lai cả đấy! Đây là lúc chứng minh lòng trung thành, Chủ tịch đang nhìn chúng ta.',
+        next: 'clap',
+      },
+      clap: {
+        text: 'Có tiếng vỗ tay, phần lớn là của anh Tín. Anh chưa bao giờ đọc kỹ hợp đồng của mình, nhưng anh biết chắc Chủ tịch sẽ không bỏ anh.',
+        next: 'minh',
+      },
+      minh: {
+        speaker: 'deputy',
+        text: 'Đợt trước anh ấy cũng đào được chừng đó, cách đây đúng sáu tháng. Anh ở lại vì anh em trong phòng, không phải vì cổ phiếu. Lương còn chưa có thì cổ phiếu là gì hả em. Em cứ tính chuyện của em nhé.',
+        choices: [
+          {
+            id: 'do-the-math',
+            text: 'Im lặng, và nhẩm xem con số đó trả được mấy tháng lương',
+            effects: [
+              { type: 'addRelation', npc: 'deputy', amount: 4 },
+              { type: 'addStress', amount: 2 },
+            ],
+            next: 'math',
+          },
+          {
+            id: 'write-it-down',
+            text: 'Ghi nguyên văn vào sổ, kèm ngày giờ',
+            requires: { type: 'flag', flag: 'startedNotes' },
+            lockedReason: 'Bạn chưa có thói quen ghi chép',
+            effects: [{ type: 'addEvidence', evidence: 'group-notes' }],
+            next: 'noted',
+          },
+          {
+            id: 'cheer',
+            text: 'Vỗ tay. Lần này biết đâu là thật',
+            effects: [
+              { type: 'addRelation', npc: 'boss', amount: 6 },
+              { type: 'addRelation', npc: 'manager', amount: 8 },
+              { type: 'addStress', amount: -3 },
+            ],
+            next: 'cheered',
+          },
+        ],
+      },
+      math: {
+        text: 'Đủ trả hết nợ lương cả công ty mà vẫn còn dư, nếu nó có thật. Bạn quyết định đợi tiếng "ting" rồi mới tính tiếp.',
+      },
+      noted: {
+        text: 'Bạn viết: "1–2 triệu đô. Không rõ 1 hay 2. Không rõ bao giờ." Dòng ghi chép này nằm ngay dưới dòng "this week" của ba tháng trước.',
+      },
+      cheered: {
+        text: 'Anh Tín gật đầu với bạn, mắt sáng lên. Đĩa trái cây hết trong bốn phút.',
+      },
+    },
+  },
+
+  'ch4-kpi-held': {
+    id: 'ch4-kpi-held',
+    place: 'desk',
+    start: 'slips',
+    nodes: {
+      slips: {
+        text: 'Hợp đồng ghi rõ có tiền KPI. Bạn mở lại các phiếu lương cũ: không tháng nào có dòng đó. Tháng trước thì đến cả phiếu lương cũng không có.',
+        next: 'ask',
+      },
+      ask: {
+        speaker: 'player',
+        text: 'Dạ cô ơi, tiền KPI của em nằm ở đâu ạ? Với bảng lương tháng trước em chưa nhận được.',
+        next: 'accountant',
+      },
+      accountant: {
+        speaker: 'accountant',
+        text: 'KPI của em có ghi nhận rồi. Nhưng đang được giữ.',
+        next: 'where',
+      },
+      where: {
+        speaker: 'player',
+        text: 'Giữ ở đâu ạ?',
+        next: 'accountant-2',
+      },
+      'accountant-2': {
+        speaker: 'accountant',
+        text: 'Ở chỗ giữ. Còn bảng lương tháng đó đang được chuẩn hóa. Chị nói thật, chị nhập số mà chị cũng chưa thấy nó.',
+        next: 'dan',
+      },
+      dan: {
+        speaker: 'dan',
+        text: 'Giam KPI đấy ông. Nghe cứ như KPI của ông vừa phạm tội.',
+        next: 'minh',
+      },
+      minh: {
+        speaker: 'deputy',
+        text: 'Không có bảng lương thì mình tự ghi. Tháng nào nhận bao nhiêu, ngày nào, ghi hết. Công ty không đưa giấy thì mình có giấy của mình.',
+        effects: [
+          { type: 'addStress', amount: 4 },
+          { type: 'addRelation', npc: 'deputy', amount: 3 },
+        ],
       },
     },
   },

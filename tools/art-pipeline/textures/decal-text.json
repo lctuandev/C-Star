@@ -1,0 +1,32 @@
+{
+  "slide": {
+    "title": "TẦM NHÌN 2030",
+    "subtitle": "Vì một tương lai không có ngày lương",
+    "note": "Biểu đồ này đi lên."
+  },
+  "slogan": "CHÚNG TA KHÔNG ĐI LÀM. CHÚNG TA ĐI XÂY TƯƠNG LAI",
+  "family": ["CHÚNG TA", "LÀ MỘT", "GIA ĐÌNH"],
+  "familyNote": "Gia đình không tính lương tháng 13",
+  "kpi": { "title": "KPI THÁNG NÀY", "up": "KPI", "flat": "Lương" },
+  "whiteboard": [
+    "Q4: x3 doanh thu",
+    "Sắp gọi vốn!!!",
+    "Tối ưu chi phí",
+    "Ai trực cuối tuần?",
+    "Đam mê = ?"
+  ],
+  "memos": [
+    "Trái cây thứ Sáu",
+    "TẠM HOÃN",
+    "Lương: đang xử lý",
+    "Team building tự túc",
+    "Tăng ca tự nguyện",
+    "Nhớ tắt đèn"
+  ],
+  "values": ["TẬN TÂM", "TẬN TỤY", "ĐANG CẬP NHẬT"],
+  "calendar": { "month": "THÁNG NÀY", "payday": "NGÀY LƯƠNG?" },
+  "tickets": ["CẦN LÀM", "ĐANG LÀM", "XONG"],
+  "bills": ["TIỀN NHÀ", "TIỀN ĐIỆN", "QUÁ HẠN"],
+  "vending": ["Nước", "Mì", "Hy vọng", "Hết hàng"],
+  "exit": "LỐI THOÁT"
+}

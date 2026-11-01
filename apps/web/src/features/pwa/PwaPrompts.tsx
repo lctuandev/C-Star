@@ -7,7 +7,7 @@ import { usePwaStore } from './pwa-store';
 import { applyUpdate } from './service-worker-client';
 
 const Card = ({ children }: { children: React.ReactNode }) => (
-  <aside className="bg-surface-800 fixed inset-x-4 bottom-[calc(env(safe-area-inset-bottom)+1rem)] mx-auto flex max-w-sm flex-col gap-3 rounded-2xl border border-white/10 p-4 text-left">
+  <aside className="bg-surface-800 fixed z-40 inset-x-4 bottom-[calc(env(safe-area-inset-bottom)+1rem)] mx-auto flex max-w-sm flex-col gap-3 rounded-2xl border border-white/10 p-4 text-left">
     {children}
   </aside>
 );
@@ -41,7 +41,7 @@ const NativeInstallCard = () => {
   return (
     <Card>
       <div>
-        <p className="font-bold">Cài game lên điện thoại</p>
+        <p className="font-bold">Cài game lên máy</p>
         <p className="text-ink-secondary text-sm">Chơi toàn màn hình, không cần mạng.</p>
       </div>
       <div className="flex gap-3">

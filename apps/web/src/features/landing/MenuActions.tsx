@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { Button } from '@/components/ui/Button';
+import { Button, buttonClass } from '@/components/ui/Button';
 import { useDisclaimerStore } from '@/features/disclaimer/disclaimer-store';
 import { useGameStore } from '@/features/play/game-store';
 import { downloadSave, useSaveStore } from '@/features/save/save-store';
@@ -14,7 +14,6 @@ export const MenuActions = () => {
   const status = useSaveStore((store) => store.status);
   const file = useSaveStore((store) => store.file);
   const refresh = useSaveStore((store) => store.refresh);
-  const setAsideBroken = useSaveStore((store) => store.setAsideBroken);
   const [confirming, setConfirming] = useState(false);
 
   useEffect(() => {
@@ -25,17 +24,13 @@ export const MenuActions = () => {
 
   const startNewGame = () =>
     askForNewGame(() => {
-      void setAsideBroken()
-        .catch(() => undefined)
-        .then(() => {
-          useGameStore.getState().newRun(Date.now());
-          router.push('/play');
-        });
+      useGameStore.getState().setStartingNewGame(true);
+      router.push('/apply');
     });
 
   if (confirming) {
     return (
-      <nav className="mt-4 flex w-full max-w-xs flex-col gap-3">
+      <nav className="mx-auto mt-4 flex w-full max-w-xs flex-col gap-3 lg:mx-0">
         <p className="text-ink-secondary">Lượt đang chơi sẽ bị thay thế, không lấy lại được.</p>
         <Button onClick={startNewGame}>Chơi lại từ đầu</Button>
         <Button variant="quiet" onClick={() => setConfirming(false)}>
@@ -46,7 +41,7 @@ export const MenuActions = () => {
   }
 
   return (
-    <nav className="mt-4 flex w-full max-w-xs flex-col gap-3">
+    <nav className="mx-auto mt-4 flex w-full max-w-xs flex-col gap-3 lg:mx-0">
       {status === 'broken' && (
         <div className="bg-surface-800 flex flex-col gap-2 rounded-xl p-3 text-left text-sm">
           <p>Không đọc được save của bạn. Game không xóa nó: lưu file ra để giữ lại.</p>
@@ -71,22 +66,13 @@ export const MenuActions = () => {
       >
         Game mới
       </Button>
-      <Link
-        href="/endings"
-        className="bg-surface-700 flex min-h-11 items-center justify-center rounded-xl px-4 font-bold"
-      >
+      <Link href="/endings" className={buttonClass('quiet')}>
         Các kết thúc
       </Link>
-      <Link
-        href="/settings"
-        className="bg-surface-700 flex min-h-11 items-center justify-center rounded-xl px-4 font-bold"
-      >
+      <Link href="/settings" className={buttonClass('quiet')}>
         Cài đặt
       </Link>
-      <Link
-        href="/about"
-        className="bg-surface-700 flex min-h-11 items-center justify-center rounded-xl px-4 font-bold"
-      >
+      <Link href="/about" className={buttonClass('quiet')}>
         Về game
       </Link>
     </nav>

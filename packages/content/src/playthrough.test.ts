@@ -74,10 +74,11 @@ const playRandomly = (seed: number, game: GameWorld = world) => {
 };
 
 describe('a random player', () => {
-  const runs = Array.from({ length: 60 }, (_, index) => playRandomly(index + 1));
+  // Half of them take the way out in month 4 and never see the rest: hence so many.
+  const runs = Array.from({ length: 240 }, (_, index) => playRandomly(index + 1));
   /** Starts with nothing, so the money crisis is reached too. */
   const poor: GameWorld = { ...world, rules: { ...world.rules, startingCash: 0 } };
-  const poorRuns = Array.from({ length: 30 }, (_, index) => playRandomly(index + 1, poor));
+  const poorRuns = Array.from({ length: 60 }, (_, index) => playRandomly(index + 1, poor));
 
   it('always reaches the end of the content, without being stuck or refused', () => {
     for (const { state } of runs) {
