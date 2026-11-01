@@ -6,7 +6,7 @@ import { isTooSlow, supportsWebGl } from './graphics';
 import { HOTSPOTS, NPC_SEATS } from './office-layout';
 import { officeMood } from './office-mood';
 import { useOfficeStore } from './office-store';
-import { hasArrived, headingOf, stepToward } from './walk';
+import { headingOf, stepToward } from './walk';
 
 const run = beginRun(1, world);
 const inMonth = (month: number, extra: Partial<GameState> = {}): GameState => ({
@@ -73,11 +73,6 @@ describe('walking (SCENARIO-053)', () => {
 
   it('walks across the whole office', () => {
     expect(stepToward([-5, 0, -4], [5, 0, 4], 1)).not.toEqual([5, 0, 4]);
-  });
-
-  it('knows when it has arrived', () => {
-    expect(hasArrived([1, 0, 1], [1, 0, 1])).toBe(true);
-    expect(hasArrived([1, 0, 0], [1, 0, 1])).toBe(false);
   });
 
   it('faces where it goes', () => {

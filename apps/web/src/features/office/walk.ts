@@ -16,9 +16,6 @@ export const stepToward = (from: Vec3, to: Vec3, distance: number): Vec3 => {
   return [from[0] + (dx / left) * distance, from[1], from[2] + (dz / left) * distance];
 };
 
-export const hasArrived = (from: Vec3, to: Vec3): boolean =>
-  Math.hypot(to[0] - from[0], to[2] - from[2]) < 0.01;
-
 /** The way to face while walking from one point to another. */
 export const headingOf = (from: Vec3, to: Vec3): number =>
   Math.atan2(to[0] - from[0], to[2] - from[2]);

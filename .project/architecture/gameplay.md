@@ -1,37 +1,42 @@
 # Gameplay Architecture
 
-Mô hình domain trong `packages/game-core`. Đây là thiết kế ban đầu; FEAT-003 và FEAT-005 chốt tên và kiểu dữ
-liệu thật, rồi cập nhật lại file này.
+Mô hình domain trong `packages/game-core`, đúng với code hiện tại.
 
 ---
 
 ## 1. GameState
 
+Kiểu đầy đủ ở `packages/game-core/src/state/game-state.ts`. Là JSON thuần, nên save chính là nó.
+
 ```text
 GameState
-  saveVersion, contentVersion, seed, rngState
-  run:        phase, chapter, month, week, actionsLeft
-  story:      currentNode, flags, visitedNodes, appliedEffects
-  money:      cash, loans, companyDebt, bills
-  mood:       energy, stress
-  relations:  theo từng nhân vật
-  evidence:   các mục đã có
-  ending:     null hoặc id ending
+  seed, rng
+  phase:     scene | week | kpi | payslip | ended
+  calendar:  month, week, actionsLeft, payday
+  money:     cash, arrears, loans, companyDebt
+  mood:      energy, stress
+  story:     sceneId, nodeId, flags, seenScenes
+  relations, kpi, kpiRound, evidence, crises
+  ending, loops, payslip, lastOutcome
 ```
 
 ---
 
 ## 2. Trạng thái lượt chơi
 
-`phase` chỉ có `scene`, `week`, `payslip`, `ended`. Mọi chuyển pha đi qua `continueCalendar` trong
+`phase` chỉ có `scene`, `week`, `kpi`, `payslip`, `ended`. Mọi chuyển pha đi qua `continueCalendar` trong
 `game-core/src/calendar/calendar.ts`:
 
 ```text
 beginRun → scene → hết cảnh → continueCalendar
-continueCalendar: có cảnh tới hạn? → scene
-                  đang ngày lương? → payslip
-                  còn lại          → week
-week: hết lượt → sang tuần sau, hoặc hết tuần 4 → tính phiếu lương → continueCalendar
+continueCalendar: đã quyết định kết thúc? → cảnh kết, rồi ended
+                  có khủng hoảng?          → scene (tối đa một lần mỗi tháng, không vào ngày lương)
+                  có cảnh tới hạn?         → scene
+                  đang ngày lương?         → payslip
+                  còn lượt                 → week
+                  hết lượt                 → sang tuần sau
+week: hành động có ticket → kpi → xong → tính lượt → continueCalendar
+      hết tuần 4 → tính phiếu lương → continueCalendar
 payslip: đóng phiếu → tháng sau, hoặc hết nội dung → ended
 ```
 
@@ -44,10 +49,11 @@ Chuyển trạng thái sai bị từ chối. Không dùng nhiều boolean rời 
 Cốt truyện là đồ thị dữ liệu, kiểu ở `packages/game-core/src/story/story-types.ts`.
 
 ```text
-Node:      id, speaker, text, choices | next
+Node:      speaker, text, effects, choices | next; hoặc routes (rẽ nhánh ẩn)
 Choice:    text, requires (điều kiện), lockedReason, effects, next
-Effect:    addMoney, addStress, addRelation, addEvidence, setFlag, ...
-Condition: so sánh chỉ số, có flag, có bằng chứng, kết hợp all / any / not
+Effect:    setFlag, addCash, companyPays, addEnergy, addStress, addRelation, addEvidence,
+           findEvidence, takeLoan, payArrears, loseWeek, chance
+Condition: flag, stat, relation, evidence, crisisCount, kết hợp all / any / not
 ```
 
 `Effect` và `Condition` là dữ liệu có schema, không phải hàm. Nhờ vậy validator kiểm tra được và save lưu được.
@@ -63,12 +69,12 @@ Condition: so sánh chỉ số, có flag, có bằng chứng, kết hợp all / 
 
 ## 4. Xác định kết thúc
 
-`selectEnding(state)` là hàm thuần, xét theo thứ tự ở GDD §6. Luôn trả về đúng một ending, trường hợp còn lại
-là Ending 5.
+Cờ `runOver` kết thúc lượt chơi. `selectEnding(state, world)` là hàm thuần, xét `world.endings` theo thứ tự ở GDD §6. Luật cuối bắt
+mọi trường hợp còn lại, là Ending 5. `renewContract` đưa về đầu và giữ sổ nợ.
 
 ---
 
 ## 5. Kiểm thử bằng lượt chơi tự động
 
-Có thể viết kịch bản chuỗi hành động chạy trên `game-core` không cần UI. Mỗi ending có một lượt chơi tự động
-(FEAT-023), đây là bài kiểm tra hồi quy chính của cốt truyện.
+`packages/content/src/playthrough.test.ts` chơi ngẫu nhiên 90 lượt: không kẹt, mọi câu tới được. `endings.test.ts` có một bot chơi có
+kế hoạch cho mỗi ending. Đây là kiểm tra hồi quy chính của cốt truyện: sửa nội dung thì chạy `pnpm --filter @cstar/content test`.
