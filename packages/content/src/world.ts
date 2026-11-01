@@ -1,7 +1,8 @@
-import type { Beat, GameWorld } from '@cstar/game-core';
+import type { GameWorld } from '@cstar/game-core';
 import { z } from 'zod';
 import { bills, payroll, rules, surprises, weeklyActions } from './economy.js';
 import { OPENING_SCENE, story } from './story/index.js';
+import { beats } from './story/schedule.js';
 import { conditionSchema, effectSchema, storySchema } from './story/story-schema.js';
 
 const text = z.string().trim().min(1);
@@ -46,9 +47,6 @@ const worldSchema = z.strictObject({
   bills: z.array(billSchema),
   surprises: z.array(billSchema),
 });
-
-/** When each scene plays (GDD §3). A beat without a week plays on that month's payday. */
-export const beats: readonly Beat[] = [];
 
 /** Parsed at load: content that does not fit never reaches a player. */
 export const world: GameWorld = worldSchema.parse({

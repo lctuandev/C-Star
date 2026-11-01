@@ -29,7 +29,8 @@ Save là thứ duy nhất của người chơi mà ta không thể khôi phục 
 
 ## 5. Autosave
 
-Sau mỗi hành động và mỗi lựa chọn hội thoại. Tải lại phải về đúng điểm đó, không lặp hiệu ứng.
+Sau mỗi hành động và mỗi lựa chọn hội thoại. Tải lại phải về đúng điểm đó, không lặp hiệu ứng. Ghi đĩa mất vài mili giây: tắt
+máy ngay trong khoảng đó thì mất đúng thao tác cuối, state vẫn nguyên vẹn.
 
 ## 6. Sao lưu
 

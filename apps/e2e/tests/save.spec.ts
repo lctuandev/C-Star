@@ -29,6 +29,26 @@ const putInStorage = (page: Page, slot: string, value: unknown) =>
     [slot, value],
   );
 
+/** The state on the disk: an autosave lands a few milliseconds after the action. */
+const savedState = (page: Page) =>
+  page.evaluate(
+    () =>
+      new Promise<{
+        story: { nodeId: string | null };
+        calendar: { actionsLeft: number };
+        phase: string;
+      } | null>((resolve) => {
+        const request = indexedDB.open('cstar', 1);
+        request.onsuccess = () => {
+          const get = request.result.transaction('saves').objectStore('saves').get('auto');
+          get.onsuccess = () => {
+            request.result.close();
+            resolve((get.result as { state: never } | undefined)?.state ?? null);
+          };
+        };
+      }),
+  );
+
 const hudOf = async (page: Page) => ({
   time: await page.getByText(/Tháng \d · Tuần \d/).textContent(),
   energy: await page.getByRole('meter', { name: 'Sức' }).getAttribute('aria-valuenow'),
@@ -39,6 +59,7 @@ test('a reload in the middle of a line loses nothing (SCENARIO-030)', async ({ p
   await startGame(page);
   await page.getByRole('button', { name: 'Đọc tiếp' }).click();
   await expect(page.getByRole('status')).toContainText('Vị trí: Chuyên viên');
+  await expect.poll(async () => (await savedState(page))?.story.nodeId).toBe('offer');
 
   await page.reload();
   await expect(page.getByRole('status')).toContainText('Vị trí: Chuyên viên');
@@ -52,8 +73,8 @@ test('a reload in the week keeps the count and doubles nothing (SCENARIO-030)', 
   await page.getByRole('button', { name: /Làm task/ }).click();
   await expect(page.getByRole('heading', { name: 'Tuần này còn 2 lượt' })).toBeVisible();
   const before = await hudOf(page);
+  await expect.poll(async () => (await savedState(page))?.calendar.actionsLeft).toBe(2);
 
-  await page.waitForTimeout(100);
   await page.reload();
   await expect(page.getByRole('heading', { name: 'Tuần này còn 2 lượt' })).toBeVisible();
   expect(await hudOf(page)).toEqual(before);
@@ -68,8 +89,8 @@ test('a reload on the payslip shows the same slip (SCENARIO-030)', async ({ page
   const slip = page.getByRole('heading', { name: 'PHIẾU LƯƠNG THÁNG 1' });
   await playUntil(page, slip);
   const money = await page.getByText('Còn lại trong ví').locator('..').textContent();
+  await expect.poll(async () => (await savedState(page))?.phase).toBe('payslip');
 
-  await page.waitForTimeout(100);
   await page.reload();
   await expect(slip).toBeVisible();
   expect(await page.getByText('Còn lại trong ví').locator('..').textContent()).toBe(money);
@@ -140,7 +161,7 @@ test('a save travels by file (SCENARIO-033)', async ({ page, context }) => {
   await startGame(page);
   await playUntil(page, weekHeading(page));
   await page.getByRole('button', { name: /Làm task/ }).click();
-  await page.waitForTimeout(100);
+  await expect.poll(async () => (await savedState(page))?.calendar.actionsLeft).toBe(2);
 
   await page.goto('/about');
   const [download] = await Promise.all([
