@@ -41,7 +41,7 @@ export const WeekScreen = ({ state, onOpenDossier }: WeekScreenProps) => {
         <p className="bg-surface-800 flex items-center gap-2 rounded-xl p-2 text-sm">
           <Portrait id="manager" size="small" />
           <span>
-            <span className="text-paycheck font-bold">Weekly sync, anh Tín: </span>
+            <span className="text-paycheck font-bold">Weekly sync, anh Roger: </span>
             {sync}
           </span>
         </p>

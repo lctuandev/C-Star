@@ -107,7 +107,7 @@ export const weeklyActions: readonly WeeklyAction[] = [
       'Uyên đã ghi lại ngày giờ mọi lời hứa vào một file riêng.',
       'Khoa tin tuần sau có lương. Tuần trước Khoa cũng tin vậy.',
       'Cả nhóm cười về trái cây thứ Sáu. Thứ Sáu này chỉ còn một quả chuối.',
-      'Anh Minh hỏi thăm từng người tháng này xoay xở thế nào. Không ai trả lời thật.',
+      'Anh Huni hỏi thăm từng người tháng này xoay xở thế nào. Không ai trả lời thật.',
     ],
   },
   {

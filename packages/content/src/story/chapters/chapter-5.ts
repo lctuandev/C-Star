@@ -184,11 +184,11 @@ export const chapter5Scenes = {
       },
       'minh-signs': {
         speaker: 'deputy',
-        text: 'Anh Tín tin thật lòng đấy, em đừng giận anh ấy. Còn em làm gì là quyền của em. Cần xác nhận em đã đi làm những tháng nào, anh ký cho.',
+        text: 'Anh Roger tin thật lòng đấy, em đừng giận anh ấy. Còn em làm gì là quyền của em. Cần xác nhận em đã đi làm những tháng nào, anh ký cho.',
         effects: [{ type: 'addEvidence', evidence: 'timesheet' }],
       },
       'minh-nods': {
-        text: 'Anh Minh đi ngang, không nói gì, chỉ khẽ gật đầu với bạn. Từ anh ấy, thế là đã nhiều.',
+        text: 'Anh Huấn đi ngang, không nói gì, chỉ khẽ gật đầu với bạn. Từ anh ấy, thế là đã nhiều.',
       },
     },
   },

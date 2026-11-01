@@ -21,7 +21,23 @@ export type SoundCue =
   | 'wrong'
   | 'chapter'
   | 'alarm'
-  | 'step';
+  | 'step'
+  | 'clap'
+  | 'applause'
+  | 'chair'
+  | 'ask'
+  | 'pen'
+  | 'dishes'
+  | 'send'
+  | 'quiet'
+  | 'sigh'
+  | 'pat'
+  | 'calculator'
+  | 'knock'
+  | 'stamp'
+  | 'phone'
+  | 'mouse'
+  | 'page';
 
 /** Each way to spend a turn sounds like what it is. */
 const ACTION_CUES: Readonly<Record<string, SoundCue>> = {
@@ -30,6 +46,68 @@ const ACTION_CUES: Readonly<Record<string, SoundCue>> = {
   rest: 'rest',
   chat: 'chat',
   investigate: 'file',
+};
+
+/**
+ * What each choice sounds like when it is taken: the thing it describes, or, where it describes
+ * nothing you could hear, how it feels. A test holds every choice in the story to this list.
+ */
+export const CHOICE_CUES: Readonly<Record<string, SoundCue>> = {
+  'accept-fast': 'mouse',
+  'read-contract': 'page',
+  'near-dan': 'chair',
+  'near-uyen': 'chair',
+  'near-khoa': 'chair',
+  clap: 'clap',
+  'ask-pay': 'ask',
+  'look-down': 'pen',
+  'treat-team': 'dishes',
+  'send-home': 'send',
+  'save-it': 'coins',
+  'ask-straight': 'ask',
+  pretend: 'page',
+  'ask-public': 'send',
+  'ask-private': 'chat',
+  'stay-quiet': 'quiet',
+  'ask-salary': 'ask',
+  volunteer: 'applause',
+  quiet: 'pen',
+  'start-notes': 'pen',
+  'not-yet': 'sigh',
+  'thank-minh': 'file',
+  'side-with-tin': 'pat',
+  lend: 'coins',
+  sorry: 'sigh',
+  'back-uyen': 'ask',
+  'back-boss': 'pat',
+  'stay-fish': 'quiet',
+  'join-dragons': 'pen',
+  'stay-on': 'sigh',
+  'walk-now': 'leave',
+  'keep-it': 'quiet',
+  share: 'warm',
+  join: 'warm',
+  decline: 'sigh',
+  'do-the-math': 'calculator',
+  'write-it-down': 'pen',
+  cheer: 'applause',
+  'invite-dan': 'chat',
+  comfort: 'pat',
+  act: 'stamp',
+  wait: 'sigh',
+  formal: 'send',
+  advice: 'knock',
+  talk: 'knock',
+  'take-title': 'dishes',
+  'refuse-title': 'stamp',
+  pursue: 'stamp',
+  leave: 'leave',
+  stay: 'sigh',
+  borrow: 'debt',
+  sell: 'coins',
+  'call-home': 'phone',
+  credit: 'debt',
+  quit: 'leave',
 };
 
 const trust = (state: GameState) =>
@@ -96,7 +174,9 @@ export const cueFor = (
     case 'answerTicket':
       return after.kpiRound?.last?.correct ? 'right' : 'wrong';
     case 'choose':
-      return choiceCue(before, after);
+      return CHOICE_CUES[action.choiceId] ?? choiceCue(before, after);
+    case 'skipTickets':
+      return 'sigh';
     case 'closePayslip':
       return 'paper';
     default:

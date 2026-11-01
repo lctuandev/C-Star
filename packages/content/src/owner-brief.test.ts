@@ -1,6 +1,7 @@
 import { beginRun } from '@cstar/game-core';
 import { describe, expect, it } from 'vitest';
 import { promises, syncLines } from './promises.js';
+import { characterInfo } from './story/characters.js';
 import { beats } from './story/schedule.js';
 import { world } from './world.js';
 
@@ -16,6 +17,15 @@ const scheduled = new Set(beats.map(({ scene }) => scene));
 
 /** Everything the owner asked to have in the story, and where it lives: it must not quietly go. */
 describe("the owner's additions to the story", () => {
+  it('uses the names the owner gave', () => {
+    expect(characterInfo.chairman.name).toContain('Jeon Kim-jung');
+    expect(characterInfo.boss.name).toContain('Jeon Gwang-hoe');
+    expect(characterInfo.manager.name).toBe('Anh Roger');
+    expect(characterInfo.deputy.name).toBe('Anh Huấn');
+    expect(textOf('ch1-first-day')).toMatch(/Roger.*Ấn Độ.*Chủ tịch Jeon/);
+    expect(textOf('ch1-first-day')).toMatch(/Huấn.*Huni/);
+  });
+
   const cases: [string, string, RegExp][] = [
     [
       'the chairman barely shows up, on a video call',

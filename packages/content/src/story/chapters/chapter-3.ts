@@ -340,13 +340,13 @@ export const chapter3Scenes = {
         choices: [
           {
             id: 'thank-minh',
-            text: 'Cảm ơn anh Minh, và về xem lại thư mục giấy tờ',
+            text: 'Cảm ơn anh Huni, và về xem lại thư mục giấy tờ',
             effects: [{ type: 'addRelation', npc: 'deputy', amount: 8 }],
             next: 'after-minh',
           },
           {
             id: 'side-with-tin',
-            text: 'Anh Tín ở đây tám năm rồi, chắc anh ấy biết',
+            text: 'Anh Roger ở đây tám năm rồi, chắc anh ấy biết',
             effects: [
               { type: 'addRelation', npc: 'manager', amount: 8 },
               { type: 'addRelation', npc: 'boss', amount: 3 },
@@ -356,10 +356,10 @@ export const chapter3Scenes = {
         ],
       },
       'after-minh': {
-        text: 'Anh Minh gật đầu rồi quay lại với chồng việc của cả phòng. Anh ấy yêu nơi này thật, bạn nhìn là biết. Chính vì vậy mà anh ấy không nói dối bạn.',
+        text: 'Anh Huấn gật đầu rồi quay lại với chồng việc của cả phòng. Anh ấy yêu nơi này thật, bạn nhìn là biết. Chính vì vậy mà anh ấy không nói dối bạn.',
       },
       'after-tin': {
-        text: 'Anh Tín vỗ vai bạn hai cái. Bạn thấy vững lòng được đúng tới giờ ăn trưa.',
+        text: 'Anh Roger vỗ vai bạn hai cái. Bạn thấy vững lòng được đúng tới giờ ăn trưa.',
       },
     },
   },
@@ -397,7 +397,7 @@ export const chapter3Scenes = {
         text: 'Bạn nhắn lại "cảm ơn nha". Người bạn trả lời bằng một cái mặt cười hơi buồn.',
       },
       walked: {
-        text: 'Anh Minh là người ký giấy cho bạn. "Đi đi em, chuyện này không có gì phải ngại." Anh Tín thì không ra chào: anh nói bạn đã bỏ rơi tầm nhìn.',
+        text: 'Anh Huấn là người ký giấy cho bạn. "Đi đi em, chuyện này không có gì phải ngại." Anh Roger thì không ra chào: anh nói bạn đã bỏ rơi tầm nhìn.',
       },
     },
   },
@@ -473,7 +473,7 @@ export const chapter3Scenes = {
     start: 'friday',
     nodes: {
       friday: {
-        text: 'Chiều thứ Sáu, weekly sync với anh Tín. Mỗi người báo cáo tiến độ một lượt. Tới lượt bạn, bạn báo xong việc rồi khẽ hỏi chuyện lương.',
+        text: 'Chiều thứ Sáu, weekly sync với anh Roger. Mỗi người báo cáo tiến độ một lượt. Tới lượt bạn, bạn báo xong việc rồi khẽ hỏi chuyện lương.',
         next: 'tin',
       },
       tin: {
@@ -493,7 +493,7 @@ export const chapter3Scenes = {
       },
       minh: {
         speaker: 'deputy',
-        text: 'Từ giờ thứ Sáu nào em cũng sẽ nghe câu đó. Anh Tín không nói dối đâu, anh ấy tin thật. Em cứ báo cáo cho đủ, việc mình làm thì mình làm đàng hoàng.',
+        text: 'Từ giờ thứ Sáu nào em cũng sẽ nghe câu đó. Anh Roger không nói dối đâu, anh ấy tin thật. Em cứ báo cáo cho đủ, việc mình làm thì mình làm đàng hoàng.',
       },
     },
   },

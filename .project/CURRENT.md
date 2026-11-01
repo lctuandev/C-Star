@@ -28,7 +28,6 @@ Không có.
 ## Open Decisions (owner)
 
 - Xác nhận sáu mục ở `docs/content-review.md`, nhất là tên "C\*".
-- Bốn cái tên owner đưa cho lãnh đạo (FEAT-034, Fiction Check) chưa dùng: game dùng chức danh và tên hư cấu cho tới khi owner xác nhận chúng hoàn toàn do tưởng tượng.
 - Chơi thử trên điện thoại thật: giọng văn, số liệu, 3D có mượt không, và nghe thử âm thanh: chưa ai nghe bằng tai.
 
 ## Next Step

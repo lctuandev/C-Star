@@ -6,4 +6,4 @@ Thêm 7 cảnh (44 cảnh tổng), 3 nhân vật mới có model và chân dung,
 
 ## Known issues
 
-Số liệu và điều kiện ending chưa được owner duyệt. Tên gốc của owner chưa dùng, chờ owner xác nhận (xem Fiction Check).
+Số liệu và điều kiện ending chưa được owner duyệt.

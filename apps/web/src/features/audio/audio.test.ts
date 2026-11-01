@@ -4,7 +4,7 @@ import type { GameState, Payslip } from '@cstar/game-core';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { AudioEngine } from './audio-engine';
 import { midiToHertz, SCORES, secondsPerBar, trackFor } from './score';
-import { cueFor } from './sound-cues';
+import { CHOICE_CUES, cueFor } from './sound-cues';
 
 const run = beginRun(1, world);
 const slip: Payslip = {
@@ -67,17 +67,13 @@ describe('cueFor (SCENARIO-050)', () => {
     expect(cueFor(run, answered(false), action)).toBe('wrong');
   });
 
-  describe('a choice sounds like what it did (SCENARIO-087)', () => {
-    const action = { type: 'choose', choiceId: 'x' } as const;
+  describe('a choice with no sound of its own sounds like what it did', () => {
+    const action = { type: 'choose', choiceId: 'something-new' } as const;
     const after = (change: Partial<GameState>): GameState => ({ ...run, ...change });
 
     it('a calmer player', () => {
       const calmer = after({ mood: { ...run.mood, stress: run.mood.stress - 1 } });
       expect(cueFor(run, calmer, action)).toBe('warm');
-    });
-
-    it('a friend made', () => {
-      expect(cueFor(run, after({ relations: { dan: 5 } }), action)).toBe('warm');
     });
 
     it('a worse day', () => {
@@ -87,16 +83,6 @@ describe('cueFor (SCENARIO-050)', () => {
 
     it('a loan taken', () => {
       expect(cueFor(run, after({ money: { ...run.money, loans: 1 } }), action)).toBe('debt');
-    });
-
-    it('money earned', () => {
-      expect(
-        cueFor(run, after({ money: { ...run.money, cash: run.money.cash + 1 } }), action),
-      ).toBe('coins');
-    });
-
-    it('a paper kept', () => {
-      expect(cueFor(run, after({ evidence: ['contract'] }), action)).toBe('file');
     });
 
     it('walking out', () => {
@@ -220,35 +206,75 @@ describe('AudioEngine', () => {
   });
 });
 
-describe('the music (SCENARIO-088)', () => {
+describe('the music follows the story (SCENARIO-088)', () => {
   const at = (month: number, sceneId: string | null = null): GameState => ({
     ...run,
     phase: sceneId ? 'scene' : 'week',
     calendar: { ...run.calendar, month },
     story: { ...run.story, sceneId, nodeId: null },
   });
-
-  it('comes apart as the months go by', () => {
-    expect(trackFor(at(1))).toBe('bright');
-    expect(trackFor(at(3))).toBe('tired');
-    expect(trackFor(at(6))).toBe('hollow');
+  const worn = (state: GameState): GameState => ({
+    ...state,
+    mood: { ...state.mood, stress: 85 },
   });
 
-  it('gets slower and darker with them', () => {
-    expect(SCORES.tired.bpm).toBeLessThan(SCORES.bright.bpm);
-    expect(SCORES.hollow.bpm).toBeLessThan(SCORES.tired.bpm);
-    expect(SCORES.hollow.cutoff).toBeLessThan(SCORES.bright.cutoff);
-    expect(SCORES.hollow.wobble).toBeGreaterThan(SCORES.bright.wobble);
+  it('starts bright and goes dark, month by month', () => {
+    const arc = [1, 2, 3, 5, 7, 8].map((month) => trackFor(at(month)));
+    expect(arc).toEqual(['dawn', 'routine', 'uneasy', 'weary', 'hollow', 'bleak']);
   });
 
-  it('is warmer at home, and uneasy in a crisis', () => {
-    expect(trackFor(at(6, 'ch5-payday'))).toBe('home');
+  it('gets slower and darker at every stage', () => {
+    const stages = [
+      SCORES.dawn,
+      SCORES.routine,
+      SCORES.uneasy,
+      SCORES.weary,
+      SCORES.hollow,
+      SCORES.bleak,
+    ];
+    stages.slice(1).forEach((score, index) => {
+      const before = stages[index] as (typeof stages)[number];
+      expect(score.bpm).toBeLessThan(before.bpm);
+      expect(score.cutoff).toBeLessThan(before.cutoff);
+      expect(score.wobble).toBeGreaterThan(before.wobble);
+    });
+  });
+
+  it('darkens early for a player at the end of their rope', () => {
+    expect(trackFor(worn(at(3)))).toBe('uneasy');
+    expect(trackFor(worn(at(4)))).toBe('weary');
+    expect(trackFor(worn(at(6)))).toBe('hollow');
+  });
+
+  it('never goes past the end of the arc', () => {
+    expect(trackFor(worn(at(40)))).toBe('bleak');
+  });
+
+  it('leaves the first month alone: nothing has gone wrong yet', () => {
+    expect(trackFor(worn(at(1)))).toBe('dawn');
+  });
+
+  it('is warm at home at first, and later not', () => {
+    expect(trackFor(at(2, 'ch1-offer'))).toBe('home');
+    expect(trackFor(at(6, 'ch5-payday'))).toBe('homeLate');
+  });
+
+  it('is uneasy in a crisis', () => {
     expect(trackFor(at(6, 'crisis-broke'))).toBe('tense');
   });
 
-  it('goes back to the menu tune when the run is over, or there is none', () => {
+  it('gives each ending its own colour', () => {
+    expect(trackFor({ ...run, phase: 'ended', ending: 'good' })).toBe('dawn');
+    expect(trackFor({ ...run, phase: 'ended', ending: 'believer' })).toBe('hollow');
+    expect(trackFor(at(8, 'ending-survivor'))).toBe('home');
+  });
+
+  it('is delighted all over again when the contract renews itself', () => {
+    expect(trackFor(at(1, world.renewalScene))).toBe('dawn');
+  });
+
+  it('goes back to the menu tune when there is no run', () => {
     expect(trackFor(null)).toBe('menu');
-    expect(trackFor({ ...run, phase: 'ended' })).toBe('menu');
   });
 
   it('keeps every bar inside its four beats, and every level low enough to mix', () => {
@@ -264,5 +290,31 @@ describe('the music (SCENARIO-088)', () => {
   it('knows its notes', () => {
     expect(midiToHertz(69)).toBe(440);
     expect(midiToHertz(81)).toBe(880);
+  });
+});
+
+describe('every choice has its own sound (SCENARIO-087)', () => {
+  const choices = Object.values(world.story.scenes).flatMap((scene) =>
+    Object.values(scene.nodes).flatMap((node) => ('choices' in node ? (node.choices ?? []) : [])),
+  );
+
+  it('leaves no choice in the story without one', () => {
+    expect(choices.length).toBeGreaterThan(50);
+    expect(choices.filter(({ id }) => !(id in CHOICE_CUES)).map(({ id }) => id)).toEqual([]);
+  });
+
+  it('keeps no sound for a choice that no longer exists', () => {
+    const ids = new Set(choices.map(({ id }) => id));
+    expect(Object.keys(CHOICE_CUES).filter((id) => !ids.has(id))).toEqual([]);
+  });
+
+  it('claps when the choice says to clap', () => {
+    expect(cueFor(run, run, { type: 'choose', choiceId: 'clap' })).toBe('clap');
+    expect(cueFor(run, run, { type: 'choose', choiceId: 'cheer' })).toBe('applause');
+  });
+
+  it('still rings the bank when a choice brings money from the company', () => {
+    const owed: GameState = { ...run, money: { ...run.money, companyDebt: 5 } };
+    expect(cueFor(owed, run, { type: 'choose', choiceId: 'join-dragons' })).toBe('ting');
   });
 });

@@ -66,7 +66,7 @@ export const AudioBoot = () => {
       const track = onPlay ? trackFor(state) : 'menu';
       audioEngine.setTrack(track);
       audioEngine.setRoomBusy(
-        onPlay && state && track !== 'home' && track !== 'menu'
+        onPlay && state && track !== 'home' && track !== 'homeLate' && track !== 'menu'
           ? (officeMood(state).occupiedDesks / FULL_OFFICE) * 0.5
           : 0,
       );

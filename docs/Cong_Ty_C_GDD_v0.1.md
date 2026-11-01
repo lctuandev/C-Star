@@ -43,15 +43,15 @@ bảo vệ mình? Game làm người chơi cười trước, nghĩ sau.
 
 ## 2. Nhân vật `[Nguồn]`
 
-Nhân vật là kiểu người biểu tượng, không mô phỏng ai có thật. Lãnh đạo chỉ có chức danh, không có tên riêng.
+Nhân vật là kiểu người biểu tượng, không mô phỏng ai có thật. Tên lãnh đạo do owner đặt và xác nhận là hư cấu.
 
 | Nhân vật                | Vai trò                                                                      |
 | ----------------------- | ---------------------------------------------------------------------------- |
 | Nhân viên mới (Player)  | Vào công ty với nhiều kỳ vọng, dần bị cuốn vào vòng xoáy chậm lương          |
-| Chủ tịch                | Chủ của công ty này và nhiều công ty khác, rất ít khi xuất hiện              |
-| Phó giám đốc (The Visionary) | Chuyên hứa, cứ 5–6 tháng lại kéo mọi người ở lại bằng tin đã "đào được 1–2 triệu đô" |
-| Anh Tín, trưởng phòng   | Tin vào tầm nhìn của Chủ tịch một cách mù quán, kêu gọi cấp dưới ở lại, không đọc hợp đồng hay luật |
-| Anh Minh, phó phòng     | Yêu công ty, liêm chính, nhưng tỉnh táo; hòa đồng và hiểu nhân viên          |
+| Chủ tịch Jeon Kim-jung  | Chủ sở hữu, người đại diện, chủ của công ty này và nhiều công ty khác, rất ít khi xuất hiện              |
+| Phó giám đốc Jeon Gwang-hoe (The Visionary) | Chuyên hứa, cứ 5–6 tháng lại kéo mọi người ở lại bằng tin đã "đào được 1–2 triệu đô" |
+| Anh Roger, trưởng phòng, người Ấn Độ | Tin vào tầm nhìn của Chủ tịch một cách mù quán, kêu gọi cấp dưới ở lại, không đọc hợp đồng hay luật |
+| Anh Huấn (Huni), phó phòng | Yêu công ty, liêm chính, nhưng tỉnh táo; hòa đồng và hiểu nhân viên          |
 | HR (The Messenger)      | Đưa tin bằng giọng ngoại giao, câu nào cũng là công ty đang cố gắng          |
 | Kế toán (The Calculator) | Giữ những con số chẳng ai hiểu: lương đợt 1, đợt 2, KPI, phụ cấp            |
 | Đồng nghiệp (The Survivor) | Cùng chờ lương: người muốn nghỉ, người muốn kiện, người vẫn tin tuần sau có |
@@ -76,7 +76,7 @@ Các chi tiết xuyên suốt: lời hứa "this week", "next week" trên mỗi 
 tháng 4, với "benefit" là được nhận một phần lương sớm; lời hứa IPO và cổ phiếu nội bộ kèm "1–2 triệu đô" ở tháng 6; mọi người
 phải vay người thân và vay tín dụng; rời đi trước tháng 6 thì Phó giám đốc nhắn "tiếc cho em"; công ty thỉnh thoảng trả một phần ba
 hoặc hai phần ba tháng lương để giữ niềm tin rồi nợ tiếp; tiền KPI bị giữ; có tháng không có bảng lương; weekly sync thứ Sáu nào anh
-Tín cũng trả lời "next week, hopefully".
+Roger cũng trả lời "next week, hopefully".
 
 ---
 

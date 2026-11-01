@@ -147,12 +147,12 @@ export const chapter1Scenes = {
       },
       'manager-hello': {
         speaker: 'manager',
-        text: 'Chào em, anh là Tín, trưởng phòng. Em vào đúng công ty, đúng thời điểm rồi đấy. Chủ tịch có một tầm nhìn mà người thường phải mất mười năm mới hiểu. Anh mất tám năm.',
+        text: 'Chào em, anh là Roger, trưởng phòng. Anh rời Ấn Độ sang đây tám năm trước vì một người: Chủ tịch Jeon. Em vào đúng công ty, đúng thời điểm rồi đấy. Tầm nhìn của ông ấy, người thường phải mất mười năm mới hiểu. Anh mất tám năm.',
         next: 'deputy-hello',
       },
       'deputy-hello': {
         speaker: 'deputy',
-        text: 'Chào {name}, anh là Minh, phó phòng. Cần gì cứ hỏi anh, từ chỗ để xe tới cách xin nghỉ phép. Giờ nghỉ trưa thì nghỉ thật nhé, đừng ăn ở bàn.',
+        text: 'Chào {name}, anh là Huấn, phó phòng, mọi người gọi là Huni cho gọn. Cần gì cứ hỏi anh, từ chỗ để xe tới cách xin nghỉ phép. Giờ nghỉ trưa thì nghỉ thật nhé, đừng ăn ở bàn.',
         next: 'first-task',
       },
       'first-task': {
@@ -172,7 +172,7 @@ export const chapter1Scenes = {
         next: 'chairman-call',
       },
       'chairman-call': {
-        text: 'Anh Tín xin cả phòng yên lặng. Màn hình chuyển sang cuộc gọi video: Chủ tịch, chủ của công ty này và nhiều công ty khác, đang ngồi trên xe.',
+        text: 'Anh Roger xin cả phòng yên lặng. Màn hình chuyển sang cuộc gọi video: Chủ tịch Jeon Kim-jung, chủ của công ty này và nhiều công ty khác, đang ngồi trên xe.',
         next: 'chairman-greets',
       },
       'chairman-greets': {
@@ -180,7 +180,7 @@ export const chapter1Scenes = {
         next: 'chairman-gone',
       },
       'chairman-gone': {
-        text: 'Cuộc gọi dài mười một giây. Anh Tín lau mắt. Phó giám đốc bước lên trước màn hình.',
+        text: 'Cuộc gọi dài mười một giây. Anh Roger lau mắt. Phó giám đốc Jeon Gwang-hoe bước lên trước màn hình.',
         next: 'boss-opens',
       },
       'boss-opens': {

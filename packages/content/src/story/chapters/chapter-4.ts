@@ -355,7 +355,7 @@ export const chapter4Scenes = {
         next: 'clap',
       },
       clap: {
-        text: 'Có tiếng vỗ tay, phần lớn là của anh Tín. Anh chưa bao giờ đọc kỹ hợp đồng của mình, nhưng anh biết chắc Chủ tịch sẽ không bỏ anh.',
+        text: 'Có tiếng vỗ tay, phần lớn là của anh Roger. Anh chưa bao giờ đọc kỹ hợp đồng của mình, nhưng anh biết chắc Chủ tịch sẽ không bỏ anh.',
         next: 'minh',
       },
       minh: {
@@ -398,7 +398,7 @@ export const chapter4Scenes = {
         text: 'Bạn viết: "1–2 triệu đô. Không rõ 1 hay 2. Không rõ bao giờ." Dòng ghi chép này nằm ngay dưới dòng "this week" của ba tháng trước.',
       },
       cheered: {
-        text: 'Anh Tín gật đầu với bạn, mắt sáng lên. Đĩa trái cây hết trong bốn phút.',
+        text: 'Anh Roger gật đầu với bạn, mắt sáng lên. Đĩa trái cây hết trong bốn phút.',
       },
     },
   },

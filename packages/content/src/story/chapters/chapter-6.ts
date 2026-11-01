@@ -26,7 +26,7 @@ export const chapter6Scenes = {
         next: 'minh-looks',
       },
       'minh-looks': {
-        text: 'Anh Minh nhìn theo cánh cửa thang máy đang đóng, rồi quay lại nhìn bạn. Anh không nói gì. Có những câu không cần nói.',
+        text: 'Anh Huấn nhìn theo cánh cửa thang máy đang đóng, rồi quay lại nhìn bạn. Anh không nói gì. Có những câu không cần nói.',
         next: 'boss',
       },
       boss: {
@@ -130,7 +130,7 @@ export const chapter6Scenes = {
         next: 'minh',
       },
       minh: {
-        text: 'Anh Minh ký tên đầu tiên trong danh sách. Anh vẫn nói mình yêu công ty này, và chính vì thế anh muốn nó trả lương.',
+        text: 'Anh Huấn ký tên đầu tiên trong danh sách. Anh vẫn nói mình yêu công ty này, và chính vì thế anh muốn nó trả lương.',
         next: 'dan',
       },
       dan: {

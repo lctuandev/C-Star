@@ -35,5 +35,5 @@ Claude không biết công ty nào đứng sau cảm hứng của game, nên kh�
    "đang cố gắng": nếu đó là lời thật của ai, hãy báo để đổi. Cũng áp dụng cho các chi tiết thêm ở M6: "Vượt thác hóa rồng", "1–2 triệu đô",
    IPO và cổ phiếu nội bộ. Nếu đây là tên chiến dịch hay lời hứa có thật của một công ty thật, người trong cuộc sẽ nhận ra, nên đổi đi.
 4. **Số liệu.** Lương 15 triệu và các con số khác là phỏng đoán. Nếu trùng số thật, nên đổi.
-5. **Tên nhân vật** Dân, Uyên, Khoa: nếu trùng người có thật liên quan, nên đổi.
+5. **Tên nhân vật** Dân, Uyên, Khoa: nếu trùng người có thật liên quan, nên đổi. Tên lãnh đạo (Jeon Kim-jung, Jeon Gwang-hoe, Roger, Huấn) owner đã xác nhận là hư cấu ngày 2026-11-01.
 6. **Lời cảnh báo** chưa qua luật sư. Nếu phát hành rộng, nên hỏi trước.

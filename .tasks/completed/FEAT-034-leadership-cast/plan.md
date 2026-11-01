@@ -32,7 +32,9 @@ FEAT-029, FEAT-033.
 
 ## Fiction Check
 
-Owner đưa bốn cái tên riêng kèm mô tả rất cụ thể. Chúng nghe như người có thật, trong khi game kể họ nợ lương nhân viên, và
-`contracts/content.md` §1 cấm tên và đặc điểm nhận dạng của người có thật. Vì vậy trong game chỉ dùng vai trò và tính cách: Chủ tịch, Phó giám đốc,
-anh Tín (trưởng phòng), anh Minh (phó phòng), không ghi quốc tịch. Các tên đó cũng không được ghi vào repo này, vì repo đang public.
-Tín và Minh là tên phổ biến, cố ý gợi "tin" và "minh mẫn". Đổi tên chỉ cần sửa `characters.ts`, nếu owner xác nhận tên gốc hoàn toàn hư cấu.
+Ban đầu game chỉ dùng chức danh và tên tạm, vì bốn cái tên owner đưa kèm mô tả rất cụ thể nghe như người có thật, mà `contracts/content.md` §1 cấm điều đó.
+Ngày 2026-11-01 owner xác nhận cả bốn hoàn toàn hư cấu, nên game dùng đúng tên owner đặt: Chủ tịch Jeon Kim-jung, Phó giám đốc Jeon Gwang-hoe, anh Roger (người Ấn Độ), anh Huấn (Huni).
+
+Đã tra hai tên Hàn theo §2: không thấy người trùng tên ở vị trí tương tự. Việc này không chứng minh được là không có ai trùng, nhất là người không nổi tiếng hoặc cách viết tiếng Hàn khác.
+
+Quốc tịch của anh Roger chỉ là thông tin nhân vật, không dùng để đùa (§3).

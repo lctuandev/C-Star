@@ -41,7 +41,9 @@ describe('DialogueBox', () => {
   it('shows who speaks (SCENARIO-019)', () => {
     reducedMotion(true);
     setup(line);
-    expect(screen.getByRole('button', { name: 'Đọc tiếp' })).toHaveTextContent('Phó giám đốc');
+    expect(screen.getByRole('button', { name: 'Đọc tiếp' })).toHaveTextContent(
+      'Phó GĐ Jeon Gwang-hoe',
+    );
   });
 
   it('types the line, then a tap moves on, never both at once (SCENARIO-019)', async () => {
@@ -70,7 +72,7 @@ describe('DialogueBox', () => {
   it('gives screen readers the whole line and who says it, from the start', () => {
     reducedMotion(false);
     setup(line);
-    expect(screen.getByRole('status')).toHaveTextContent(`Phó giám đốc: ${line.text}`);
+    expect(screen.getByRole('status')).toHaveTextContent(`Phó GĐ Jeon Gwang-hoe: ${line.text}`);
   });
 
   it('shows the line at once with reduced motion (SCENARIO-022)', () => {
