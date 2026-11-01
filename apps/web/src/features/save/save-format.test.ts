@@ -26,6 +26,19 @@ describe('a save file', () => {
     }
   });
 
+  it('brings an old save up to date without losing what it had', () => {
+    const file = readSaveFile(load('save-v1.json'));
+    expect(file?.saveVersion).toBe(SAVE_VERSION);
+    expect(file?.state.money).toEqual({
+      cash: 12_000_000,
+      arrears: 0,
+      loans: 0,
+      companyDebt: 0,
+    });
+    expect(file?.state.story.flags).toEqual({ readContract: true });
+    expect(file?.state.evidence).toEqual([]);
+  });
+
   it.each([
     ['nothing', null],
     ['a string', 'save'],
@@ -53,6 +66,9 @@ describe('a save file', () => {
         ...file,
         state: { ...file.state, mood: { energy: 101, stress: 0 } },
       }),
+    ).toBeNull();
+    expect(
+      readSaveFile({ ...file, state: { ...file.state, relations: { boss: 500 } } }),
     ).toBeNull();
   });
 

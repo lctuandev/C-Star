@@ -1,13 +1,21 @@
-import { applyAction, beginRun, drawRandom, seedRng, viewOf, weekActions } from '@cstar/game-core';
-import type { GameAction, GameState, RngState } from '@cstar/game-core';
+import {
+  applyAction,
+  beginRun,
+  drawRandom,
+  roundIsOver,
+  seedRng,
+  viewOf,
+  weekActions,
+} from '@cstar/game-core';
+import type { GameAction, GameState, GameWorld, RngState } from '@cstar/game-core';
 import { describe, expect, it } from 'vitest';
 import { world } from './world.js';
 
 const MAX_STEPS = 2_000;
 
 /** Plays a whole run, picking at random among whatever the game offers. */
-const playRandomly = (seed: number) => {
-  let state = beginRun(seed, world);
+const playRandomly = (seed: number, game: GameWorld = world) => {
+  let state = beginRun(seed, game);
   let dice: RngState = seedRng(seed * 7 + 1);
   const seen = new Set<string>();
 
@@ -21,11 +29,22 @@ const playRandomly = (seed: number) => {
     if (current.phase === 'payslip') {
       return { type: 'closePayslip' };
     }
+    if (current.phase === 'kpi') {
+      const round = current.kpiRound!;
+      if (roundIsOver(round)) {
+        return { type: 'finishTickets' };
+      }
+      return pick<GameAction>([
+        { type: 'answerTicket', answer: 'do' },
+        { type: 'answerTicket', answer: 'defer' },
+        { type: 'skipTickets' },
+      ]);
+    }
     if (current.phase === 'week') {
-      const open = weekActions(current, world).filter((action) => action.available);
+      const open = weekActions(current, game).filter((action) => action.available);
       return { type: 'takeAction', actionId: pick(open).id };
     }
-    const view = viewOf(current, world.story);
+    const view = viewOf(current, game.story);
     if (!view) {
       throw new Error(`Nothing to do in phase ${current.phase}`);
     }
@@ -40,7 +59,7 @@ const playRandomly = (seed: number) => {
     if (state.story.nodeId) {
       seen.add(`${state.story.sceneId}/${state.story.nodeId}`);
     }
-    const result = applyAction(state, nextAction(state), world);
+    const result = applyAction(state, nextAction(state), game);
     expect(result.ok).toBe(true);
     state = result.state;
 
@@ -56,6 +75,9 @@ const playRandomly = (seed: number) => {
 
 describe('a random player', () => {
   const runs = Array.from({ length: 60 }, (_, index) => playRandomly(index + 1));
+  /** Starts with nothing, so the money crisis is reached too. */
+  const poor: GameWorld = { ...world, rules: { ...world.rules, startingCash: 0 } };
+  const poorRuns = Array.from({ length: 30 }, (_, index) => playRandomly(index + 1, poor));
 
   it('always reaches the end of the content, without being stuck or refused', () => {
     for (const { state } of runs) {
@@ -71,8 +93,14 @@ describe('a random player', () => {
     }
   });
 
+  it('hits the walls sometimes, and comes through them', () => {
+    expect(runs.flatMap((run) => Object.keys(run.state.crises))).toContain('burnout');
+    expect(poorRuns.every(({ state }) => state.phase === 'ended')).toBe(true);
+    expect(poorRuns.some(({ state }) => (state.crises.broke?.count ?? 0) > 0)).toBe(true);
+  });
+
   it('can see every line of the story', () => {
-    const seen = new Set(runs.flatMap((run) => [...run.seen]));
+    const seen = new Set([...runs, ...poorRuns].flatMap((run) => [...run.seen]));
     const lines = Object.values(world.story.scenes).flatMap((scene) =>
       Object.entries(scene.nodes)
         .filter(([, node]) => !('routes' in node))
@@ -83,7 +111,8 @@ describe('a random player', () => {
 
   it('feels the company’s debt by the end', () => {
     for (const { state } of runs) {
-      expect(state.money.companyDebt).toBe(world.rules.salary);
+      const unpaidMonths = world.rules.lastMonth - world.payroll.length;
+      expect(state.money.companyDebt).toBe(world.rules.salary * unpaidMonths - 4_500_000);
     }
   });
 });

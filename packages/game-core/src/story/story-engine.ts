@@ -2,6 +2,7 @@ import type { GameState } from '../state/game-state.js';
 import { meets } from './conditions.js';
 import { applyEffects } from './effects.js';
 import { isRouteNode } from './story-types.js';
+import type { EvidenceItem } from '../calendar/world-types.js';
 import type { Choice, LineNode, StoryGraph } from './story-types.js';
 
 export interface ChoiceView {
@@ -42,6 +43,7 @@ const enterNode = (
   story: StoryGraph,
   sceneId: string,
   nodeId: string,
+  catalogue: readonly EvidenceItem[],
 ): GameState => {
   const node = story.scenes[sceneId]?.nodes[nodeId];
   if (!node) {
@@ -49,12 +51,21 @@ const enterNode = (
   }
   if (isRouteNode(node)) {
     const route = node.routes.find(({ when }) => meets(state, when));
-    return enterNode(state, story, sceneId, route?.next ?? node.otherwise);
+    return enterNode(state, story, sceneId, route?.next ?? node.otherwise, catalogue);
   }
-  return applyEffects({ ...state, story: { ...state.story, sceneId, nodeId } }, node.effects);
+  return applyEffects(
+    { ...state, story: { ...state.story, sceneId, nodeId } },
+    node.effects,
+    catalogue,
+  );
 };
 
-export const startScene = (state: GameState, story: StoryGraph, sceneId: string): GameState => {
+export const startScene = (
+  state: GameState,
+  story: StoryGraph,
+  sceneId: string,
+  catalogue: readonly EvidenceItem[] = [],
+): GameState => {
   const scene = story.scenes[sceneId];
   if (!scene) {
     throw new Error(`Unknown scene ${sceneId}.`);
@@ -67,34 +78,45 @@ export const startScene = (state: GameState, story: StoryGraph, sceneId: string)
     story,
     sceneId,
     scene.start,
+    catalogue,
   );
 };
 
 /** Null when the line waits for a choice, or there is no line: the caller rejects the action. */
-export const advance = (state: GameState, story: StoryGraph): GameState | null => {
+export const advance = (
+  state: GameState,
+  story: StoryGraph,
+  catalogue: readonly EvidenceItem[] = [],
+): GameState | null => {
   const line = currentLine(state, story);
   if (!line || line.choices) {
     return null;
   }
   return line.next === undefined
     ? leaveScene(state)
-    : enterNode(state, story, state.story.sceneId as string, line.next);
+    : enterNode(state, story, state.story.sceneId as string, line.next, catalogue);
 };
 
 const isOpen = (state: GameState, choice: Choice) =>
   choice.requires === undefined || meets(state, choice.requires);
 
 /** Null for a choice that is not on screen or is locked: a repeated tap ends here. */
-export const choose = (state: GameState, story: StoryGraph, choiceId: string): GameState | null => {
+export const choose = (
+  state: GameState,
+  story: StoryGraph,
+  choiceId: string,
+  catalogue: readonly EvidenceItem[] = [],
+): GameState | null => {
   const choice = currentLine(state, story)?.choices?.find(({ id }) => id === choiceId);
   if (!choice || !isOpen(state, choice)) {
     return null;
   }
   return enterNode(
-    applyEffects(state, choice.effects),
+    applyEffects(state, choice.effects, catalogue),
     story,
     state.story.sceneId as string,
     choice.next,
+    catalogue,
   );
 };
 

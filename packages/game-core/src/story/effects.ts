@@ -1,8 +1,11 @@
+import type { EvidenceItem } from '../calendar/world-types.js';
 import { drawRandom } from '../rng/seeded-rng.js';
 import type { GameState, Money, Mood } from '../state/game-state.js';
+import { meets } from './conditions.js';
 import type { Effect } from './story-types.js';
 
 const MOOD_MAX = 100;
+const RELATION_LIMIT = 100;
 
 const clampMood = (value: number) => Math.min(MOOD_MAX, Math.max(0, value));
 
@@ -24,7 +27,33 @@ const companyPays = (money: Money, amount: number): Money => {
   return { ...money, cash: money.cash + paid, companyDebt: money.companyDebt - paid };
 };
 
-const applyEffect = (state: GameState, effect: Effect): GameState => {
+export const withRelation = (state: GameState, npc: string, amount: number): GameState => {
+  const value = (state.relations[npc] ?? 0) + amount;
+  const clamped = Math.min(RELATION_LIMIT, Math.max(-RELATION_LIMIT, value));
+  return { ...state, relations: { ...state.relations, [npc]: clamped } };
+};
+
+const withEvidence = (state: GameState, id: string): GameState =>
+  state.evidence.includes(id) ? state : { ...state, evidence: [...state.evidence, id] };
+
+/** What the catalogue allows now: some papers can only be had at the right moment (GDD §5.3). */
+export const nextEvidence = (
+  state: GameState,
+  catalogue: readonly EvidenceItem[],
+): EvidenceItem | undefined =>
+  catalogue.find(
+    (item) =>
+      !state.evidence.includes(item.id) &&
+      state.calendar.month >= (item.fromMonth ?? 1) &&
+      state.calendar.month <= (item.toMonth ?? Infinity) &&
+      (item.requires === undefined || meets(state, item.requires)),
+  );
+
+const applyEffect = (
+  state: GameState,
+  effect: Effect,
+  catalogue: readonly EvidenceItem[],
+): GameState => {
   switch (effect.type) {
     case 'setFlag':
       return {
@@ -42,15 +71,49 @@ const applyEffect = (state: GameState, effect: Effect): GameState => {
       return withMood(state, { energy: effect.amount });
     case 'addStress':
       return withMood(state, { stress: effect.amount });
+    case 'addRelation':
+      return withRelation(state, effect.npc, effect.amount);
+    case 'addEvidence':
+      return withEvidence(state, effect.evidence);
+    case 'findEvidence': {
+      const item = nextEvidence(state, catalogue);
+      return item ? withEvidence(state, item.id) : state;
+    }
+    case 'takeLoan':
+      return {
+        ...state,
+        money: {
+          ...state.money,
+          cash: state.money.cash + effect.amount,
+          loans: state.money.loans + effect.amount,
+        },
+      };
+    case 'payArrears': {
+      const paid = Math.min(state.money.cash, state.money.arrears);
+      return {
+        ...state,
+        money: {
+          ...state.money,
+          cash: state.money.cash - paid,
+          arrears: state.money.arrears - paid,
+        },
+      };
+    }
+    case 'loseWeek':
+      return { ...state, calendar: { ...state.calendar, actionsLeft: 0 } };
     case 'chance': {
       const { value, next } = drawRandom(state.rng);
       return applyEffects(
         { ...state, rng: next },
         value < effect.chance ? effect.then : effect.otherwise,
+        catalogue,
       );
     }
   }
 };
 
-export const applyEffects = (state: GameState, effects: readonly Effect[] = []): GameState =>
-  effects.reduce(applyEffect, state);
+export const applyEffects = (
+  state: GameState,
+  effects: readonly Effect[] = [],
+  catalogue: readonly EvidenceItem[] = [],
+): GameState => effects.reduce((current, effect) => applyEffect(current, effect, catalogue), state);

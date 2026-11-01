@@ -1,5 +1,12 @@
-import { closePayslip, continueCalendar, takeWeeklyAction } from '../calendar/calendar.js';
-import type { GameWorld } from '../calendar/world-types.js';
+import {
+  closePayslip,
+  continueCalendar,
+  finishKpiRound,
+  skipKpiRound,
+  takeWeeklyAction,
+} from '../calendar/calendar.js';
+import { answerTicket } from '../calendar/tickets.js';
+import type { GameWorld, TicketAnswer } from '../calendar/world-types.js';
 import { createGameState } from '../state/game-state.js';
 import type { GameState } from '../state/game-state.js';
 import { advance, choose, startScene } from '../story/story-engine.js';
@@ -8,6 +15,9 @@ export type GameAction =
   | { type: 'advance' }
   | { type: 'choose'; choiceId: string }
   | { type: 'takeAction'; actionId: string }
+  | { type: 'answerTicket'; answer: TicketAnswer }
+  | { type: 'finishTickets' }
+  | { type: 'skipTickets' }
   | { type: 'closePayslip' };
 
 export type ActionResult =
@@ -21,11 +31,17 @@ const afterStory = (state: GameState | null, world: GameWorld) =>
 const reduce = (state: GameState, action: GameAction, world: GameWorld): GameState | null => {
   switch (action.type) {
     case 'advance':
-      return afterStory(advance(state, world.story), world);
+      return afterStory(advance(state, world.story, world.evidence), world);
     case 'choose':
-      return afterStory(choose(state, world.story, action.choiceId), world);
+      return afterStory(choose(state, world.story, action.choiceId, world.evidence), world);
     case 'takeAction':
       return takeWeeklyAction(state, world, action.actionId);
+    case 'answerTicket':
+      return answerTicket(state, world, action.answer);
+    case 'finishTickets':
+      return finishKpiRound(state, world);
+    case 'skipTickets':
+      return skipKpiRound(state, world);
     case 'closePayslip':
       return closePayslip(state, world);
   }
@@ -42,7 +58,7 @@ export const applyAction = (
 };
 
 export const beginRun = (seed: number, world: GameWorld): GameState =>
-  startScene(createGameState(seed, world.rules), world.story, world.openingScene);
+  startScene(createGameState(seed, world.rules), world.story, world.openingScene, world.evidence);
 
 /**
  * Takes up a loaded run. A save can outlive a scene a later version renamed: it must not strand the

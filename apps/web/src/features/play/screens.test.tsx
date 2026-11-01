@@ -26,14 +26,22 @@ const slip: Payslip = {
   bills: [{ label: 'Tiền nhà', amount: 4_500_000 }],
   arrears: 0,
   cash: 7_000_000,
+  loans: 0,
   companyDebt: 15_000_000,
+  kpi: null,
 };
 
 describe('Hud', () => {
   it('shows the time, the money and what the company owes (SCENARIO-029)', () => {
     const state = week();
     render(
-      <Hud state={{ ...state, money: { cash: 7_400_000, arrears: 0, companyDebt: 15_000_000 } }} />,
+      <Hud
+        kpiTarget={0}
+        state={{
+          ...state,
+          money: { cash: 7_400_000, arrears: 0, loans: 0, companyDebt: 15_000_000 },
+        }}
+      />,
     );
     expect(screen.getByText('Tháng 1 · Tuần 1')).toBeInTheDocument();
     expect(screen.getByText('7,4 tr')).toBeInTheDocument();
@@ -50,7 +58,7 @@ describe('WeekScreen', () => {
   it('offers the week’s actions and sends the one picked (SCENARIO-024)', async () => {
     const state = week();
     useGameStore.setState({ state });
-    render(<WeekScreen state={state} />);
+    render(<WeekScreen state={state} onOpenDossier={vi.fn()} />);
     expect(screen.getByText('Tuần này còn 3 lượt')).toBeInTheDocument();
 
     await userEvent.click(screen.getByRole('button', { name: /Nghỉ ngơi/ }));
@@ -59,13 +67,13 @@ describe('WeekScreen', () => {
   });
 
   it('shows why an action is locked', () => {
-    render(<WeekScreen state={week()} />);
+    render(<WeekScreen state={week()} onOpenDossier={vi.fn()} />);
     expect(screen.getByRole('button', { name: /Nhận việc ngoài/ })).toBeDisabled();
     expect(screen.getByText(/còn tin vào lương/)).toBeInTheDocument();
   });
 
   it('says what the last action did', () => {
-    render(<WeekScreen state={{ ...week(), lastOutcome: 'Ngủ ngon.' }} />);
+    render(<WeekScreen state={{ ...week(), lastOutcome: 'Ngủ ngon.' }} onOpenDossier={vi.fn()} />);
     expect(screen.getByRole('status')).toHaveTextContent('Ngủ ngon.');
   });
 });
@@ -87,6 +95,17 @@ describe('PayslipScreen (SCENARIO-026)', () => {
   it('just pays when it pays', () => {
     render(<PayslipScreen payslip={{ ...slip, salaryPaid: slip.salaryDue }} />);
     expect(screen.getByRole('button', { name: 'Nhận lương' })).toBeInTheDocument();
+  });
+
+  it('shows the KPI and the loans only when there are some', () => {
+    const { rerender } = render(<PayslipScreen payslip={slip} />);
+    expect(screen.queryByText('KPI tháng')).not.toBeInTheDocument();
+    expect(screen.queryByText('Đang vay')).not.toBeInTheDocument();
+    rerender(
+      <PayslipScreen payslip={{ ...slip, loans: 5_000_000, kpi: { points: 6, target: 8 } }} />,
+    );
+    expect(screen.getByText('6 / 8')).toBeInTheDocument();
+    expect(screen.getByText('5.000.000 đ')).toBeInTheDocument();
   });
 
   it('shows what is missing only when something is', () => {

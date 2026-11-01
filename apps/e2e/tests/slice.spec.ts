@@ -1,9 +1,9 @@
 import { expect, test } from '@playwright/test';
 import { playUntil, startGame, weekHeading } from '../tools/play.js';
 
-/** The vertical slice, as a player gets it: chapters 1 and 2, start to end. */
+/** The game so far, as a player gets it, from the offer to the end of the content. */
 test('the whole slice plays through (SCENARIO-035, 036)', async ({ page }) => {
-  test.setTimeout(120_000);
+  test.setTimeout(240_000);
   await startGame(page);
 
   const end = page.getByRole('heading', { name: /Coming Soon/ });
@@ -23,11 +23,11 @@ test('the whole slice plays through (SCENARIO-035, 036)', async ({ page }) => {
         }
         return false;
       },
-      { timeout: 110_000, intervals: [10] },
+      { timeout: 230_000, intervals: [10] },
     )
     .toBe(true);
 
-  await expect(page.getByText('15 tr')).toBeVisible();
+  await expect(page.getByText('40,5 tr')).toBeVisible();
 });
 
 test('the first day has three seats (SCENARIO-035)', async ({ page }) => {

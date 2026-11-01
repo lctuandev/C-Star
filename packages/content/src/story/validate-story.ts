@@ -39,6 +39,9 @@ const flagsIn = (condition: Condition): string[] => {
     case 'flag':
       return [condition.flag];
     case 'stat':
+    case 'relation':
+    case 'evidence':
+    case 'crisisCount':
       return [];
     case 'not':
       return flagsIn(condition.condition);
@@ -157,6 +160,75 @@ const checkScene = (key: string, scene: Scene, catalog: StoryCatalog): StoryIssu
   return issues;
 };
 
+const conditionParts = (condition: Condition): Condition[] => {
+  switch (condition.type) {
+    case 'not':
+      return [condition, ...conditionParts(condition.condition)];
+    case 'all':
+    case 'any':
+      return [condition, ...condition.conditions.flatMap(conditionParts)];
+    default:
+      return [condition];
+  }
+};
+
+/** Everything in the world that names an NPC, a paper or a crisis, with where it was. */
+const referencesOf = (world: GameWorld) => {
+  const places: { scene: string; effects: Effect[]; conditions: Condition[] }[] = [];
+  for (const [key, scene] of Object.entries(world.story.scenes)) {
+    for (const node of Object.values(scene.nodes)) {
+      places.push({ scene: key, effects: effectsOf(node), conditions: conditionsOf(node) });
+    }
+  }
+  for (const action of world.actions) {
+    places.push({
+      scene: 'week',
+      effects: action.effects,
+      conditions: action.requires ? [action.requires] : [],
+    });
+  }
+  for (const beat of world.beats) {
+    places.push({
+      scene: beat.scene,
+      effects: [],
+      conditions: beat.requires ? [beat.requires] : [],
+    });
+  }
+  for (const crisis of world.crises) {
+    places.push({ scene: crisis.scene, effects: [], conditions: [crisis.when] });
+  }
+  return places;
+};
+
+const checkReferences = (world: GameWorld, catalog: StoryCatalog): StoryIssue[] => {
+  const npcs = new Set(catalog.characters);
+  const papers = new Set(world.evidence.map((item) => item.id));
+  const crises = new Set(world.crises.map((crisis) => crisis.id));
+  return referencesOf(world).flatMap(({ scene, effects, conditions }) => {
+    const messages: string[] = [];
+    for (const effect of flattenEffects(effects)) {
+      if (effect.type === 'addRelation' && !npcs.has(effect.npc)) {
+        messages.push(`relation with unknown npc "${effect.npc}"`);
+      }
+      if (effect.type === 'addEvidence' && !papers.has(effect.evidence)) {
+        messages.push(`unknown evidence "${effect.evidence}"`);
+      }
+    }
+    for (const part of conditions.flatMap(conditionParts)) {
+      if (part.type === 'relation' && !npcs.has(part.npc)) {
+        messages.push(`relation with unknown npc "${part.npc}"`);
+      }
+      if (part.type === 'evidence' && !papers.has(part.evidence)) {
+        messages.push(`unknown evidence "${part.evidence}"`);
+      }
+      if (part.type === 'crisisCount' && !crises.has(part.crisis)) {
+        messages.push(`unknown crisis "${part.crisis}"`);
+      }
+    }
+    return messages.map((message) => ({ scene, message }));
+  });
+};
+
 /** Every way a story can trap or confuse a player that can be seen without playing it. */
 export const validateStory = (
   story: StoryGraph,
@@ -189,17 +261,18 @@ export const validateStory = (
 /** The story plus what ties it to the calendar. */
 export const validateWorld = (world: GameWorld, catalog: StoryCatalog): StoryIssue[] => {
   const scenes = world.story.scenes;
-  const issues = validateStory(
-    world.story,
-    catalog,
-    world.actions.flatMap((action) => flagsSetBy(action.effects)),
-  );
+  const flagsFromActions = world.actions.flatMap((action) => flagsSetBy(action.effects));
+  const issues = validateStory(world.story, catalog, flagsFromActions);
   const report = (scene: string, message: string) => issues.push({ scene, message });
 
   if (!(world.openingScene in scenes)) {
     report(world.openingScene, 'the opening scene does not exist');
   }
-  const beatScenes = world.beats.map((beat) => beat.scene);
+  issues.push(...checkReferences(world, catalog));
+  const beatScenes = [
+    ...world.beats.map((beat) => beat.scene),
+    ...world.crises.map((crisis) => crisis.scene),
+  ];
   for (const beat of world.beats) {
     if (!(beat.scene in scenes)) {
       report(beat.scene, `month ${beat.month} plays a scene that does not exist`);
@@ -215,6 +288,18 @@ export const validateWorld = (world: GameWorld, catalog: StoryCatalog): StoryIss
     if (key !== world.openingScene && !beatScenes.includes(key)) {
       report(key, 'no beat ever plays this scene');
     }
+  }
+  for (const crisis of world.crises) {
+    if (!(crisis.scene in scenes)) {
+      report(crisis.scene, `crisis "${crisis.id}" plays a scene that does not exist`);
+    }
+  }
+  const usesTickets = world.actions.some((action) => action.tickets);
+  if (usesTickets && world.tickets.length < world.rules.ticketsPerRound) {
+    report('week', 'not enough tickets for a round');
+  }
+  if (new Set(world.evidence.map((item) => item.id)).size !== world.evidence.length) {
+    report('week', 'two pieces of evidence share an id');
   }
   if (world.actions.every((action) => action.requires)) {
     report('week', 'every weekly action can be locked: the player could get stuck');

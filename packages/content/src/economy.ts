@@ -4,7 +4,7 @@ import type { Bill, GameRules, WeeklyAction } from '@cstar/game-core';
 export const rules: GameRules = {
   actionsPerWeek: 3,
   weeksPerMonth: 4,
-  lastMonth: 2,
+  lastMonth: 4,
   startingCash: 9_000_000,
   startingEnergy: 80,
   startingStress: 10,
@@ -12,10 +12,15 @@ export const rules: GameRules = {
   weeklyEnergyRecovery: 15,
   unpaidStress: 12,
   surpriseChance: 0.4,
+  kpiTargets: [0, 0, 8, 10],
+  kpiMissStress: 6,
+  kpiTrust: 6,
+  ticketsPerRound: 4,
+  quickTaskPoints: 2,
 };
 
 /** The share of the salary the company pays each month, from month 1. */
-export const payroll: readonly number[] = [1, 0];
+export const payroll: readonly number[] = [1];
 
 export const bills: readonly Bill[] = [
   { label: 'Tiền nhà', amount: 4_500_000 },
@@ -34,12 +39,14 @@ export const weeklyActions: readonly WeeklyAction[] = [
   {
     id: 'work',
     label: 'Làm task',
-    hint: 'Sếp vui hơn, bạn mệt hơn',
+    hint: 'Có KPI, sếp vui hơn, bạn mệt hơn',
+    tickets: true,
     requires: { type: 'stat', stat: 'energy', min: 15 },
     lockedReason: 'Không còn sức để giả vờ bận',
     effects: [
       { type: 'addEnergy', amount: -15 },
       { type: 'addStress', amount: 3 },
+      { type: 'addRelation', npc: 'boss', amount: 1 },
     ],
     outcomes: [
       'Bạn đóng một ticket. Hệ thống mở thêm ba ticket.',
@@ -88,16 +95,40 @@ export const weeklyActions: readonly WeeklyAction[] = [
   {
     id: 'chat',
     label: 'Tám với đồng nghiệp',
-    hint: 'Bớt căng, biết thêm chuyện',
+    hint: 'Bớt căng, thân nhau hơn',
     effects: [
       { type: 'addEnergy', amount: -5 },
       { type: 'addStress', amount: -8 },
+      { type: 'addRelation', npc: 'dan', amount: 2 },
+      { type: 'addRelation', npc: 'uyen', amount: 2 },
+      { type: 'addRelation', npc: 'khoa', amount: 2 },
     ],
     outcomes: [
       'Dân bảo công ty sắp có đợt gọi vốn mới. Dân bảo thế từ năm ngoái.',
       'Uyên đã ghi lại ngày giờ mọi lời hứa vào một file riêng.',
       'Khoa tin tuần sau có lương. Tuần trước Khoa cũng tin vậy.',
       'Cả nhóm cười về trái cây thứ Sáu. Thứ Sáu này chỉ còn một quả chuối.',
+    ],
+  },
+  {
+    id: 'investigate',
+    label: 'Lưu giấy tờ',
+    hint: 'Giữ lại giấy tờ của mình, HR có thể để ý',
+    requires: { type: 'flag', flag: 'startedNotes' },
+    lockedReason: 'Chưa nghĩ tới chuyện phải giữ giấy tờ',
+    effects: [
+      { type: 'findEvidence' },
+      { type: 'addEnergy', amount: -5 },
+      { type: 'addStress', amount: 2 },
+      {
+        type: 'chance',
+        chance: 0.25,
+        then: [{ type: 'addRelation', npc: 'hr', amount: -6 }],
+      },
+    ],
+    outcomes: [
+      'Bạn đã có đủ những gì tháng này cho phép lấy.',
+      'Không còn gì mới để lưu vào lúc này.',
     ],
   },
 ];

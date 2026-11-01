@@ -1,9 +1,11 @@
 import type { GameWorld } from '@cstar/game-core';
 import { z } from 'zod';
 import { bills, payroll, rules, surprises, weeklyActions } from './economy.js';
+import { evidence } from './evidence.js';
 import { OPENING_SCENE, story } from './story/index.js';
-import { beats } from './story/schedule.js';
+import { beats, crises } from './story/schedule.js';
 import { conditionSchema, effectSchema, storySchema } from './story/story-schema.js';
+import { tickets } from './tickets.js';
 
 const text = z.string().trim().min(1);
 const money = z.number().int().nonnegative();
@@ -23,6 +25,11 @@ const worldSchema = z.strictObject({
     weeklyEnergyRecovery: z.number().int().nonnegative(),
     unpaidStress: z.number().int().nonnegative(),
     surpriseChance: z.number().min(0).max(1),
+    kpiTargets: z.array(z.number().int().nonnegative()),
+    kpiMissStress: z.number().int().nonnegative(),
+    kpiTrust: z.number().int().nonnegative(),
+    ticketsPerRound: z.number().int().positive(),
+    quickTaskPoints: z.number().int().nonnegative(),
   }),
   actions: z.array(
     z.strictObject({
@@ -33,6 +40,7 @@ const worldSchema = z.strictObject({
       lockedReason: text.optional(),
       effects: z.array(effectSchema),
       outcomes: z.array(text),
+      tickets: z.boolean().optional(),
     }),
   ),
   beats: z.array(
@@ -46,6 +54,26 @@ const worldSchema = z.strictObject({
   payroll: z.array(z.number().min(0).max(1)),
   bills: z.array(billSchema),
   surprises: z.array(billSchema),
+  tickets: z.array(
+    z.strictObject({
+      id: text,
+      from: text,
+      text,
+      answer: z.enum(['do', 'defer']),
+      reply: text,
+    }),
+  ),
+  evidence: z.array(
+    z.strictObject({
+      id: text,
+      title: text,
+      description: text,
+      fromMonth: z.number().int().positive().optional(),
+      toMonth: z.number().int().positive().optional(),
+      requires: conditionSchema.optional(),
+    }),
+  ),
+  crises: z.array(z.strictObject({ id: text, scene: text, when: conditionSchema })),
 });
 
 /** Parsed at load: content that does not fit never reaches a player. */
@@ -58,4 +86,7 @@ export const world: GameWorld = worldSchema.parse({
   payroll,
   bills,
   surprises,
+  tickets,
+  evidence,
+  crises,
 });

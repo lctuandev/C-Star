@@ -1,8 +1,20 @@
 export { applyAction, beginRun, replay, resumeRun } from './actions/apply-action.js';
 export type { ActionResult, GameAction } from './actions/apply-action.js';
-export { weekActions } from './calendar/calendar.js';
+export { kpiTargetOf, weekActions } from './calendar/calendar.js';
 export type { ActionView } from './calendar/calendar.js';
-export type { Beat, Bill, GameRules, GameWorld, WeeklyAction } from './calendar/world-types.js';
+export { roundIsOver, ticketView } from './calendar/tickets.js';
+export type { TicketView } from './calendar/tickets.js';
+export type {
+  Beat,
+  Bill,
+  CrisisRule,
+  EvidenceItem,
+  GameRules,
+  GameWorld,
+  Ticket,
+  TicketAnswer,
+  WeeklyAction,
+} from './calendar/world-types.js';
 export { shouldShowDisclaimer } from './disclaimer/disclaimer-rule.js';
 export type { DisclaimerCheck } from './disclaimer/disclaimer-rule.js';
 export { drawRandom, seedRng } from './rng/seeded-rng.js';
@@ -10,7 +22,9 @@ export type { RngDraw, RngState } from './rng/seeded-rng.js';
 export { createGameState } from './state/game-state.js';
 export type {
   Calendar,
+  CrisisRecord,
   GameState,
+  KpiRound,
   Money,
   Mood,
   Payslip,

@@ -1,8 +1,9 @@
 import { drawRandom } from '../rng/seeded-rng.js';
 import type { GameState, PayslipLine } from '../state/game-state.js';
 import { meets } from '../story/conditions.js';
-import { applyEffects, withMood } from '../story/effects.js';
+import { applyEffects, withMood, withRelation } from '../story/effects.js';
 import { startScene } from '../story/story-engine.js';
+import { roundIsOver, startKpiRound } from './tickets.js';
 import type { GameWorld, WeeklyAction } from './world-types.js';
 
 export interface ActionView {
@@ -28,6 +29,9 @@ export const weekActions = (state: GameState, world: GameWorld): ActionView[] =>
     };
   });
 
+export const kpiTargetOf = (world: GameWorld, month: number): number =>
+  world.rules.kpiTargets[month - 1] ?? 0;
+
 const dueBeat = (state: GameState, world: GameWorld) => {
   const { month, week, payday } = state.calendar;
   return world.beats.find(
@@ -39,19 +43,53 @@ const dueBeat = (state: GameState, world: GameWorld) => {
   );
 };
 
+const dueCrisis = (state: GameState, world: GameWorld) =>
+  world.crises.find(
+    (crisis) =>
+      state.crises[crisis.id]?.lastMonth !== state.calendar.month && meets(state, crisis.when),
+  );
+
+const playScene = (state: GameState, world: GameWorld, sceneId: string): GameState => ({
+  ...startScene(state, world.story, sceneId, world.evidence),
+  phase: 'scene',
+});
+
 /** Plays what is due now, or moves to what the calendar is waiting for. */
 export const continueCalendar = (state: GameState, world: GameWorld): GameState => {
+  // Not on payday: the slip comes first, and it may settle what the crisis is about.
+  const crisis = state.calendar.payday ? undefined : dueCrisis(state, world);
+  if (crisis) {
+    const count = (state.crises[crisis.id]?.count ?? 0) + 1;
+    const record = { count, lastMonth: state.calendar.month };
+    const marked = { ...state, crises: { ...state.crises, [crisis.id]: record } };
+    return playScene(marked, world, crisis.scene);
+  }
   const beat = dueBeat(state, world);
   if (beat) {
-    return { ...startScene(state, world.story, beat.scene), phase: 'scene' };
+    return playScene(state, world, beat.scene);
   }
-  return { ...state, phase: state.calendar.payday ? 'payslip' : 'week' };
+  if (state.calendar.payday) {
+    return { ...state, phase: 'payslip' };
+  }
+  // A burnout can take the rest of a week away while a scene plays.
+  return state.calendar.actionsLeft > 0 ? { ...state, phase: 'week' } : endWeek(state, world);
 };
 
 const pickOutcome = (state: GameState, outcomes: readonly string[]): GameState => {
   const { value, next } = drawRandom(state.rng);
   const line = outcomes[Math.floor(value * outcomes.length)] ?? null;
   return { ...state, rng: next, lastOutcome: line };
+};
+
+/** The month's target, if there is one: the boss notices either way. */
+const settleKpi = (state: GameState, world: GameWorld, target: number): GameState => {
+  if (target === 0) {
+    return state;
+  }
+  const { kpiMissStress, kpiTrust } = world.rules;
+  return state.kpi >= target
+    ? withRelation(state, 'boss', kpiTrust)
+    : withRelation(withMood(state, { stress: kpiMissStress }), 'boss', -kpiTrust);
 };
 
 /** Pays what can be paid and writes the slip. Arrears come back on the next one. */
@@ -80,15 +118,24 @@ const settlePayday = (state: GameState, world: GameWorld): GameState => {
   const money = {
     cash: available - paid,
     arrears: owed - paid,
+    loans: state.money.loans,
     companyDebt: state.money.companyDebt + salary - salaryPaid,
   };
 
-  const settled = salaryPaid < salary ? withMood(state, { stress: unpaidStress }) : state;
+  const target = kpiTargetOf(world, month);
+  const unpaid = salaryPaid < salary ? withMood(state, { stress: unpaidStress }) : state;
   return {
-    ...settled,
+    ...settleKpi(unpaid, world, target),
     rng: pick.next,
     money,
-    payslip: { month, salaryDue: salary, salaryPaid, bills, ...money },
+    payslip: {
+      month,
+      salaryDue: salary,
+      salaryPaid,
+      bills,
+      ...money,
+      kpi: target > 0 ? { points: state.kpi, target } : null,
+    },
   };
 };
 
@@ -104,6 +151,27 @@ const endWeek = (state: GameState, world: GameWorld): GameState => {
   return continueCalendar(settlePayday({ ...rested, calendar }, world), world);
 };
 
+/** The action counts: its line is picked, the turn is spent, and the calendar moves. */
+const finishAction = (
+  state: GameState,
+  world: GameWorld,
+  action: WeeklyAction,
+  evidenceBefore: number,
+): GameState => {
+  const told = pickOutcome(state, action.outcomes);
+  const found = world.evidence.find(({ id }) => id === told.evidence[evidenceBefore]);
+  return continueCalendar(
+    {
+      ...told,
+      phase: 'week',
+      kpiRound: null,
+      lastOutcome: found ? `Bạn lưu lại: ${found.title}.` : told.lastOutcome,
+      calendar: { ...told.calendar, actionsLeft: told.calendar.actionsLeft - 1 },
+    },
+    world,
+  );
+};
+
 export const takeWeeklyAction = (
   state: GameState,
   world: GameWorld,
@@ -113,11 +181,29 @@ export const takeWeeklyAction = (
   if (state.phase !== 'week' || !action || !isOpen(state, action)) {
     return null;
   }
-  const acted = pickOutcome(applyEffects(state, action.effects), action.outcomes);
-  const actionsLeft = acted.calendar.actionsLeft - 1;
-  const counted = { ...acted, calendar: { ...acted.calendar, actionsLeft } };
-  return actionsLeft > 0 ? counted : endWeek(counted, world);
+  const acted = applyEffects(state, action.effects, world.evidence);
+  return action.tickets
+    ? startKpiRound(acted, world, action.id)
+    : finishAction(acted, world, action, state.evidence.length);
 };
+
+const closeRound = (state: GameState, world: GameWorld, points: number): GameState | null => {
+  const action = world.actions.find(({ id }) => id === state.kpiRound?.actionId);
+  if (state.phase !== 'kpi' || !action) {
+    return null;
+  }
+  return finishAction({ ...state, kpi: state.kpi + points }, world, action, state.evidence.length);
+};
+
+/** Back to the week once the last reply has been read. */
+export const finishKpiRound = (state: GameState, world: GameWorld): GameState | null => {
+  const round = state.kpiRound;
+  return round && roundIsOver(round) ? closeRound(state, world, round.score) : null;
+};
+
+/** "Làm cho có": the round is skipped, for fewer points. */
+export const skipKpiRound = (state: GameState, world: GameWorld): GameState | null =>
+  state.kpiRound ? closeRound(state, world, world.rules.quickTaskPoints) : null;
 
 /** The slip is closed: the next month, or the end of what exists. */
 export const closePayslip = (state: GameState, world: GameWorld): GameState | null => {
@@ -134,5 +220,5 @@ export const closePayslip = (state: GameState, world: GameWorld): GameState | nu
     actionsLeft: rules.actionsPerWeek,
     payday: false,
   };
-  return continueCalendar({ ...state, calendar, payslip: null, lastOutcome: null }, world);
+  return continueCalendar({ ...state, calendar, kpi: 0, payslip: null, lastOutcome: null }, world);
 };

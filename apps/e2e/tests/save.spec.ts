@@ -4,7 +4,7 @@ import path from 'node:path';
 import { expect, test } from '@playwright/test';
 import type { Page } from '@playwright/test';
 import { asReturningPlayer } from '../tools/accepted-disclaimer.js';
-import { playUntil, startGame, weekHeading } from '../tools/play.js';
+import { doTask, playUntil, startGame, weekHeading } from '../tools/play.js';
 
 const continueButton = (page: Page) => page.getByRole('button', { name: 'Tiếp tục' });
 const newGame = (page: Page) => page.getByRole('button', { name: 'Game mới' });
@@ -70,7 +70,7 @@ test('a reload in the week keeps the count and doubles nothing (SCENARIO-030)', 
 }) => {
   await startGame(page);
   await playUntil(page, weekHeading(page));
-  await page.getByRole('button', { name: /Làm task/ }).click();
+  await doTask(page);
   await expect(page.getByRole('heading', { name: 'Tuần này còn 2 lượt' })).toBeVisible();
   const before = await hudOf(page);
   await expect.poll(async () => (await savedState(page))?.calendar.actionsLeft).toBe(2);
@@ -160,7 +160,7 @@ test('a direct link never overwrites a broken save (SCENARIO-032)', async ({ pag
 test('a save travels by file (SCENARIO-033)', async ({ page, context }) => {
   await startGame(page);
   await playUntil(page, weekHeading(page));
-  await page.getByRole('button', { name: /Làm task/ }).click();
+  await doTask(page);
   await expect.poll(async () => (await savedState(page))?.calendar.actionsLeft).toBe(2);
 
   await page.goto('/about');

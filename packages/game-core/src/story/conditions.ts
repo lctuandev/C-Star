@@ -5,6 +5,7 @@ export const readStat = (state: GameState, stat: Stat): number => {
   switch (stat) {
     case 'cash':
     case 'arrears':
+    case 'loans':
     case 'companyDebt':
       return state.money[stat];
     case 'energy':
@@ -12,6 +13,10 @@ export const readStat = (state: GameState, stat: Stat): number => {
       return state.mood[stat];
     case 'month':
       return state.calendar.month;
+    case 'kpi':
+      return state.kpi;
+    case 'evidenceCount':
+      return state.evidence.length;
   }
 };
 
@@ -23,6 +28,14 @@ export const meets = (state: GameState, condition: Condition): boolean => {
       const value = readStat(state, condition.stat);
       return value >= (condition.min ?? -Infinity) && value <= (condition.max ?? Infinity);
     }
+    case 'relation': {
+      const value = state.relations[condition.npc] ?? 0;
+      return value >= (condition.min ?? -Infinity) && value <= (condition.max ?? Infinity);
+    }
+    case 'evidence':
+      return state.evidence.includes(condition.evidence);
+    case 'crisisCount':
+      return (state.crises[condition.crisis]?.count ?? 0) >= condition.min;
     case 'not':
       return !meets(state, condition.condition);
     case 'all':

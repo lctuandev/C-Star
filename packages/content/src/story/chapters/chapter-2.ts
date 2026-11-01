@@ -55,7 +55,10 @@ export const chapter2Scenes = {
           {
             id: 'ask-straight',
             text: '"Dạ tháng này lương có đúng ngày không cô?"',
-            effects: [{ type: 'setFlag', flag: 'askedAccountant' }],
+            effects: [
+              { type: 'setFlag', flag: 'askedAccountant' },
+              { type: 'addRelation', npc: 'accountant', amount: 5 },
+            ],
             next: 'straight',
           },
           { id: 'pretend', text: '"Dạ em tìm bút thôi ạ"', next: 'pen' },
@@ -119,13 +122,18 @@ export const chapter2Scenes = {
             effects: [
               { type: 'setFlag', flag: 'askedHrInPublic' },
               { type: 'addStress', amount: 4 },
+              { type: 'addRelation', npc: 'hr', amount: -8 },
+              { type: 'addRelation', npc: 'uyen', amount: 6 },
             ],
             next: 'public-answer',
           },
           {
             id: 'ask-private',
             text: 'Nhắn riêng chị HR cho lịch sự',
-            effects: [{ type: 'setFlag', flag: 'askedHrPrivately' }],
+            effects: [
+              { type: 'setFlag', flag: 'askedHrPrivately' },
+              { type: 'addRelation', npc: 'hr', amount: 5 },
+            ],
             next: 'private-answer',
           },
           {

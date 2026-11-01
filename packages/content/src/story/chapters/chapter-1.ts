@@ -26,7 +26,10 @@ export const chapter1Scenes = {
           {
             id: 'read-contract',
             text: 'Đọc hết hợp đồng trước đã',
-            effects: [{ type: 'setFlag', flag: 'readContract' }],
+            effects: [
+              { type: 'setFlag', flag: 'readContract' },
+              { type: 'addEvidence', evidence: 'contract' },
+            ],
             next: 'fine-print',
           },
         ],
@@ -89,19 +92,28 @@ export const chapter1Scenes = {
           {
             id: 'near-dan',
             text: 'Ngồi cạnh Dân, người đang mở ba cửa sổ tin tức tài chính',
-            effects: [{ type: 'setFlag', flag: 'satWithDan' }],
+            effects: [
+              { type: 'setFlag', flag: 'satWithDan' },
+              { type: 'addRelation', npc: 'dan', amount: 10 },
+            ],
             next: 'meet-dan',
           },
           {
             id: 'near-uyen',
             text: 'Ngồi cạnh Uyên, người có tập hồ sơ dán nhãn rất ngay ngắn',
-            effects: [{ type: 'setFlag', flag: 'satWithUyen' }],
+            effects: [
+              { type: 'setFlag', flag: 'satWithUyen' },
+              { type: 'addRelation', npc: 'uyen', amount: 10 },
+            ],
             next: 'meet-uyen',
           },
           {
             id: 'near-khoa',
             text: 'Ngồi cạnh Khoa, người đang cười với cái màn hình',
-            effects: [{ type: 'setFlag', flag: 'satWithKhoa' }],
+            effects: [
+              { type: 'setFlag', flag: 'satWithKhoa' },
+              { type: 'addRelation', npc: 'khoa', amount: 10 },
+            ],
             next: 'meet-khoa',
           },
         ],
@@ -162,7 +174,10 @@ export const chapter1Scenes = {
           {
             id: 'clap',
             text: 'Vỗ tay thật to',
-            effects: [{ type: 'setFlag', flag: 'clappedForBoss' }],
+            effects: [
+              { type: 'setFlag', flag: 'clappedForBoss' },
+              { type: 'addRelation', npc: 'boss', amount: 8 },
+            ],
             next: 'after-clap',
           },
           {
@@ -171,6 +186,7 @@ export const chapter1Scenes = {
             effects: [
               { type: 'setFlag', flag: 'askedAboutPay' },
               { type: 'addStress', amount: 5 },
+              { type: 'addRelation', npc: 'boss', amount: -5 },
             ],
             next: 'after-ask',
           },
@@ -257,6 +273,9 @@ export const chapter1Scenes = {
               { type: 'addCash', amount: -600_000 },
               { type: 'addStress', amount: -8 },
               { type: 'setFlag', flag: 'treatedTeam' },
+              { type: 'addRelation', npc: 'dan', amount: 5 },
+              { type: 'addRelation', npc: 'uyen', amount: 5 },
+              { type: 'addRelation', npc: 'khoa', amount: 5 },
             ],
             next: 'treat',
           },

@@ -2,7 +2,7 @@ import type { GameState } from '@cstar/game-core';
 import { z } from 'zod';
 
 /** Raise it with every change to the shape below, and add the step in `MIGRATIONS` (contracts/save.md §3). */
-export const SAVE_VERSION = 1;
+export const SAVE_VERSION = 2;
 
 const money = z.number().int().nonnegative();
 const mood = z.number().int().min(0).max(100);
@@ -14,20 +14,24 @@ const payslipSchema = z.strictObject({
   bills: z.array(z.strictObject({ label: z.string(), amount: money })),
   arrears: money,
   cash: money,
+  loans: money,
   companyDebt: money,
+  kpi: z
+    .strictObject({ points: z.number().int().nonnegative(), target: z.number().int().positive() })
+    .nullable(),
 });
 
 const gameStateSchema: z.ZodType<GameState> = z.strictObject({
   seed: z.number(),
   rng: z.number().int().nonnegative(),
-  phase: z.enum(['scene', 'week', 'payslip', 'ended']),
+  phase: z.enum(['scene', 'week', 'kpi', 'payslip', 'ended']),
   calendar: z.strictObject({
     month: z.number().int().positive(),
     week: z.number().int().positive(),
     actionsLeft: z.number().int().nonnegative(),
     payday: z.boolean(),
   }),
-  money: z.strictObject({ cash: money, arrears: money, companyDebt: money }),
+  money: z.strictObject({ cash: money, arrears: money, loans: money, companyDebt: money }),
   mood: z.strictObject({ energy: mood, stress: mood }),
   story: z.strictObject({
     sceneId: z.string().nullable(),
@@ -35,6 +39,22 @@ const gameStateSchema: z.ZodType<GameState> = z.strictObject({
     flags: z.record(z.string(), z.boolean()),
     seenScenes: z.array(z.string()),
   }),
+  relations: z.record(z.string(), z.number().int().min(-100).max(100)),
+  kpi: z.number().int().nonnegative(),
+  kpiRound: z
+    .strictObject({
+      actionId: z.string(),
+      tickets: z.array(z.string()),
+      index: z.number().int().nonnegative(),
+      score: z.number().int().nonnegative(),
+      last: z.strictObject({ ticketId: z.string(), correct: z.boolean() }).nullable(),
+    })
+    .nullable(),
+  evidence: z.array(z.string()),
+  crises: z.record(
+    z.string(),
+    z.strictObject({ count: z.number().int(), lastMonth: z.number().int() }),
+  ),
   payslip: payslipSchema.nullable(),
   lastOutcome: z.string().nullable(),
 });
@@ -50,7 +70,26 @@ export type SaveFile = z.infer<typeof saveFileSchema>;
 type Migration = (file: Record<string, unknown>) => Record<string, unknown>;
 
 /** Step N takes a save of version N to version N + 1. Steps are never removed. */
-const MIGRATIONS: Record<number, Migration> = {};
+const MIGRATIONS: Record<number, Migration> = {
+  /** M2: loans, relations, KPI, evidence, crises. Nobody had any of them yet. */
+  1: (file) => {
+    const state = file.state as Record<string, unknown>;
+    const payslip = state.payslip as Record<string, unknown> | null;
+    return {
+      ...file,
+      state: {
+        ...state,
+        money: { ...(state.money as object), loans: 0 },
+        relations: {},
+        kpi: 0,
+        kpiRound: null,
+        evidence: [],
+        crises: {},
+        payslip: payslip && { ...payslip, loans: 0, kpi: null },
+      },
+    };
+  },
+};
 
 export const createSaveFile = (state: GameState, savedAt: string): SaveFile => ({
   saveVersion: SAVE_VERSION,

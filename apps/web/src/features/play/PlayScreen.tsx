@@ -1,14 +1,16 @@
 'use client';
 
-import { viewOf } from '@cstar/game-core';
+import { kpiTargetOf, viewOf } from '@cstar/game-core';
 import type { Place } from '@cstar/game-core';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { DialogueBox } from '@/features/dialogue/DialogueBox';
 import { HistorySheet } from '@/features/dialogue/HistorySheet';
+import { DossierSheet } from '@/features/dossier/DossierSheet';
 import { Hud } from '@/features/hud/Hud';
 import { PayslipScreen } from '@/features/payslip/PayslipScreen';
 import { useSaveStore } from '@/features/save/save-store';
+import { TicketScreen } from '@/features/tickets/TicketScreen';
 import { WeekScreen } from '@/features/week/WeekScreen';
 import { EndOfContent } from './EndOfContent';
 import { useGameStore, world } from './game-store';
@@ -29,6 +31,7 @@ export const PlayScreen = () => {
   const writeFailed = useSaveStore((store) => store.writeFailed);
   const router = useRouter();
   const [showHistory, setShowHistory] = useState(false);
+  const [showDossier, setShowDossier] = useState(false);
 
   // A reload or a direct link: take up the saved run, or start one if there is none.
   useEffect(() => {
@@ -62,13 +65,16 @@ export const PlayScreen = () => {
     <main
       className={`flex min-h-dvh flex-col bg-gradient-to-b pt-[env(safe-area-inset-top)] ${BACKDROPS[place ?? 'office']}`}
     >
-      <Hud state={state} />
+      <Hud state={state} kpiTarget={kpiTargetOf(world, state.calendar.month)} />
       {writeFailed && (
         <p role="alert" className="bg-surface-800 text-alarm px-4 py-2 text-sm">
           Tiến độ chưa được lưu: trình duyệt đang chặn bộ nhớ.
         </p>
       )}
-      {state.phase === 'week' && <WeekScreen state={state} />}
+      {state.phase === 'week' && (
+        <WeekScreen state={state} onOpenDossier={() => setShowDossier(true)} />
+      )}
+      {state.phase === 'kpi' && <TicketScreen state={state} />}
       {state.phase === 'payslip' && state.payslip && <PayslipScreen payslip={state.payslip} />}
       {state.phase === 'ended' && <EndOfContent />}
       {view && (
@@ -91,6 +97,7 @@ export const PlayScreen = () => {
         </>
       )}
       {showHistory && <HistorySheet lines={history} onClose={() => setShowHistory(false)} />}
+      {showDossier && <DossierSheet state={state} onClose={() => setShowDossier(false)} />}
     </main>
   );
 };

@@ -5,7 +5,12 @@ import type { GameState } from '@cstar/game-core';
 import { Button } from '@/components/ui/Button';
 import { useGameStore, world } from '@/features/play/game-store';
 
-export const WeekScreen = ({ state }: { state: GameState }) => {
+interface WeekScreenProps {
+  state: GameState;
+  onOpenDossier: () => void;
+}
+
+export const WeekScreen = ({ state, onOpenDossier }: WeekScreenProps) => {
   const dispatch = useGameStore((store) => store.dispatch);
   const { actionsLeft } = state.calendar;
 
@@ -16,7 +21,16 @@ export const WeekScreen = ({ state }: { state: GameState }) => {
           {state.lastOutcome}
         </p>
       )}
-      <h2 className="text-lg font-extrabold">Tuần này còn {actionsLeft} lượt</h2>
+      <div className="flex items-center justify-between gap-3">
+        <h2 className="text-lg font-extrabold">Tuần này còn {actionsLeft} lượt</h2>
+        <button
+          type="button"
+          onClick={onOpenDossier}
+          className="bg-surface-800 min-h-11 rounded-xl px-4 text-sm font-bold"
+        >
+          Hồ sơ
+        </button>
+      </div>
       {weekActions(state, world).map((action) => (
         <div key={action.id} className="flex flex-col gap-1">
           <Button

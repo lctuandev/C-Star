@@ -38,3 +38,9 @@ export const playUntil = async (page: Page, target: Locator) => {
 
 /** The heading of the week screen. */
 export const weekHeading = (page: Page) => page.getByRole('heading', { name: /Tuần này còn/ });
+
+/** The desk task: "Làm cho có" skips the tickets. */
+export const doTask = async (page: Page) => {
+  await page.getByRole('button', { name: /Làm task/ }).click();
+  await page.getByRole('button', { name: 'Làm cho có' }).click();
+};

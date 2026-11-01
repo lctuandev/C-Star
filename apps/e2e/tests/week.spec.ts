@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 import type { Page } from '@playwright/test';
-import { playUntil, startGame, weekHeading } from '../tools/play.js';
+import { doTask, playUntil, startGame, weekHeading } from '../tools/play.js';
 
 const rest = (page: Page) => page.getByRole('button', { name: /Nghỉ ngơi/ }).click();
 const slipTitle = (page: Page, month: number) =>
@@ -40,7 +40,6 @@ test('payday writes the slip and the company’s debt (SCENARIO-026, 029)', asyn
     }
   }
 
-  await expect(page.getByRole('heading', { name: /Coming Soon/ })).toBeVisible();
   await expect(page.getByText('15 tr')).toBeVisible();
 });
 
@@ -69,6 +68,6 @@ test('the HUD shows the moods moving (SCENARIO-028)', async ({ page }) => {
   await playUntil(page, weekHeading(page));
   const energy = page.getByRole('meter', { name: 'Sức' });
   await expect(energy).toHaveAttribute('aria-valuenow', '80');
-  await page.getByRole('button', { name: /Làm task/ }).click();
+  await doTask(page);
   await expect(energy).toHaveAttribute('aria-valuenow', '65');
 });

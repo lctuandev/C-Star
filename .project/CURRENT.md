@@ -20,7 +20,7 @@ tháng. Web, PWA chơi được offline, điện thoại dọc là chính. Khôn
 
 ## Active Task
 
-**FEAT-011-relationships** — đang làm. M0, M1 xong.
+**FEAT-020-chapter-4-six-months-later** — đang làm. M0, M1, M2 xong. Làm M4 trước M3 (xem `roadmap.md` §1).
 
 ## Blockers
 

@@ -38,4 +38,21 @@ describe('meets', () => {
     expect(meets(run, { type: 'stat', stat: 'companyDebt', max: 0 })).toBe(true);
     expect(meets(run, { type: 'stat', stat: 'arrears', min: 1 })).toBe(false);
   });
+
+  it('reads relations, evidence and crises', () => {
+    const state: GameState = {
+      ...run,
+      relations: { boss: 20 },
+      evidence: ['contract'],
+      crises: { broke: { count: 2, lastMonth: 1 } },
+    };
+    expect(meets(state, { type: 'relation', npc: 'boss', min: 20 })).toBe(true);
+    expect(meets(state, { type: 'relation', npc: 'boss', max: 10 })).toBe(false);
+    expect(meets(state, { type: 'relation', npc: 'hr', max: 0 })).toBe(true);
+    expect(meets(state, { type: 'evidence', evidence: 'contract' })).toBe(true);
+    expect(meets(state, { type: 'evidence', evidence: 'other' })).toBe(false);
+    expect(meets(state, { type: 'stat', stat: 'evidenceCount', min: 1 })).toBe(true);
+    expect(meets(state, { type: 'crisisCount', crisis: 'broke', min: 2 })).toBe(true);
+    expect(meets(state, { type: 'crisisCount', crisis: 'burnout', min: 1 })).toBe(false);
+  });
 });

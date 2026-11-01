@@ -1,6 +1,8 @@
 import type { StoryGraph } from '@cstar/game-core';
 import { chapter1Scenes } from './chapters/chapter-1.js';
 import { chapter2Scenes } from './chapters/chapter-2.js';
+import { chapter3Scenes } from './chapters/chapter-3.js';
+import { crisisScenes } from './chapters/crises.js';
 import { storySchema } from './story-schema.js';
 
 export { characterInfo, characters } from './characters.js';
@@ -10,5 +12,5 @@ export type { CharacterId, CharacterInfo } from './characters.js';
 export const OPENING_SCENE = 'ch1-offer';
 
 export const story: StoryGraph = storySchema.parse({
-  scenes: { ...chapter1Scenes, ...chapter2Scenes },
+  scenes: { ...chapter1Scenes, ...chapter2Scenes, ...chapter3Scenes, ...crisisScenes },
 });

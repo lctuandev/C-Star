@@ -1,9 +1,21 @@
-export type Stat = 'cash' | 'arrears' | 'companyDebt' | 'energy' | 'stress' | 'month';
+export type Stat =
+  | 'cash'
+  | 'arrears'
+  | 'loans'
+  | 'companyDebt'
+  | 'energy'
+  | 'stress'
+  | 'month'
+  | 'kpi'
+  | 'evidenceCount';
 
 /** Conditions and effects are data, not functions: the validator can check them, saves can hold them. */
 export type Condition =
   | { type: 'flag'; flag: string }
   | { type: 'stat'; stat: Stat; min?: number; max?: number }
+  | { type: 'relation'; npc: string; min?: number; max?: number }
+  | { type: 'evidence'; evidence: string }
+  | { type: 'crisisCount'; crisis: string; min: number }
   | { type: 'not'; condition: Condition }
   | { type: 'all'; conditions: Condition[] }
   | { type: 'any'; conditions: Condition[] };
@@ -16,6 +28,16 @@ export type Effect =
   | { type: 'companyPays'; amount: number }
   | { type: 'addEnergy'; amount: number }
   | { type: 'addStress'; amount: number }
+  | { type: 'addRelation'; npc: string; amount: number }
+  | { type: 'addEvidence'; evidence: string }
+  /** The next piece the month allows, if any (`GameWorld.evidence`). */
+  | { type: 'findEvidence' }
+  /** Cash now, owed to someone else later. */
+  | { type: 'takeLoan'; amount: number }
+  /** Pays what cash can cover of the arrears. */
+  | { type: 'payArrears' }
+  /** A burnout: the rest of the week is gone. */
+  | { type: 'loseWeek' }
   /** Drawn from the run's RNG, so a replay gets the same luck. */
   | { type: 'chance'; chance: number; then: Effect[]; otherwise?: Effect[] };
 

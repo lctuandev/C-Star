@@ -12,6 +12,15 @@ export interface GameRules extends RunStart {
   unpaidStress: number;
   /** The chance of a surprise bill each month. */
   surpriseChance: number;
+  /** Per month, from month 1. 0 or past the end: no KPI yet. */
+  kpiTargets: readonly number[];
+  /** Missing the month's target. */
+  kpiMissStress: number;
+  /** What the boss's trust does when the target is met, or missed by the same amount. */
+  kpiTrust: number;
+  ticketsPerRound: number;
+  /** Points for skipping the round with "Làm cho có". */
+  quickTaskPoints: number;
 }
 
 /** One of the week's choices (GDD §4). */
@@ -25,6 +34,38 @@ export interface WeeklyAction {
   effects: Effect[];
   /** One is picked at random and shown under the week. */
   outcomes: string[];
+  /** Plays a round of tickets before the action counts. */
+  tickets?: boolean;
+}
+
+export type TicketAnswer = 'do' | 'defer';
+
+/** One item of the desk mini-game (GDD §5.5). */
+export interface Ticket {
+  id: string;
+  from: string;
+  text: string;
+  answer: TicketAnswer;
+  /** Shown after the player's answer, right or wrong. */
+  reply: string;
+}
+
+/** A paper the player can keep (GDD §5.3). */
+export interface EvidenceItem {
+  id: string;
+  title: string;
+  description: string;
+  /** Outside these months `findEvidence` cannot find it: some papers can be missed. */
+  fromMonth?: number;
+  toMonth?: number;
+  requires?: Condition;
+}
+
+/** A scene that plays when the player hits a wall, at most once a month. */
+export interface CrisisRule {
+  id: string;
+  scene: string;
+  when: Condition;
 }
 
 /** A scene the calendar plays once: at the start of a week, or on the month's payday. */
@@ -52,4 +93,7 @@ export interface GameWorld {
   payroll: readonly number[];
   bills: readonly Bill[];
   surprises: readonly Bill[];
+  tickets: readonly Ticket[];
+  evidence: readonly EvidenceItem[];
+  crises: readonly CrisisRule[];
 }

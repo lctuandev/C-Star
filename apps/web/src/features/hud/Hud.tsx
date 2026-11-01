@@ -19,7 +19,7 @@ const Meter = ({ label, value, tone }: { label: string; value: number; tone: str
 );
 
 /** Compact: the scene stays the main thing (ux-direction §1). */
-export const Hud = ({ state }: { state: GameState }) => {
+export const Hud = ({ state, kpiTarget }: { state: GameState; kpiTarget: number }) => {
   const { calendar, money, mood } = state;
 
   return (
@@ -28,6 +28,11 @@ export const Hud = ({ state }: { state: GameState }) => {
         <p className="font-bold">
           Tháng {calendar.month} · Tuần {calendar.week}
         </p>
+        {kpiTarget > 0 && (
+          <p className="text-ink-secondary text-sm">
+            KPI {state.kpi}/{kpiTarget}
+          </p>
+        )}
         <Link href="/" className="text-ink-secondary flex min-h-11 items-center px-2 text-sm">
           Menu
         </Link>

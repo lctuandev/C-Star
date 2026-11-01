@@ -26,6 +26,9 @@ export const PayslipScreen = ({ payslip }: { payslip: Payslip }) => {
         <dl className="flex flex-col gap-1">
           <Row label="Lương theo hợp đồng" amount={formatMoney(payslip.salaryDue)} />
           <Row label="Thực nhận" amount={formatMoney(payslip.salaryPaid)} strong />
+          {payslip.kpi && (
+            <Row label="KPI tháng" amount={`${payslip.kpi.points} / ${payslip.kpi.target}`} />
+          )}
         </dl>
         <hr className="border-dashed border-current opacity-40" />
         <dl className="flex flex-col gap-1">
@@ -39,6 +42,7 @@ export const PayslipScreen = ({ payslip }: { payslip: Payslip }) => {
           {payslip.arrears > 0 && (
             <Row label="Còn thiếu" amount={formatMoney(payslip.arrears)} strong />
           )}
+          {payslip.loans > 0 && <Row label="Đang vay" amount={formatMoney(payslip.loans)} />}
           <Row label="Công ty đang nợ bạn" amount={formatMoney(payslip.companyDebt)} strong />
         </dl>
       </div>

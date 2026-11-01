@@ -21,6 +21,9 @@ M0 Nền móng → M1 Slice 2D → [owner chơi thử, chốt ADR-004] → M2 Ch
 
 Riêng M3 phụ thuộc ADR-004. Mọi cột mốc khác giữ nguyên dù chọn hướng nào.
 
+**Đổi thứ tự (2026-11-01):** làm M4 trước M3. Owner yêu cầu làm liên tục không dừng hỏi, nên điểm dừng cuối M1 không còn. M4 không phụ
+thuộc lớp hiển thị, còn M3 là việc tốn kém nhất và cần chốt ADR-004: làm xong cốt truyện trước để game hoàn chỉnh dù 3D có làm hay không.
+
 ---
 
 ## 2. M0 — Nền móng

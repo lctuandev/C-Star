@@ -73,6 +73,8 @@ describe('the week (SCENARIO-024)', () => {
         lockedReason: 'Không còn sức',
       },
       { id: 'rest', label: 'Nghỉ', hint: 'Lấy lại sức', available: true },
+      { id: 'desk', label: 'Làm ticket', hint: 'Có KPI', available: true },
+      { id: 'look', label: 'Tìm hiểu', hint: 'Tìm giấy tờ', available: true },
     ]);
     expect(applyAction(tired, act('work'), world).ok).toBe(false);
     expect(applyAction(tired, act('rest'), world).ok).toBe(true);
@@ -115,7 +117,9 @@ describe('payday (SCENARIO-026)', () => {
       bills: [{ label: 'Tiền nhà', amount: 600 }],
       arrears: 0,
       cash: 1_400,
+      loans: 0,
       companyDebt: 0,
+      kpi: null,
     });
   });
 
@@ -149,6 +153,7 @@ describe('payday (SCENARIO-026)', () => {
   it('keeps cash at zero and carries what is missing (SCENARIO-027)', () => {
     const broke: GameWorld = {
       ...world,
+      crises: [],
       payroll: [0, 0],
       bills: [{ label: 'Tiền nhà', amount: 1_500 }],
     };
@@ -171,6 +176,7 @@ describe('payday (SCENARIO-026)', () => {
   it('pays arrears first when money comes', () => {
     const late: GameWorld = {
       ...world,
+      crises: [],
       payroll: [0, 5],
       bills: [{ label: 'Tiền nhà', amount: 1_500 }],
     };
@@ -217,7 +223,7 @@ describe('payday (SCENARIO-026)', () => {
 describe('a run stays in bounds', () => {
   it('whatever the player does', () => {
     const script: GameAction[] = [...intoTheWeek];
-    const names = ['work', 'rest'] as const;
+    const names = ['work', 'rest', 'look'] as const;
     for (const seed of [1, 2, 3]) {
       let state = replay(seed, script, world);
       for (let i = 0; i < 40 && state.phase !== 'ended'; i += 1) {
@@ -226,7 +232,7 @@ describe('a run stays in bounds', () => {
             ? closePayslip
             : state.phase === 'scene'
               ? advance
-              : act(names[(i * seed) % 2] as string);
+              : act(names[(i * seed) % 3] as string);
         const result = applyAction(state, action, world);
         state = result.ok ? result.state : applyAction(state, act('rest'), world).state;
         expect(state.money.cash).toBeGreaterThanOrEqual(0);
