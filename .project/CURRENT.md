@@ -17,7 +17,7 @@ tháng. Web, PWA chơi được offline, điện thoại dọc là chính. Khôn
 - Repo: <https://github.com/lctuandev/C-Star>, nhánh `main`, **public**.
 - Toàn bộ roadmap xong trừ phần cần owner, ghi ở `backlog.md`.
 - Số liệu, điều kiện ending, giọng văn, câu chữ cảnh báo đều chưa được owner duyệt.
-- Bản `main` mới hơn bản đang chạy công khai: thêm FEAT-039 đến FEAT-041, chưa phát hành.
+- Bản đang chạy công khai: commit `6691cd7` (FEAT-039 đến FEAT-041).
 
 ## Active Task
 
@@ -34,4 +34,4 @@ Không có.
 
 ## Next Step
 
-Owner đọc `docs/kich-ban-day-du.md`, duyệt nội dung mới, rồi quyết định phát hành.
+Owner đọc `docs/kich-ban-day-du.md`, chơi thử bản đang chạy, rồi phản hồi về nội dung mới.
