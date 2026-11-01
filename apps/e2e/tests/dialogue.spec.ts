@@ -25,6 +25,7 @@ test('reads a scene with one finger and takes a choice (SCENARIO-019, 020)', asy
 
   await readLine(page);
   await readLine(page);
+  await readLine(page);
   await page.getByRole('button', { name: 'Hiện hết câu' }).click();
   await page.getByRole('button', { name: 'Đọc hết hợp đồng trước đã' }).click();
 
@@ -46,12 +47,13 @@ test('the keyboard plays the game on a laptop (SCENARIO-023)', async ({ page }, 
   await expect(page.getByRole('status')).toContainText('Thứ Hai');
   await page.keyboard.press('Space');
   await page.keyboard.press('Space');
-  await expect(page.getByRole('status')).toContainText('trái cây thứ Sáu');
+  await expect(page.getByRole('status')).toContainText('còn đúng 9 triệu');
 });
 
 test('reads well on a small phone', async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 640 });
   await startGame(page);
+  await readLine(page);
   await readLine(page);
   await readLine(page);
   await page.getByRole('button', { name: 'Hiện hết câu' }).click();

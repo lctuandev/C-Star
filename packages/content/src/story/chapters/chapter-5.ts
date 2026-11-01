@@ -38,7 +38,7 @@ export const chapter5Scenes = {
         otherwise: 'think',
       },
       folder: {
-        text: 'Thư mục "Của mình" đã dày lên từ cái đêm cuối tháng 6.',
+        text: 'Thư mục "Của mình" đã dày lên từ cái đêm bạn thôi đợi.',
         next: 'think',
       },
       think: {
@@ -119,16 +119,16 @@ export const chapter5Scenes = {
       },
       'hr-public': {
         speaker: 'hr',
-        text: 'Chị vẫn nhớ câu em hỏi hồi tháng 2: "Cố gắng có chuyển khoản được không". Bên chị có người chụp lại, gửi nhau cười. Giờ không ai cười nữa.',
+        text: 'Chị vẫn nhớ câu em hỏi hôm lương trễ lần đầu: "Cố gắng có chuyển khoản được không". Bên chị có người chụp lại, gửi nhau cười. Giờ không ai cười nữa.',
         next: 'hr-1',
       },
       'hr-private': {
         speaker: 'hr',
-        text: 'Hồi tháng 2 em nhắn riêng chị, lịch sự lắm. Chị bảo em đừng chia sẻ ra ngoài, em cũng nghe. Giờ em ngồi đây thì chị hiểu mọi chuyện đã khác.',
+        text: 'Hôm lương trễ lần đầu em nhắn riêng chị, lịch sự lắm. Chị bảo em đừng chia sẻ ra ngoài, em cũng nghe. Giờ em ngồi đây thì chị hiểu mọi chuyện đã khác.',
         next: 'hr-1',
       },
       'hr-quiet': {
-        text: 'Hồi tháng 2 bạn gõ "dạ vâng ạ" rồi xóa đi. Năm tháng sau bạn ngồi đối diện chị HR, và lần này bạn sẽ nói.',
+        text: 'Hôm lương trễ lần đầu bạn gõ "dạ vâng ạ" rồi xóa đi. Hơn bốn tháng sau bạn ngồi đối diện chị HR, và lần này bạn sẽ nói.',
         next: 'hr-1',
       },
       'hr-1': {
@@ -149,6 +149,18 @@ export const chapter5Scenes = {
       accountant: {
         speaker: 'accountant',
         text: 'Khoản của em bên cô ghi là "đang chờ đối soát". Hỏi đối soát với ai thì cô không biết, trên hệ thống chỉ có mỗi dòng đó.',
+        next: 'slip-check',
+      },
+      'slip-check': {
+        routes: [{ when: { type: 'relation', npc: 'accountant', min: 5 }, next: 'slips' }],
+        otherwise: 'three',
+      },
+      slips: {
+        text: 'Đợi chị HR ra ngoài, cô Kế toán đẩy sang một tờ giấy gập đôi: phiếu lương những tháng bạn chưa bao giờ nhận được. "Cô chỉ nhập số. Mà số của em thì em có quyền xem."',
+        effects: [
+          { type: 'setFlag', flag: 'gotLostSlips' },
+          { type: 'addEvidence', evidence: 'lost-slips' },
+        ],
         next: 'three',
       },
       three: {
@@ -199,6 +211,7 @@ export const chapter5Scenes = {
       },
       'why-check': {
         routes: [
+          { when: { type: 'flag', flag: 'askedDialogue' }, next: 'why-asked' },
           { when: { type: 'flag', flag: 'keptNegotiating' }, next: 'why-calm' },
           { when: { type: 'flag', flag: 'clappedForBoss' }, next: 'why-clap' },
           {
@@ -518,7 +531,7 @@ export const chapter5Scenes = {
         text: 'Cảm ơn bạn. Chuyện nghe được chỉ để mình hiểu tình hình thôi, đừng đưa vào bảng. Cái gì của mình thì mình giữ, có gì sai đâu mà sợ.',
       },
       'walked-in': {
-        text: 'Ba người nhìn bạn. Chị HR đóng laptop lại. Phó giám đốc cười, nụ cười của những buổi họp toàn công ty: "Được. Tuần sau em vào gặp anh."',
+        text: 'Hai người nhìn bạn. Chị HR đóng laptop lại. Phó giám đốc cười, nụ cười của những buổi họp toàn công ty: "Được. Tuần sau em vào gặp anh."',
       },
     },
   },

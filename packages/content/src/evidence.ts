@@ -13,7 +13,8 @@ export const evidence: readonly EvidenceItem[] = [
   {
     id: 'bank-history',
     title: 'Lịch sử nhận lương',
-    description: 'Sao kê tài khoản của chính bạn: một lần "ting", rồi im lặng.',
+    description:
+      'Sao kê tài khoản của chính bạn: một tháng đủ, rồi những khoản lẻ không theo ngày nào.',
     fromMonth: 2,
   },
   {
@@ -51,6 +52,12 @@ export const evidence: readonly EvidenceItem[] = [
       'Bản bạn gửi công ty, nêu rõ từng khoản bị nợ, cùng mọi hồi âm. Ghi rõ ngày bạn đã đòi.',
     fromMonth: 7,
     requires: { type: 'flag', flag: 'sentFormalRequest' },
+  },
+  {
+    id: 'lost-slips',
+    title: 'Phiếu lương bị thiếu',
+    description: 'Phiếu lương những tháng công ty không gửi, cô Kế toán đưa tận tay.',
+    requires: { type: 'flag', flag: 'gotLostSlips' },
   },
   {
     id: 'debt-table',

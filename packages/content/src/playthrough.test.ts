@@ -13,8 +13,22 @@ import { world } from './world.js';
 
 const MAX_STEPS = 2_000;
 
-/** Plays a whole run, picking at random among whatever the game offers. */
-const playRandomly = (seed: number, game: GameWorld = world) => {
+/** How warm a choice is towards the people the story keeps score of. */
+const warmth = (game: GameWorld, state: GameState, choiceId: string): number => {
+  const node = game.story.scenes[state.story.sceneId ?? '']?.nodes[state.story.nodeId ?? ''];
+  const choice =
+    node && 'choices' in node ? node.choices?.find(({ id }) => id === choiceId) : undefined;
+  return (choice?.effects ?? []).reduce(
+    (sum, effect) => sum + (effect.type === 'addRelation' ? effect.amount : 0),
+    0,
+  );
+};
+
+/**
+ * Plays a whole run, picking at random among whatever the game offers. A loner mostly takes the
+ * coldest answer and never chats: some scenes only happen to someone with no friends.
+ */
+const playRandomly = (seed: number, game: GameWorld = world, loner = false) => {
   let state = beginRun(seed, game);
   let dice: RngState = seedRng(seed * 7 + 1);
   const seen = new Set<string>();
@@ -41,7 +55,9 @@ const playRandomly = (seed: number, game: GameWorld = world) => {
       ]);
     }
     if (current.phase === 'week') {
-      const open = weekActions(current, game).filter((action) => action.available);
+      const open = weekActions(current, game).filter(
+        (action) => action.available && !(loner && action.id === 'chat'),
+      );
       return { type: 'takeAction', actionId: pick(open).id };
     }
     const view = viewOf(current, game.story);
@@ -52,7 +68,9 @@ const playRandomly = (seed: number, game: GameWorld = world) => {
       return { type: 'advance' };
     }
     const open = view.choices.filter((choice) => choice.available);
-    return { type: 'choose', choiceId: pick(open).id };
+    const coldest = Math.min(...open.map(({ id }) => warmth(game, current, id)));
+    const cold = open.filter(({ id }) => warmth(game, current, id) === coldest);
+    return { type: 'choose', choiceId: pick(loner && pick([1, 2, 3, 4]) > 1 ? cold : open).id };
   };
 
   for (let step = 0; step < MAX_STEPS && state.phase !== 'ended'; step += 1) {
@@ -79,6 +97,7 @@ describe('a random player', () => {
   /** Starts with nothing, so the money crisis is reached too. */
   const poor: GameWorld = { ...world, rules: { ...world.rules, startingCash: 0 } };
   const poorRuns = Array.from({ length: 60 }, (_, index) => playRandomly(index + 1, poor));
+  const lonerRuns = Array.from({ length: 80 }, (_, index) => playRandomly(index + 1, world, true));
 
   it('always reaches the end of the content, without being stuck or refused', () => {
     for (const { state } of runs) {
@@ -102,7 +121,7 @@ describe('a random player', () => {
   });
 
   it('can see every line of the story', () => {
-    const seen = new Set([...runs, ...poorRuns].flatMap((run) => [...run.seen]));
+    const seen = new Set([...runs, ...poorRuns, ...lonerRuns].flatMap((run) => [...run.seen]));
     // The endings have their own directed runs in endings.test.ts, the renewal too.
     const played = Object.values(world.story.scenes).filter(
       (scene) => !scene.id.startsWith('ending-') && scene.id !== world.renewalScene,
@@ -112,8 +131,9 @@ describe('a random player', () => {
         .filter(([, node]) => !('routes' in node))
         .map(([nodeId]) => `${scene.id}/${nodeId}`),
     );
-    // Only a renewed run says this one.
-    const rest = lines.filter((line) => line !== 'ch1-first-day/deja-vu');
+    // Only a renewed run says the first, the second has a directed test in story-links.test.ts.
+    const directed = new Set(['ch1-first-day/deja-vu', 'ch4-group/let-in']);
+    const rest = lines.filter((line) => !directed.has(line));
     expect(rest.filter((line) => !seen.has(line))).toEqual([]);
   });
 

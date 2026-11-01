@@ -17,7 +17,7 @@ tháng. Web, PWA chơi được offline, điện thoại dọc là chính. Khôn
 - Repo: <https://github.com/lctuandev/C-Star>, nhánh `main`, **public**.
 - Toàn bộ roadmap xong trừ phần cần owner, ghi ở `backlog.md`.
 - Số liệu, điều kiện ending, giọng văn, câu chữ cảnh báo đều chưa được owner duyệt.
-- Bản đang chạy công khai: bản mới nhất của `main` tới FEAT-042.
+- Bản đang chạy công khai: `64e1a5a` (tới FEAT-042). `main` có thêm FEAT-043 và FEAT-044, chưa phát hành.
 
 ## Active Task
 

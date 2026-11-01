@@ -58,11 +58,11 @@ const hudOf = async (page: Page) => ({
 test('a reload in the middle of a line loses nothing (SCENARIO-030)', async ({ page }) => {
   await startGame(page);
   await page.getByRole('button', { name: 'Đọc tiếp' }).click();
-  await expect(page.getByRole('status')).toContainText('Vị trí: Chuyên viên');
-  await expect.poll(async () => (await savedState(page))?.story.nodeId).toBe('offer');
+  await expect(page.getByRole('status')).toContainText('còn đúng 9 triệu');
+  await expect.poll(async () => (await savedState(page))?.story.nodeId).toBe('savings');
 
   await page.reload();
-  await expect(page.getByRole('status')).toContainText('Vị trí: Chuyên viên');
+  await expect(page.getByRole('status')).toContainText('còn đúng 9 triệu');
 });
 
 test('a reload in the week keeps the count and doubles nothing (SCENARIO-030)', async ({

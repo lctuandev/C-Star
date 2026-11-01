@@ -18,7 +18,7 @@ export const chapter4Scenes = {
         next: 'who',
       },
       ting: {
-        text: 'Ting. 5.000.000 đ, giảm còn một phần ba tháng lương. Nội dung: "UNG DOT 1 CUA DOT 2 LUONG T2 BU T3". Bạn đọc ba lần và hiểu ít hơn sau mỗi lần.',
+        text: 'Ting. 5.000.000 đ, vẫn một phần ba tháng lương. Nội dung: "UNG DOT 1 CUA DOT 2 LUONG T2 BU T3". Bạn đọc ba lần và hiểu ít hơn sau mỗi lần.',
         effects: [{ type: 'companyPays', amount: 5_000_000 }],
         next: 'who',
       },
@@ -33,7 +33,7 @@ export const chapter4Scenes = {
         next: 'phones',
       },
       phones: {
-        text: 'Bàn đối diện, một đồng nghiệp vừa liếc màn hình rồi úp vội điện thoại xuống khi thấy mọi người nhìn sang. Cả phòng bỗng rất chăm chú vào việc của mình.',
+        text: 'Cuối dãy bàn, một đồng nghiệp vừa liếc màn hình rồi úp vội điện thoại xuống khi thấy mọi người nhìn sang. Cả phòng bỗng rất chăm chú vào việc của mình.',
         next: 'criteria',
       },
       criteria: {
@@ -167,6 +167,7 @@ export const chapter4Scenes = {
     nodes: {
       date: {
         text: 'Hết tháng 5. Vẫn không có một dòng nào về kế hoạch trả lương. Tháng trôi qua êm đềm như một tháng bình thường, vì với công ty thì đúng là vậy.',
+        effects: [{ type: 'addTrust', amount: -8 }],
         next: 'mail',
       },
       mail: {
@@ -196,7 +197,7 @@ export const chapter4Scenes = {
     start: 'coffee',
     nodes: {
       coffee: {
-        text: 'Bạn và Uyên ngồi ở quán cóc đầu ngõ, cà phê 15 nghìn, thứ duy nhất ở quanh đây vẫn trả tiền đúng giá.',
+        text: 'Bạn và Uyên ngồi ở quán cóc đầu ngõ, cà phê 15 nghìn, thứ duy nhất quanh đây vẫn được trả tiền đúng giá.',
         next: 'criteria-check',
       },
       'criteria-check': {
@@ -205,7 +206,7 @@ export const chapter4Scenes = {
       },
       'criteria-echo': {
         speaker: 'uyen',
-        text: 'Chuyện bạn hỏi HR về tiêu chí, cả tầng biết rồi. Ba người nhắn hỏi mình bạn là ai, giọng rất nhỏ.',
+        text: 'Chuyện bạn hỏi HR về tiêu chí, cả tầng biết rồi. Ba người kéo mình ra hỏi bạn là ai, giọng rất nhỏ.',
         next: 'uyen-list',
       },
       'uyen-list': {
@@ -228,15 +229,54 @@ export const chapter4Scenes = {
   'ch4-group': {
     id: 'ch4-group',
     place: 'hallway',
-    start: 'backed-check',
+    start: 'cold-check',
     nodes: {
+      'cold-check': {
+        routes: [{ when: { type: 'relation', npc: 'uyen', max: -10 }, next: 'left-out' }],
+        otherwise: 'backed-check',
+      },
+      'left-out': {
+        text: 'Tối thứ Năm có sáu người ngồi ở quán cũ. Bạn biết chuyện khi thấy tấm ảnh trong nhóm chat. Không ai rủ bạn.',
+        next: 'too-late',
+      },
+      'too-late': {
+        speaker: 'player',
+        text: 'Giờ nhắn Uyên còn kịp không?',
+        choices: [
+          {
+            id: 'stay-out',
+            text: 'Thôi, họ không cần mình',
+            effects: [{ type: 'addStress', amount: 3 }],
+            next: 'stayed-out',
+          },
+          {
+            id: 'ask-in',
+            text: 'Nhắn Uyên, gửi kèm những giấy tờ mình đang có',
+            requires: { type: 'stat', stat: 'evidenceCount', min: 2 },
+            lockedReason: 'Cần ít nhất 2 giấy tờ để nhóm tin bạn',
+            effects: [
+              { type: 'setFlag', flag: 'joinedGroup' },
+              { type: 'addRelation', npc: 'uyen', amount: 10 },
+              { type: 'addRelation', npc: 'hr', amount: -6 },
+            ],
+            next: 'let-in',
+          },
+        ],
+      },
+      'stayed-out': {
+        text: 'Bạn thả tim tấm ảnh, rồi tắt điện thoại.',
+      },
+      'let-in': {
+        speaker: 'uyen',
+        text: 'Giấy tờ này đúng. Thứ Năm tuần sau, quán cũ. Mang bản gốc nhé.',
+      },
       'backed-check': {
         routes: [{ when: { type: 'flag', flag: 'backedUyen' }, next: 'remembers' }],
         otherwise: 'invite',
       },
       remembers: {
         speaker: 'uyen',
-        text: 'Hôm họp dự án Bứt Phá, bạn là người duy nhất hỏi cùng mình. Nên mình hỏi bạn trước.',
+        text: 'Hôm họp dự án Bứt Phá, bạn là người duy nhất hỏi cùng mình. Nên mình muốn có bạn ở đó.',
         next: 'invite',
       },
       invite: {
@@ -262,7 +302,7 @@ export const chapter4Scenes = {
         ],
       },
       joined: {
-        text: 'Tối thứ Năm, sáu người ngồi quanh một cái bàn nhựa, xếp giấy tờ thành chồng. Không ai nói to. Lần đầu tiên sau nhiều tháng, bạn không thấy mình đơn độc.',
+        text: 'Tối thứ Năm, bảy người ngồi quanh một cái bàn nhựa, xếp giấy tờ thành chồng. Không ai nói to. Lần đầu tiên sau nhiều tháng, bạn không thấy mình đơn độc.',
       },
       declined: {
         text: 'Uyên không nói gì, chỉ gật đầu rồi quay về chỗ. Tối thứ Năm bạn ở nhà, xem đi xem lại số dư tài khoản.',
@@ -620,7 +660,19 @@ export const chapter4Scenes = {
       hungry: {
         speaker: 'player',
         text: 'Khoa mà không đói á?',
-        next: 'memory',
+        next: 'close-check',
+      },
+      'close-check': {
+        routes: [{ when: { type: 'relation', npc: 'khoa', max: 4 }, next: 'brush-off' }],
+        otherwise: 'memory',
+      },
+      'brush-off': {
+        speaker: 'khoa',
+        text: 'Hong sao đâu, mình ổn mà! Bạn đi ăn đi.',
+        next: 'nod',
+      },
+      nod: {
+        text: 'Bạn gật đầu rồi đi. Hai người chưa bao giờ đủ thân để hỏi thêm câu nữa. Sau này bạn còn nghĩ lại cái gật đầu đó nhiều lần.',
       },
       memory: {
         routes: [
@@ -698,7 +750,14 @@ export const chapter4Scenes = {
     nodes: {
       late: {
         text: 'Bạn ở lại muộn. Cả tầng đã tắt đèn, chỉ còn bàn anh Roger sáng. Trên bàn là tấm ảnh tập thể cũ và một email in ra: "Welcome to the C* Family".',
-        next: 'photo',
+        next: 'trust-check',
+      },
+      'trust-check': {
+        routes: [{ when: { type: 'relation', npc: 'manager', max: -1 }, next: 'shut' }],
+        otherwise: 'photo',
+      },
+      shut: {
+        text: 'Anh ngẩng lên thấy bạn, úp tấm ảnh xuống bàn. "Em về đi, muộn rồi." Giữa hai người chưa bao giờ có chuyện gì ngoài tầm nhìn.',
       },
       photo: {
         speaker: 'manager',

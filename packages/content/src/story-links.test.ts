@@ -47,6 +47,7 @@ const flagsRead = new Set([
   ...world.beats.flatMap((beat) => flagsIn(beat.requires)),
   ...world.endings.flatMap((ending) => flagsIn(ending.when)),
   ...world.tickets.flatMap((ticket) => flagsIn(ticket.requires)),
+  ...world.evidence.flatMap((item) => flagsIn(item.requires)),
   ...world.actions.flatMap((action) => [
     ...flagsIn(action.appearsWhen),
     ...flagsIn(action.requires),
@@ -126,6 +127,14 @@ describe('the rules GPT asked to pin down (FEAT-042)', () => {
     expect(after.ending).toBe('survivor');
   });
 
+  it('lets someone Uyên left out earn a way in, with papers', () => {
+    const run = runWith(1, false);
+    const coldShoulder: GameState = { ...run, relations: { uyen: -20 }, evidence: [] };
+    expect(playScene(coldShoulder, 'ch4-group', 'ask-in').story.flags.joinedGroup).toBeUndefined();
+    const withPapers = { ...coldShoulder, evidence: ['contract', 'timesheet'] };
+    expect(playScene(withPapers, 'ch4-group', 'ask-in').story.flags.joinedGroup).toBe(true);
+  });
+
   it('counts a paper once, whoever hands it over', () => {
     const run = runWith(1, false);
     const held: GameState = {
@@ -141,6 +150,24 @@ describe('the rules GPT asked to pin down (FEAT-042)', () => {
     const owed: GameState = { ...run, story: { ...run.story, flags: { helpedKhoa: true } } };
     expect(playScene(owed, 'ch6-empty-office').money.cash).toBe(owed.money.cash + 1_000_000);
     expect(playScene(run, 'ch6-empty-office').money.cash).toBe(run.money.cash);
+  });
+});
+
+describe('nothing talks about debt before there is any (FEAT-043)', () => {
+  const firstMonth = (seed: number): GameState => {
+    const run = runWith(seed, false);
+    return {
+      ...run,
+      calendar: { ...run.calendar, month: 1 },
+      money: { ...run.money, companyDebt: 0 },
+    };
+  };
+
+  it('keeps the unpaid jokes out of the first tickets', () => {
+    const dealt = SEEDS.flatMap((seed) => take(firstMonth(seed), 'work').kpiRound?.tickets ?? []);
+    const aboutDebt = world.tickets.filter(({ requires }) => requires).map(({ id }) => id);
+    expect(aboutDebt.length).toBeGreaterThan(0);
+    expect(dealt.filter((id) => aboutDebt.includes(id))).toEqual([]);
   });
 });
 
@@ -165,6 +192,34 @@ describe('the story hangs together (FEAT-041)', () => {
       (flag) => !flagsRead.has(flag) && !NOT_A_CHOICE.has(flag),
     );
     expect(forgotten).toEqual([]);
+  });
+
+  it('lets every relationship change the story, not only a number in the dossier', () => {
+    const relationsIn = (condition: Condition | undefined): string[] => {
+      if (!condition) {
+        return [];
+      }
+      if (condition.type === 'relation') {
+        return [condition.npc];
+      }
+      if (condition.type === 'not') {
+        return relationsIn(condition.condition);
+      }
+      return condition.type === 'all' || condition.type === 'any'
+        ? condition.conditions.flatMap(relationsIn)
+        : [];
+    };
+    const changed = new Set(
+      nodes
+        .flatMap((node) => choicesOf(node).flatMap((choice) => choice.effects ?? []))
+        .flatMap((effect) => (effect.type === 'addRelation' ? [effect.npc] : [])),
+    );
+    const matter = new Set([
+      ...nodes.flatMap((node) => routesOf(node).flatMap((route) => relationsIn(route.when))),
+      ...nodes.flatMap((node) => choicesOf(node).flatMap((choice) => relationsIn(choice.requires))),
+      ...world.endings.flatMap((ending) => relationsIn(ending.when)),
+    ]);
+    expect([...changed].filter((npc) => !matter.has(npc))).toEqual([]);
   });
 
   it('reads only flags that something sets, or the engine does', () => {

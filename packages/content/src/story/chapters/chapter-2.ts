@@ -75,7 +75,7 @@ export const chapter2Scenes = {
         next: 'end',
       },
       end: {
-        text: 'Bạn cầm cây bút quay về chỗ. Có một cảm giác rất nhỏ, như khi bạn nhận ra mình để quên chìa khóa nhưng chưa chắc.',
+        text: 'Bạn quay về chỗ. Có một cảm giác rất nhỏ, như khi bạn nhận ra mình để quên chìa khóa nhưng chưa chắc.',
       },
     },
   },
@@ -95,7 +95,10 @@ export const chapter2Scenes = {
       },
       afternoon: {
         text: '15 giờ. Không có tiếng "ting". Bạn chưa bao giờ nghe sự im lặng to đến thế.',
-        effects: [{ type: 'addStress', amount: 5 }],
+        effects: [
+          { type: 'addStress', amount: 5 },
+          { type: 'addTrust', amount: -10 },
+        ],
         next: 'group',
       },
       group: {

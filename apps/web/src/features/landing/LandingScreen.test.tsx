@@ -25,6 +25,24 @@ describe('LandingScreen', () => {
     await waitFor(() => expect(push).toHaveBeenCalledWith('/apply'));
   });
 
+  it('links to the policy at the foot of the page', () => {
+    render(<LandingScreen />);
+    expect(screen.getByRole('link', { name: 'Chính sách' })).toHaveAttribute('href', '/policy');
+  });
+
+  it('asks for a coffee only when asked, with the QR and what it does not buy', async () => {
+    render(<LandingScreen />);
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+
+    await userEvent.click(screen.getByRole('button', { name: 'Mời tác giả ly cà phê' }));
+    const dialog = screen.getByRole('dialog');
+    expect(dialog).toHaveTextContent('Không mở thêm nội dung, không hoàn lại');
+    expect(screen.getByRole('img', { name: /VietQR/ })).toHaveAttribute('src', '/donate/qr.png');
+
+    await userEvent.click(screen.getByRole('button', { name: 'Đóng' }));
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
+
   it('links to the full text', () => {
     render(<LandingScreen />);
     expect(screen.getByRole('link', { name: 'Về game' })).toHaveAttribute('href', '/about');

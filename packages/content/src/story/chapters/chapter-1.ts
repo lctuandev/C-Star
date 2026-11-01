@@ -7,6 +7,10 @@ export const chapter1Scenes = {
     nodes: {
       mail: {
         text: 'Thứ Hai, 7 giờ 12 phút. Điện thoại rung. Một email có tiêu đề: "Chúc mừng! Hành trình phi thường của bạn bắt đầu từ đây".',
+        next: 'savings',
+      },
+      savings: {
+        text: 'Ba tháng tìm việc. Trong tài khoản còn đúng 9 triệu, đủ thêm một tháng nữa nếu ăn mì.',
         next: 'offer',
       },
       offer: {

@@ -200,6 +200,21 @@ test('ending summary', async ({ page }, info) => {
   await page.screenshot({ path: `${SHOTS_DIR}/${LABEL}-${info.project.name}-ending.png` });
 });
 
+test('coffee', async ({ page }, info) => {
+  await asReturningPlayer(page);
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Mời tác giả ly cà phê' }).click();
+  await page.waitForTimeout(600);
+  await page.screenshot({ path: `${SHOTS_DIR}/${LABEL}-${info.project.name}-coffee.png` });
+});
+
+test('policy', async ({ page }, info) => {
+  await asReturningPlayer(page);
+  await page.goto('/policy');
+  await page.waitForTimeout(800);
+  await page.screenshot({ path: `${SHOTS_DIR}/${LABEL}-${info.project.name}-policy.png` });
+});
+
 test('menu', async ({ page }, info) => {
   await asReturningPlayer(page);
   await page.goto('/');

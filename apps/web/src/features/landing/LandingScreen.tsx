@@ -1,4 +1,6 @@
 import { disclaimer, gameInfo } from '@cstar/content';
+import Link from 'next/link';
+import { DonateButton } from '@/features/landing/DonateButton';
 import { MenuActions } from '@/features/landing/MenuActions';
 import { PwaPrompts } from '@/features/pwa/PwaPrompts';
 
@@ -18,6 +20,15 @@ export const LandingScreen = () => (
       <p className="text-paycheck text-lg font-bold">{gameInfo.tagline}</p>
       <MenuActions />
       <p className="text-ink-muted mt-3 max-w-sm text-sm">{disclaimer.reminder}</p>
+      <div className="flex flex-wrap items-center justify-center gap-x-4">
+        <Link
+          href="/policy"
+          className="text-ink-muted inline-flex min-h-11 items-center text-sm underline"
+        >
+          Chính sách
+        </Link>
+        <DonateButton />
+      </div>
     </div>
     <PwaPrompts />
   </main>

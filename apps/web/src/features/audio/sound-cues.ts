@@ -91,6 +91,8 @@ export const CHOICE_CUES: Readonly<Record<string, SoundCue>> = {
   'join-dragons': 'pen',
   'stay-on': 'sigh',
   'walk-now': 'leave',
+  'stay-out': 'quiet',
+  'ask-in': 'send',
   'look-away': 'quiet',
   'ask-paid': 'chat',
   'ask-criteria': 'ask',

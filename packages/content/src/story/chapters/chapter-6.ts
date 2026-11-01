@@ -96,7 +96,7 @@ export const chapter6Scenes = {
       },
       'tin-quiet': {
         speaker: 'manager',
-        text: 'Ông ấy không nhớ tên công ty. Tám năm, em ạ. Ông ấy không nhớ tên công ty.',
+        text: 'Ông ấy không biết công ty này làm gì. Tám năm, em ạ. Ông ấy không biết.',
         next: 'minh-looks',
       },
       'tin-moved': {
@@ -116,6 +116,22 @@ export const chapter6Scenes = {
       pledge: {
         speaker: 'hr',
         text: 'Cả nhà ký giúp chị Bản cam kết đồng hành trước 5 giờ chiều nay nhé. Khoản lương cũ được chuyển tiếp sang kỳ phát triển mới, ai ký là người nhà của công ty.',
+        next: 'hr-check',
+      },
+      'hr-check': {
+        routes: [
+          { when: { type: 'relation', npc: 'hr', min: 2 }, next: 'hr-aside' },
+          { when: { type: 'relation', npc: 'hr', max: -10 }, next: 'hr-cold' },
+        ],
+        otherwise: 'pledge-check',
+      },
+      'hr-aside': {
+        speaker: 'hr',
+        text: 'Em đọc kỹ rồi hẵng ký nhé. Chị nói với tư cách người cũng chưa có lương.',
+        next: 'pledge-check',
+      },
+      'hr-cold': {
+        text: 'Chị HR đặt tờ giấy lên bàn bạn, không nhìn bạn, rồi đi thẳng. Cả năm nay chị chưa từng im lặng lâu như vậy.',
         next: 'pledge-check',
       },
       'pledge-check': {
@@ -172,7 +188,7 @@ export const chapter6Scenes = {
               { type: 'setFlag', flag: 'choseStay' },
               { type: 'setFlag', flag: 'runOver' },
             ],
-            next: 'stay-line',
+            next: 'stay-check',
           },
         ],
       },
@@ -183,6 +199,14 @@ export const chapter6Scenes = {
       'leave-line': {
         speaker: 'player',
         text: 'Em xin phép dừng ở đây. Em đặt thẻ nhân viên lên bàn nhé.',
+      },
+      'stay-check': {
+        routes: [{ when: { type: 'stat', stat: 'awareness', min: 50 }, next: 'stay-eyes-open' }],
+        otherwise: 'stay-line',
+      },
+      'stay-eyes-open': {
+        speaker: 'player',
+        text: 'Em biết tờ này không có ngày nào cả. Em vẫn ký. Em chưa đủ sức đi lúc này.',
       },
       'stay-line': {
         speaker: 'player',
@@ -277,10 +301,18 @@ export const chapter6Scenes = {
       },
       'roger-check': {
         routes: [{ when: { type: 'flag', flag: 'rogerDoubts' }, next: 'roger-signs' }],
-        otherwise: 'year',
+        otherwise: 'dan-check',
       },
       'roger-signs': {
         text: 'Hôm cuối, anh Roger đến trễ, không nói gì, ký vào dòng cuối của danh sách. Anh xin lỗi từng người anh đã giới thiệu vào công ty, từng người một. Có người gật đầu. Có người không nhìn anh. Anh không giải thích thêm.',
+        next: 'dan-check',
+      },
+      'dan-check': {
+        routes: [{ when: { type: 'flag', flag: 'danJoined' }, next: 'dan-cards' }],
+        otherwise: 'year',
+      },
+      'dan-cards': {
+        text: 'Dân đóng cả ba cửa sổ tin tức. Giờ màn hình chỉ còn một bảng: lịch trả ba cái thẻ tín dụng, ghi nguồn đàng hoàng.',
         next: 'year',
       },
       year: {
@@ -320,6 +352,14 @@ export const chapter6Scenes = {
     nodes: {
       box: {
         text: 'Bạn mang về một thùng giấy, trong đó có một cái áo thun in chữ "gia đình".',
+        next: 'friend-check',
+      },
+      'friend-check': {
+        routes: [{ when: { type: 'flag', flag: 'turnedDownFriend' }, next: 'friend' }],
+        otherwise: 'new',
+      },
+      friend: {
+        text: 'Bạn nhắn lại người bạn hôm tháng 4. Họ không hỏi gì, chỉ gửi địa chỉ văn phòng.',
         next: 'new',
       },
       new: {
@@ -357,7 +397,14 @@ export const chapter6Scenes = {
       },
       year: {
         text: 'Một năm sau, quán cà phê gần công ty mới. Đồng nghiệp hỏi: "Công ty cũ của ông có dự án lớn lắm hả, giờ sao rồi?". Bạn nói: "Không biết. Nghe nói tuần sau có tiền".',
-        next: 'year-uyen',
+        next: 'message-check',
+      },
+      'message-check': {
+        routes: [{ when: { type: 'flag', flag: 'tookPromotion' }, next: 'year-dan' }],
+        otherwise: 'year-uyen',
+      },
+      'year-dan': {
+        text: 'Điện thoại rung, tin nhắn của Dân: "C* đang tuyển 20 người, ông ạ. Phúc lợi vẫn có trái cây thứ Sáu". Bạn nhắn lại: "Trái cây vẫn còn à?". Dân: "Còn. Chắc mùa này được mùa".',
       },
       'year-uyen': {
         text: 'Điện thoại rung, tin nhắn của Uyên: "C* đang tuyển 20 người. Phúc lợi vẫn có trái cây thứ Sáu". Bạn nhắn lại: "Trái cây vẫn còn à?". Uyên: "Ừ. Chắc mùa này được mùa".',
@@ -398,6 +445,14 @@ export const chapter6Scenes = {
       },
       year: {
         text: 'Một năm sau. Bạn lên chức, có danh thiếp mới, có cả một cái bằng khen thứ hai. Anh Huni đã nộp đơn từ lâu, bàn giao đủ từng việc. Nhóm của bạn còn đúng một người là bạn. Trên tường, tấm ảnh tập thể mới chụp vừa khít trong khung nhỏ.',
+        next: 'faith-check',
+      },
+      'faith-check': {
+        routes: [{ when: { type: 'stat', stat: 'trust', max: 25 }, next: 'no-faith' }],
+        otherwise: 'year-roger',
+      },
+      'no-faith': {
+        text: 'Thật ra bạn không còn tin từ lâu rồi. Bạn chỉ không biết nếu thôi tin thì mình là ai ở đây.',
         next: 'year-roger',
       },
       'year-roger': {
@@ -446,7 +501,7 @@ export const chapter6Scenes = {
         text: 'Một năm sau. Hay là hôm qua, bạn không còn chắc nữa. Bạn đã từng hỏi, từng ghi chép, từng nghĩ mình sẽ làm được gì đó. Sáng nay có email chào mừng một nhân viên mới. Bạn được giao hướng dẫn bạn ấy.',
       },
       year: {
-        text: 'Một năm sau. Hay là hôm qua, bạn không còn chắc nữa. Bạn chưa từng sai ở nhiệm vụ nào, và cũng chưa từng quyết định điều gì. Sáng nay có email chào mừng một nhân viên mới. Bạn được giao hướng dẫn bạn ấy.',
+        text: 'Một năm sau. Hay là hôm qua, bạn không còn chắc nữa. Bạn chưa từng sai ở nhiệm vụ nào, và từ hôm ký tờ cam kết cũng không còn phải quyết định điều gì. Sáng nay có email chào mừng một nhân viên mới. Bạn được giao hướng dẫn bạn ấy.',
       },
     },
   },
@@ -493,7 +548,7 @@ export const chapter6Scenes = {
       },
       dan: {
         speaker: 'dan',
-        text: 'Ông còn nhớ hôm đầu tiên không? Tôi bảo ông công ty sắp gọi vốn. Câu đó chắc tôi nói hơn trăm lần rồi. Giờ tôi không biết nữa, nhưng tiền của tôi thì vẫn chưa về.',
+        text: 'Ông còn nhớ không? Từ hồi ông mới vào, tôi đã bảo công ty sắp gọi vốn. Câu đó chắc tôi nói hơn trăm lần rồi. Giờ tôi không biết nữa, nhưng tiền của tôi thì vẫn chưa về.',
         next: 'lunch-check',
       },
       'lunch-check': {
@@ -506,11 +561,27 @@ export const chapter6Scenes = {
       },
       'repay-check': {
         routes: [{ when: { type: 'flag', flag: 'helpedKhoa' }, next: 'repaid' }],
-        otherwise: 'uyen',
+        otherwise: 'dragon-check',
       },
       repaid: {
         text: 'Ting. Tim bạn đập một nhịp. 1.000.000 đ, nội dung: "KHOA TRA BAN. TUAN SAU CHAC CHAN LUON". Đó là lời hứa "tuần sau" duy nhất ở đây được giữ.',
         effects: [{ type: 'addCash', amount: 1_000_000 }],
+        next: 'dragon-check',
+      },
+      'dragon-check': {
+        routes: [{ when: { type: 'flag', flag: 'joinedDragons' }, next: 'dragons' }],
+        otherwise: 'milk-check',
+      },
+      dragons: {
+        text: 'Nhóm Vượt thác còn năm người. Họp 7 giờ sáng vẫn họp, chủ yếu để điểm danh nhau.',
+        next: 'milk-check',
+      },
+      'milk-check': {
+        routes: [{ when: { type: 'crisisCount', crisis: 'burnout', min: 1 }, next: 'milk' }],
+        otherwise: 'uyen',
+      },
+      milk: {
+        text: 'Trên bàn bạn có một hộp sữa, không ghi tên. Từ hôm bạn nằm nhà cả tuần, thỉnh thoảng lại có một hộp như vậy.',
         next: 'uyen',
       },
       uyen: {

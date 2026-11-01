@@ -351,7 +351,7 @@ export const chapter3Scenes = {
     start: 'corner',
     nodes: {
       corner: {
-        text: 'Bạn gặp Phó giám đốc ở hành lang, lúc anh đang vội đi đâu đó. Cả tháng nay đây là lần đầu bạn đứng đủ gần để hỏi.',
+        text: 'Bạn gặp Phó giám đốc ở hành lang, lúc anh đang vội đi đâu đó. Cơ hội hiếm hoi để hỏi riêng.',
         next: 'ask',
       },
       ask: {
@@ -418,6 +418,7 @@ export const chapter3Scenes = {
           {
             id: 'stay-on',
             text: 'Từ chối. Nghỉ lúc này thì chưa biết phải đòi khoản còn thiếu thế nào',
+            effects: [{ type: 'setFlag', flag: 'turnedDownFriend' }],
             next: 'stayed',
           },
           {

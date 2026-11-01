@@ -6,6 +6,9 @@ export const KHOA_IS_HERE: Condition = {
   condition: { type: 'flag', flag: 'khoaLeft' },
 };
 
+/** Before month 2's payday nobody is owed anything, and a joke about it spoils the story. */
+export const WAGES_ARE_OWED: Condition = { type: 'stat', stat: 'companyDebt', min: 1 };
+
 /** First guesses, for the owner to tune by playing (GDD §4, §5). */
 export const rules: GameRules = {
   actionsPerWeek: 3,

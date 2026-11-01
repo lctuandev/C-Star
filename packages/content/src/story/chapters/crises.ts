@@ -27,7 +27,10 @@ export const crisisScenes = {
           {
             id: 'sell',
             text: 'Bán chiếc máy ảnh cũ',
+            requires: { type: 'not', condition: { type: 'flag', flag: 'soldCamera' } },
+            lockedReason: 'Máy ảnh bán rồi',
             effects: [
+              { type: 'setFlag', flag: 'soldCamera' },
               { type: 'addCash', amount: 2_500_000 },
               { type: 'payArrears' },
               { type: 'addStress', amount: 2 },
@@ -70,7 +73,7 @@ export const crisisScenes = {
         ],
       },
       borrowed: {
-        text: 'Bạn thân chuyển ngay, không hỏi gì. Tiếng "ting" đầu tiên sau nhiều tháng, và nó đến từ người cũng đang đi làm thuê.',
+        text: 'Bạn thân chuyển ngay, không hỏi gì. Tiếng "ting" đúng lúc nhất trong nhiều tháng, và nó đến từ người cũng đang đi làm thuê.',
       },
       sold: {
         text: 'Người mua trả tiền đúng hẹn. Bạn đứng nhìn cái túi đựng máy ảnh rỗng một lúc. Đó là khoản thu đúng hạn duy nhất của tháng.',
