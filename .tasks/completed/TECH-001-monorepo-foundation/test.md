@@ -15,7 +15,7 @@
 | `pnpm dev` qua địa chỉ LAN của máy trả 200 và đúng nội dung                | PASS       |
 | Nhìn thật ở 375×812: đủ dấu tiếng Việt, không có lỗi console               | PASS       |
 | Mở bằng điện thoại thật cùng Wi-Fi                                         | NOT TESTED |
-| CI xanh trên GitHub                                                        | NOT TESTED |
+| CI xanh trên GitHub (run 41280738591, commit `9b9354e`), đủ mọi bước       | PASS       |
 
 ## Failures
 

@@ -1,5 +1,7 @@
 # Công ty C\*
 
+<img src="docs/brand/logo.png" alt="Logo C*" width="128">
+
 Tên làm việc. Game web đơn theo cốt truyện, thể loại dark comedy, về nhân viên bị công ty nợ lương hơn sáu
 tháng. Toàn bộ là hư cấu: mọi công ty, nhân vật và sự kiện đều do tưởng tượng, không phải thông tin thật và
 không nhắm vào cá nhân hay tổ chức nào.

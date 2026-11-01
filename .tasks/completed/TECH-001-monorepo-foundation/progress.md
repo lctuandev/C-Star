@@ -8,6 +8,8 @@
 - Dựng root, `config`, `game-core` (seeded RNG), `content` (`gameInfo`), `web`, `e2e`, CI.
 - Cổng tránh đụng Alo (5000, 5100): dev 5200, static 5201, E2E 5300.
 
+- Push lên `lctuandev/C-Star` qua SSH: máy không có credential HTTPS. CI xanh.
+
 ## Khác so với plan
 
 - Thêm: ESLint chặn `Math.random`, `Date.now`, `new Date` trong `game-core`. Hợp đồng gameplay §2 đòi tất định,

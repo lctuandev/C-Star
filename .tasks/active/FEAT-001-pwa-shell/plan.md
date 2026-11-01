@@ -14,7 +14,7 @@ Game cài được ra màn hình chính và chơi được không cần mạng, 
 - Đăng ký service worker chỉ ở production.
 - Cập nhật: bản mới ở trạng thái chờ, menu hiện lời mời, bấm mới áp dụng, không tự reload.
 - Gợi ý cài đặt nhẹ nhàng ở menu: Android dùng `beforeinstallprompt`, iOS là hướng dẫn thêm vào Màn hình chính.
-- Icon tạm, thay bằng icon thật ở M5.
+- Icon đã có sẵn ở `apps/web/public/icons/` (`docs/brand/README.md`), chỉ cần nối vào manifest.
 
 ## Non-goals
 

@@ -15,4 +15,3 @@ Monorepo pnpm + Turborepo theo ADR-001: `apps/web` (Next.js 16 static export, Ta
 ## Known issues
 
 - Chưa thử trên điện thoại thật cùng Wi-Fi.
-- Trang chào chưa có favicon, FEAT-001 thêm icon.

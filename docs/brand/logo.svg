@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#0c1113"/>
+  <g transform="translate(51.19999999999999 51.19999999999999) scale(0.8)">
+  <!-- C and asterisk drawn as fluorescent tubes. The dim arm is the tube about to die. -->
+  <g fill="none" stroke-linecap="round">
+    <path
+      stroke="#c8f0e4"
+      stroke-width="62"
+      d="M 292.5 144.7 A 148 148 0 1 0 322.0 385.0"
+    />
+    <g stroke-width="30" transform="translate(399 131)">
+      <path stroke="#c8f0e4" d="M 0 0 L 0 -60" />
+      <path stroke="#c8f0e4" d="M 0 0 L 57 -18.5" />
+      <path stroke="#4f6a65" d="M 0 0 L 35.3 48.5" />
+      <path stroke="#c8f0e4" d="M 0 0 L -35.3 48.5" />
+      <path stroke="#c8f0e4" d="M 0 0 L -57 -18.5" />
+    </g>
+  </g>
+</g>
+</svg>
