@@ -6,13 +6,13 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { DialogueBox } from '@/features/dialogue/DialogueBox';
 import { HistorySheet } from '@/features/dialogue/HistorySheet';
+import { EndingScreen } from '@/features/endings/EndingScreen';
 import { DossierSheet } from '@/features/dossier/DossierSheet';
 import { Hud } from '@/features/hud/Hud';
 import { PayslipScreen } from '@/features/payslip/PayslipScreen';
 import { useSaveStore } from '@/features/save/save-store';
 import { TicketScreen } from '@/features/tickets/TicketScreen';
 import { WeekScreen } from '@/features/week/WeekScreen';
-import { EndOfContent } from './EndOfContent';
 import { useGameStore, world } from './game-store';
 
 /** Stand-ins until the art pass: cold light at work, warm light at home (GDD §7). */
@@ -76,7 +76,7 @@ export const PlayScreen = () => {
       )}
       {state.phase === 'kpi' && <TicketScreen state={state} />}
       {state.phase === 'payslip' && state.payslip && <PayslipScreen payslip={state.payslip} />}
-      {state.phase === 'ended' && <EndOfContent />}
+      {state.phase === 'ended' && <EndingScreen state={state} />}
       {view && (
         <>
           <div className="flex flex-1 items-start justify-end p-4">

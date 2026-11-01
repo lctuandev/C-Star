@@ -2,7 +2,7 @@ import type { GameState } from '@cstar/game-core';
 import { z } from 'zod';
 
 /** Raise it with every change to the shape below, and add the step in `MIGRATIONS` (contracts/save.md §3). */
-export const SAVE_VERSION = 2;
+export const SAVE_VERSION = 3;
 
 const money = z.number().int().nonnegative();
 const mood = z.number().int().min(0).max(100);
@@ -55,6 +55,8 @@ const gameStateSchema: z.ZodType<GameState> = z.strictObject({
     z.string(),
     z.strictObject({ count: z.number().int(), lastMonth: z.number().int() }),
   ),
+  ending: z.string().nullable(),
+  loops: z.number().int().nonnegative(),
   payslip: payslipSchema.nullable(),
   lastOutcome: z.string().nullable(),
 });
@@ -89,6 +91,11 @@ const MIGRATIONS: Record<number, Migration> = {
       },
     };
   },
+  /** M4: endings and renewed contracts. */
+  2: (file) => ({
+    ...file,
+    state: { ...(file.state as object), ending: null, loops: 0 },
+  }),
 };
 
 export const createSaveFile = (state: GameState, savedAt: string): SaveFile => ({

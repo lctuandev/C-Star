@@ -18,7 +18,8 @@ export type GameAction =
   | { type: 'answerTicket'; answer: TicketAnswer }
   | { type: 'finishTickets' }
   | { type: 'skipTickets' }
-  | { type: 'closePayslip' };
+  | { type: 'closePayslip' }
+  | { type: 'renewContract' };
 
 export type ActionResult =
   | { ok: true; state: GameState }
@@ -27,6 +28,28 @@ export type ActionResult =
 
 const afterStory = (state: GameState | null, world: GameWorld) =>
   state && state.story.sceneId === null ? continueCalendar(state, world) : state;
+
+/** Set on a renewed run: scenes can notice they are being played again. */
+export const RENEWED_FLAG = 'renewed';
+
+/**
+ * Ending 5: the run starts over and the debt stays, which is the joke (GDD §6). A new seed, or the
+ * same bad luck would repeat word for word.
+ */
+const renewContract = (state: GameState, world: GameWorld): GameState | null => {
+  const ending = world.endings.find(({ id }) => id === state.ending);
+  if (state.phase !== 'ended' || !ending?.loops) {
+    return null;
+  }
+  const fresh = createGameState(state.seed + 1, world.rules);
+  const renewed: GameState = {
+    ...fresh,
+    loops: state.loops + 1,
+    money: { ...fresh.money, companyDebt: state.money.companyDebt },
+    story: { ...fresh.story, flags: { [RENEWED_FLAG]: true } },
+  };
+  return startScene(renewed, world.story, world.renewalScene, world.evidence);
+};
 
 const reduce = (state: GameState, action: GameAction, world: GameWorld): GameState | null => {
   switch (action.type) {
@@ -44,6 +67,8 @@ const reduce = (state: GameState, action: GameAction, world: GameWorld): GameSta
       return skipKpiRound(state, world);
     case 'closePayslip':
       return closePayslip(state, world);
+    case 'renewContract':
+      return renewContract(state, world);
   }
 };
 

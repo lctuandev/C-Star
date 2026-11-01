@@ -1,3 +1,4 @@
+import { world } from '@cstar/content';
 import { expect, test } from '@playwright/test';
 import { playUntil, startGame, weekHeading } from '../tools/play.js';
 
@@ -37,7 +38,7 @@ test('the dossier shows papers and people (SCENARIO-037, 039)', async ({ page })
   await page.getByRole('button', { name: 'Hồ sơ' }).click();
   const sheet = page.getByRole('dialog', { name: 'Hồ sơ' });
   await expect(sheet.getByText('Hợp đồng lao động')).toBeVisible();
-  await expect(sheet.getByText('Giấy tờ (1/5)')).toBeVisible();
+  await expect(sheet.getByText(`Giấy tờ (1/${world.evidence.length})`)).toBeVisible();
   await sheet.getByRole('button', { name: 'Đóng' }).click();
   await expect(sheet).toBeHidden();
 });

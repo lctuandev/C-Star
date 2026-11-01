@@ -16,6 +16,19 @@ export const beats: readonly Beat[] = [
   { scene: 'ch3-new-project', month: 4, week: 1 },
   { scene: 'ch3-chart', month: 4, week: 3 },
   { scene: 'ch3-promise', month: 4 },
+  { scene: 'ch4-second-tranche', month: 5, week: 1 },
+  { scene: 'ch4-khoa-leaves', month: 5, week: 2 },
+  { scene: 'ch4-different-debts', month: 5, week: 4 },
+  { scene: 'ch4-date-passes', month: 5 },
+  { scene: 'ch4-group', month: 6, week: 1 },
+  { scene: 'ch4-dan-doubts', month: 6, week: 3 },
+  { scene: 'ch4-six-months', month: 6 },
+  { scene: 'ch5-compare', month: 7, week: 1 },
+  { scene: 'ch5-choose-way', month: 7, week: 2 },
+  { scene: 'ch5-company-reply', month: 7, week: 3 },
+  { scene: 'ch5-offer', month: 7, week: 4 },
+  { scene: 'ch5-payday', month: 7 },
+  { scene: 'ch6-last-day', month: 8, week: 1 },
 ];
 
 /** Checked in this order (GDD §5.1, §5.2). */

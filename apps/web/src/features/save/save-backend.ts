@@ -30,7 +30,7 @@ const transact = async <T>(
   }
 };
 
-export type SaveSlot = 'auto' | 'broken';
+export type SaveSlot = 'auto' | 'broken' | 'progress';
 
 export const saveBackend = {
   read: (slot: SaveSlot): Promise<unknown> =>

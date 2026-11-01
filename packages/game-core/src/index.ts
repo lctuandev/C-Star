@@ -1,6 +1,6 @@
-export { applyAction, beginRun, replay, resumeRun } from './actions/apply-action.js';
+export { applyAction, beginRun, RENEWED_FLAG, replay, resumeRun } from './actions/apply-action.js';
 export type { ActionResult, GameAction } from './actions/apply-action.js';
-export { kpiTargetOf, weekActions } from './calendar/calendar.js';
+export { kpiTargetOf, RUN_OVER_FLAG, selectEnding, weekActions } from './calendar/calendar.js';
 export type { ActionView } from './calendar/calendar.js';
 export { roundIsOver, ticketView } from './calendar/tickets.js';
 export type { TicketView } from './calendar/tickets.js';
@@ -8,6 +8,7 @@ export type {
   Beat,
   Bill,
   CrisisRule,
+  EndingRule,
   EvidenceItem,
   GameRules,
   GameWorld,

@@ -292,7 +292,7 @@ export const chapter3Scenes = {
       },
       uyen: {
         speaker: 'uyen',
-        text: 'Lần đầu tiên có ngày. Mình lưu email này lại.',
+        text: 'Lần đầu tiên có ngày. Mình lưu email này lại, bạn cũng nên làm thế.',
         next: 'check',
       },
       check: {

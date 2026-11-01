@@ -4,7 +4,7 @@ import type { Bill, GameRules, WeeklyAction } from '@cstar/game-core';
 export const rules: GameRules = {
   actionsPerWeek: 3,
   weeksPerMonth: 4,
-  lastMonth: 4,
+  lastMonth: 8,
   startingCash: 9_000_000,
   startingEnergy: 80,
   startingStress: 10,
@@ -12,7 +12,7 @@ export const rules: GameRules = {
   weeklyEnergyRecovery: 15,
   unpaidStress: 12,
   surpriseChance: 0.4,
-  kpiTargets: [0, 0, 8, 10],
+  kpiTargets: [0, 0, 8, 10, 10, 12, 12],
   kpiMissStress: 6,
   kpiTrust: 6,
   ticketsPerRound: 4,

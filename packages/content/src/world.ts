@@ -1,8 +1,9 @@
 import type { GameWorld } from '@cstar/game-core';
 import { z } from 'zod';
 import { bills, payroll, rules, surprises, weeklyActions } from './economy.js';
+import { endings } from './endings.js';
 import { evidence } from './evidence.js';
-import { OPENING_SCENE, story } from './story/index.js';
+import { OPENING_SCENE, RENEWAL_SCENE, story } from './story/index.js';
 import { beats, crises } from './story/schedule.js';
 import { conditionSchema, effectSchema, storySchema } from './story/story-schema.js';
 import { tickets } from './tickets.js';
@@ -74,6 +75,18 @@ const worldSchema = z.strictObject({
     }),
   ),
   crises: z.array(z.strictObject({ id: text, scene: text, when: conditionSchema })),
+  endings: z.array(
+    z.strictObject({
+      id: text,
+      title: text,
+      summary: text,
+      hint: text,
+      scene: text,
+      when: conditionSchema.optional(),
+      loops: z.boolean().optional(),
+    }),
+  ),
+  renewalScene: text,
 });
 
 /** Parsed at load: content that does not fit never reaches a player. */
@@ -89,4 +102,6 @@ export const world: GameWorld = worldSchema.parse({
   tickets,
   evidence,
   crises,
+  endings,
+  renewalScene: RENEWAL_SCENE,
 });

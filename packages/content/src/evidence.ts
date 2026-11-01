@@ -37,4 +37,17 @@ export const evidence: readonly EvidenceItem[] = [
     fromMonth: 4,
     requires: { type: 'flag', flag: 'startedNotes' },
   },
+  {
+    id: 'hr-promises',
+    title: 'Các thông báo của HR',
+    description: 'Mọi thông báo gửi chung về lương, xếp theo ngày. Không cái nào có con số.',
+    fromMonth: 5,
+    toMonth: 7,
+  },
+  {
+    id: 'debt-table',
+    title: 'Bảng đối chiếu của nhóm',
+    description: 'Ai, tháng nào, được hứa gì, đã nhận bao nhiêu, còn thiếu bao nhiêu.',
+    fromMonth: 8,
+  },
 ];

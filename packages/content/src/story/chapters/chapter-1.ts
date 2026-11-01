@@ -65,8 +65,16 @@ export const chapter1Scenes = {
   'ch1-first-day': {
     id: 'ch1-first-day',
     place: 'office',
-    start: 'lobby',
+    start: 'renewed',
     nodes: {
+      renewed: {
+        routes: [{ when: { type: 'flag', flag: 'renewed' }, next: 'deja-vu' }],
+        otherwise: 'lobby',
+      },
+      'deja-vu': {
+        text: 'Chị HR nhìn bạn như chưa từng gặp, và đưa cho bạn đúng cái áo thun bạn đang mặc.',
+        next: 'lobby',
+      },
       lobby: {
         text: 'Sảnh công ty có một bức tường cây, một máy pha cà phê to bằng cái tủ lạnh, và dòng chữ inox: "CHÚNG TA KHÔNG ĐI LÀM. CHÚNG TA ĐI XÂY TƯƠNG LAI".',
         next: 'hr-welcome',

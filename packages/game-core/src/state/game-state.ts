@@ -90,6 +90,10 @@ export interface GameState {
   /** Ids, in the order found. */
   evidence: readonly string[];
   crises: Readonly<Record<string, CrisisRecord>>;
+  /** Set when the run is decided: the id of an `EndingRule`. */
+  ending: string | null;
+  /** How many times this run renewed its contract (Ending 5). */
+  loops: number;
   payslip: Payslip | null;
   /** The line under the week screen after an action. */
   lastOutcome: string | null;
@@ -115,6 +119,8 @@ export const createGameState = (seed: number, start: RunStart): GameState => ({
   kpiRound: null,
   evidence: [],
   crises: {},
+  ending: null,
+  loops: 0,
   payslip: null,
   lastOutcome: null,
 });

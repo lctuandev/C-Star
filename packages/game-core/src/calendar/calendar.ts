@@ -4,7 +4,7 @@ import { meets } from '../story/conditions.js';
 import { applyEffects, withMood, withRelation } from '../story/effects.js';
 import { startScene } from '../story/story-engine.js';
 import { roundIsOver, startKpiRound } from './tickets.js';
-import type { GameWorld, WeeklyAction } from './world-types.js';
+import type { EndingRule, GameWorld, WeeklyAction } from './world-types.js';
 
 export interface ActionView {
   id: string;
@@ -32,6 +32,17 @@ export const weekActions = (state: GameState, world: GameWorld): ActionView[] =>
 export const kpiTargetOf = (world: GameWorld, month: number): number =>
   world.rules.kpiTargets[month - 1] ?? 0;
 
+/** A scene sets this flag on the last decision of a run. */
+export const RUN_OVER_FLAG = 'runOver';
+
+export const selectEnding = (state: GameState, world: GameWorld): EndingRule => {
+  const rule = world.endings.find(({ when }) => when === undefined || meets(state, when));
+  if (!rule) {
+    throw new Error('No ending rule holds: the content validator should catch this.');
+  }
+  return rule;
+};
+
 const dueBeat = (state: GameState, world: GameWorld) => {
   const { month, week, payday } = state.calendar;
   return world.beats.find(
@@ -54,8 +65,18 @@ const playScene = (state: GameState, world: GameWorld, sceneId: string): GameSta
   phase: 'scene',
 });
 
+const concludeRun = (state: GameState, world: GameWorld): GameState => {
+  const rule = world.endings.find(({ id }) => id === state.ending) ?? selectEnding(state, world);
+  return state.story.seenScenes.includes(rule.scene)
+    ? { ...state, phase: 'ended' }
+    : playScene({ ...state, ending: rule.id }, world, rule.scene);
+};
+
 /** Plays what is due now, or moves to what the calendar is waiting for. */
 export const continueCalendar = (state: GameState, world: GameWorld): GameState => {
+  if (state.story.flags[RUN_OVER_FLAG]) {
+    return concludeRun(state, world);
+  }
   // Not on payday: the slip comes first, and it may settle what the crisis is about.
   const crisis = state.calendar.payday ? undefined : dueCrisis(state, world);
   if (crisis) {

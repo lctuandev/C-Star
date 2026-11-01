@@ -1,4 +1,4 @@
-import { isRouteNode } from '@cstar/game-core';
+import { isRouteNode, RENEWED_FLAG } from '@cstar/game-core';
 import type { Condition, Effect, GameWorld, Scene, StoryGraph, StoryNode } from '@cstar/game-core';
 
 export interface StoryIssue {
@@ -197,6 +197,13 @@ const referencesOf = (world: GameWorld) => {
   for (const crisis of world.crises) {
     places.push({ scene: crisis.scene, effects: [], conditions: [crisis.when] });
   }
+  for (const ending of world.endings) {
+    places.push({
+      scene: ending.scene,
+      effects: [],
+      conditions: ending.when ? [ending.when] : [],
+    });
+  }
   return places;
 };
 
@@ -262,7 +269,7 @@ export const validateStory = (
 export const validateWorld = (world: GameWorld, catalog: StoryCatalog): StoryIssue[] => {
   const scenes = world.story.scenes;
   const flagsFromActions = world.actions.flatMap((action) => flagsSetBy(action.effects));
-  const issues = validateStory(world.story, catalog, flagsFromActions);
+  const issues = validateStory(world.story, catalog, [...flagsFromActions, RENEWED_FLAG]);
   const report = (scene: string, message: string) => issues.push({ scene, message });
 
   if (!(world.openingScene in scenes)) {
@@ -272,6 +279,8 @@ export const validateWorld = (world: GameWorld, catalog: StoryCatalog): StoryIss
   const beatScenes = [
     ...world.beats.map((beat) => beat.scene),
     ...world.crises.map((crisis) => crisis.scene),
+    ...world.endings.map((ending) => ending.scene),
+    world.renewalScene,
   ];
   for (const beat of world.beats) {
     if (!(beat.scene in scenes)) {
@@ -293,6 +302,20 @@ export const validateWorld = (world: GameWorld, catalog: StoryCatalog): StoryIss
     if (!(crisis.scene in scenes)) {
       report(crisis.scene, `crisis "${crisis.id}" plays a scene that does not exist`);
     }
+  }
+  for (const ending of world.endings) {
+    if (!(ending.scene in scenes)) {
+      report(ending.scene, `ending "${ending.id}" plays a scene that does not exist`);
+    }
+  }
+  if (world.endings.at(-1)?.when !== undefined || world.endings.length === 0) {
+    report('endings', 'the last ending must catch every run');
+  }
+  if (world.endings.slice(0, -1).some((ending) => ending.when === undefined)) {
+    report('endings', 'an ending without a condition hides the ones after it');
+  }
+  if (!(world.renewalScene in scenes)) {
+    report(world.renewalScene, 'the renewal scene does not exist');
   }
   const usesTickets = world.actions.some((action) => action.tickets);
   if (usesTickets && world.tickets.length < world.rules.ticketsPerRound) {

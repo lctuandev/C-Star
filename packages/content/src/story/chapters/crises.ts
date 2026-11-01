@@ -45,6 +45,17 @@ export const crisisScenes = {
             ],
             next: 'called',
           },
+          {
+            id: 'quit',
+            text: 'Đủ rồi. Nghỉ việc, về quê làm lại từ đầu',
+            requires: { type: 'crisisCount', crisis: 'broke', min: 3 },
+            lockedReason: 'Chưa tới mức phải bỏ hết mọi thứ',
+            effects: [
+              { type: 'setFlag', flag: 'quitEarly' },
+              { type: 'setFlag', flag: 'runOver' },
+            ],
+            next: 'quit-line',
+          },
         ],
       },
       borrowed: {
@@ -55,6 +66,10 @@ export const crisisScenes = {
       },
       called: {
         text: 'Mẹ không hỏi nhiều, chỉ bảo "có gì về nhà ăn cơm". Bạn nói "dạ" rồi nhìn trần nhà một lúc lâu.',
+      },
+      'quit-line': {
+        speaker: 'player',
+        text: 'Lần thứ ba. Mình không thể tiếp tục trả tiền để được đi làm nữa.',
       },
     },
   },

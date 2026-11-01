@@ -13,8 +13,11 @@ export const startGame = async (page: Page) => {
   await expect(page).toHaveURL(/\/play$/);
 };
 
-/** Reads through scenes, taking the first choice open, until `target` shows. */
-export const playUntil = async (page: Page, target: Locator) => {
+/**
+ * Reads through scenes until `target` shows, always taking the first choice open, or the last.
+ * Never the choice to quit, which ends the run.
+ */
+export const playUntil = async (page: Page, target: Locator, pick: 'first' | 'last' = 'first') => {
   const box = page.getByRole('button', { name: 'Đọc tiếp' });
   const choices = page.getByRole('group', { name: 'Lựa chọn' }).getByRole('button');
 
@@ -25,7 +28,8 @@ export const playUntil = async (page: Page, target: Locator) => {
           return true;
         }
         if ((await choices.count()) > 0) {
-          await choices.and(page.locator(':enabled')).first().click();
+          const open = choices.and(page.locator(':enabled')).filter({ hasNotText: 'Nghỉ việc' });
+          await (pick === 'first' ? open.first() : open.last()).click();
         } else if (await box.isVisible()) {
           await box.click();
         }

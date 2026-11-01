@@ -89,8 +89,11 @@ Mỗi tuần người chơi có **3 lượt hành động**:
 | Tám với đồng nghiệp | Quan hệ, tin đồn, giảm căng thẳng | Một lượt           |
 | Tìm hiểu            | Bằng chứng (khi đã mở khóa)       | Một lượt, rủi ro với HR |
 
-Mục tiêu độ dài: **45–60 phút cho một lượt chơi**, khoảng 7 tháng × 4 tuần × 3 lượt, tức dưới 90 hành động,
-xen kẽ cảnh cốt truyện. Autosave sau mỗi hành động để chơi được từng đoạn ngắn trên điện thoại.
+Mục tiêu độ dài: **45–60 phút cho một lượt chơi**, 7 tháng × 4 tuần × 3 lượt = 84 hành động, xen kẽ 37 cảnh cốt
+truyện. Tháng 8 chỉ có cảnh cuối. Autosave sau mỗi hành động để chơi được từng đoạn ngắn trên điện thoại.
+
+Bản cài đặt đang dùng các hành động: Làm task (mini-game), Nhận việc ngoài (từ tháng 2), Nghỉ ngơi, Tám với đồng
+nghiệp, Lưu giấy tờ (từ khi nhận lời Uyên ở Chương 3). Số liệu nằm ở `packages/content/src/economy.ts`.
 
 ---
 

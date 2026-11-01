@@ -72,6 +72,12 @@ export const MenuActions = () => {
         Game mới
       </Button>
       <Link
+        href="/endings"
+        className="bg-surface-700 flex min-h-11 items-center justify-center rounded-xl px-4 font-bold"
+      >
+        Các kết thúc
+      </Link>
+      <Link
         href="/about"
         className="bg-surface-700 flex min-h-11 items-center justify-center rounded-xl px-4 font-bold"
       >

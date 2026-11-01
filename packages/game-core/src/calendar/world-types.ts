@@ -68,6 +68,21 @@ export interface CrisisRule {
   when: Condition;
 }
 
+/** One of the ways a run ends. The first rule that holds wins (GDD §6). */
+export interface EndingRule {
+  id: string;
+  title: string;
+  /** Shown on the end screen. */
+  summary: string;
+  /** Shown in the collection until it has been reached. */
+  hint: string;
+  scene: string;
+  /** Omitted on the last rule, which catches every other run. */
+  when?: Condition;
+  /** Ending 5: instead of an end, the contract renews (GDD §6). */
+  loops?: boolean;
+}
+
 /** A scene the calendar plays once: at the start of a week, or on the month's payday. */
 export interface Beat {
   scene: string;
@@ -96,4 +111,8 @@ export interface GameWorld {
   tickets: readonly Ticket[];
   evidence: readonly EvidenceItem[];
   crises: readonly CrisisRule[];
+  /** In order: the first that holds. The last has no condition. */
+  endings: readonly EndingRule[];
+  /** Opens a renewed run. */
+  renewalScene: string;
 }

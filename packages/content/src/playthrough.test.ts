@@ -86,7 +86,8 @@ describe('a random player', () => {
   });
 
   it('plays every scene the calendar promises', () => {
-    for (const { state } of runs) {
+    // Quitting early is an ending too: it skips what comes after.
+    for (const { state } of runs.filter((run) => !run.state.story.flags.quitEarly)) {
       for (const beat of world.beats.filter((item) => !item.requires)) {
         expect(state.story.seenScenes).toContain(beat.scene);
       }
@@ -101,18 +102,24 @@ describe('a random player', () => {
 
   it('can see every line of the story', () => {
     const seen = new Set([...runs, ...poorRuns].flatMap((run) => [...run.seen]));
-    const lines = Object.values(world.story.scenes).flatMap((scene) =>
+    // The endings have their own directed runs in endings.test.ts, the renewal too.
+    const played = Object.values(world.story.scenes).filter(
+      (scene) => !scene.id.startsWith('ending-') && scene.id !== world.renewalScene,
+    );
+    const lines = played.flatMap((scene) =>
       Object.entries(scene.nodes)
         .filter(([, node]) => !('routes' in node))
         .map(([nodeId]) => `${scene.id}/${nodeId}`),
     );
-    expect(lines.filter((line) => !seen.has(line))).toEqual([]);
+    // Only a renewed run says this one.
+    const rest = lines.filter((line) => line !== 'ch1-first-day/deja-vu');
+    expect(rest.filter((line) => !seen.has(line))).toEqual([]);
   });
 
-  it('feels the company’s debt by the end', () => {
+  it('always gets one of the endings', () => {
+    const ids = world.endings.map((ending) => ending.id);
     for (const { state } of runs) {
-      const unpaidMonths = world.rules.lastMonth - world.payroll.length;
-      expect(state.money.companyDebt).toBe(world.rules.salary * unpaidMonths - 4_500_000);
+      expect(ids).toContain(state.ending);
     }
   });
 });

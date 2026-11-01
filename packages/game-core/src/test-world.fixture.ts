@@ -62,6 +62,30 @@ export const testWorld: GameWorld = {
           },
         },
       },
+      finale: {
+        id: 'finale',
+        place: 'office',
+        start: 'only',
+        nodes: { only: { text: 'Hết.', effects: [{ type: 'setFlag', flag: 'runOver' }] } },
+      },
+      'end-good': {
+        id: 'end-good',
+        place: 'home',
+        start: 'only',
+        nodes: { only: { text: 'Tốt.' } },
+      },
+      'end-loop': {
+        id: 'end-loop',
+        place: 'desk',
+        start: 'only',
+        nodes: { only: { text: 'Lại nữa.' } },
+      },
+      renewal: {
+        id: 'renewal',
+        place: 'desk',
+        start: 'only',
+        nodes: { only: { text: 'Gia hạn.' } },
+      },
       burnout: {
         id: 'burnout',
         place: 'home',
@@ -145,6 +169,25 @@ export const testWorld: GameWorld = {
     { id: 'early', title: 'Giấy tháng đầu', description: 'Chỉ có tháng 1.', toMonth: 1 },
     { id: 'late', title: 'Giấy tháng hai', description: 'Từ tháng 2.', fromMonth: 2 },
   ],
+  endings: [
+    {
+      id: 'good',
+      title: 'Tốt',
+      summary: 'Kết thúc tốt.',
+      hint: 'Cần giấy tờ.',
+      scene: 'end-good',
+      when: { type: 'evidence', evidence: 'contract' },
+    },
+    {
+      id: 'loop',
+      title: 'Lại nữa',
+      summary: 'Không có gì đổi.',
+      hint: 'Không làm gì.',
+      scene: 'end-loop',
+      loops: true,
+    },
+  ],
+  renewalScene: 'renewal',
   crises: [
     { id: 'broke', scene: 'broke', when: { type: 'stat', stat: 'arrears', min: 1 } },
     { id: 'burnout', scene: 'burnout', when: { type: 'stat', stat: 'energy', max: 0 } },

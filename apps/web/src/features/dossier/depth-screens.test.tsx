@@ -38,7 +38,7 @@ describe('relationLabel (SCENARIO-037)', () => {
 describe('DossierSheet (SCENARIO-037, 039)', () => {
   it('says so when there is nothing yet', () => {
     render(<DossierSheet state={run()} onClose={() => {}} />);
-    expect(screen.getByText('Giấy tờ (0/5)')).toBeInTheDocument();
+    expect(screen.getByText(`Giấy tờ (0/${world.evidence.length})`)).toBeInTheDocument();
   });
 
   it('shows the papers kept and where people stand', () => {

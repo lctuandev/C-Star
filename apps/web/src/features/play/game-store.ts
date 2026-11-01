@@ -2,6 +2,7 @@ import { world } from '@cstar/content';
 import { applyAction, beginRun, resumeRun, viewOf } from '@cstar/game-core';
 import type { GameAction, GameState } from '@cstar/game-core';
 import { create } from 'zustand';
+import { useProgressStore } from '@/features/endings/progress-store';
 import { useSaveStore } from '@/features/save/save-store';
 
 export { world };
@@ -62,6 +63,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (result.ok) {
       set({ state: result.state, history: withLine(history, result.state) });
       useSaveStore.getState().autosave(result.state);
+      if (state.phase !== 'ended' && result.state.phase === 'ended' && result.state.ending) {
+        void useProgressStore.getState().record(result.state.ending);
+      }
     }
   },
 }));

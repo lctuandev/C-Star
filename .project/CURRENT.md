@@ -20,7 +20,7 @@ tháng. Web, PWA chơi được offline, điện thoại dọc là chính. Khôn
 
 ## Active Task
 
-**FEAT-020-chapter-4-six-months-later** — đang làm. M0, M1, M2 xong. Làm M4 trước M3 (xem `roadmap.md` §1).
+**FEAT-026-audio** — đang làm. M0, M1, M2, M4 xong: game chơi trọn tới 6 kết thúc ở bản 2D.
 
 ## Blockers
 
