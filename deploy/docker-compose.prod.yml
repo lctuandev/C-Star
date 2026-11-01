@@ -1,0 +1,10 @@
+name: cong-ty-c-prod
+
+services:
+  web:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    ports:
+      - '${WEB_PORT:-5556}:8080'
+    restart: unless-stopped

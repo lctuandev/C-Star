@@ -1,7 +1,9 @@
 import { defineConfig, devices } from '@playwright/test';
 
 const E2E_WEB_PORT = Number(process.env.E2E_WEB_PORT ?? 5300);
-const E2E_WEB_URL = `http://localhost:${E2E_WEB_PORT}`;
+/** Set to test a server that is already running, such as the production image (TECH-004). */
+const E2E_EXTERNAL_URL = process.env.E2E_EXTERNAL_URL;
+const E2E_WEB_URL = E2E_EXTERNAL_URL ?? `http://localhost:${E2E_WEB_PORT}`;
 
 /**
  * Real browser against the real static build, so the PWA is tested as shipped: run `pnpm test:e2e`
@@ -29,11 +31,13 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'], viewport: { width: 1280, height: 800 } },
     },
   ],
-  webServer: {
-    command: 'pnpm --filter @cstar/web start',
-    url: E2E_WEB_URL,
-    reuseExistingServer: false,
-    timeout: 30_000,
-    env: { PORT: String(E2E_WEB_PORT) },
-  },
+  webServer: E2E_EXTERNAL_URL
+    ? undefined
+    : {
+        command: 'pnpm --filter @cstar/web start',
+        url: E2E_WEB_URL,
+        reuseExistingServer: false,
+        timeout: 30_000,
+        env: { PORT: String(E2E_WEB_PORT) },
+      },
 });

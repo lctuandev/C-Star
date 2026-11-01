@@ -87,9 +87,9 @@ export const weeklyActions: readonly WeeklyAction[] = [
       { type: 'addStress', amount: -10 },
     ],
     outcomes: [
-      'Bạn ngủ một giấc không mơ về Excel.',
+      'Bạn ngủ một giấc không mơ về bảng tính.',
       'Bạn đi dạo. Công viên không có KPI.',
-      'Bạn tắt thông báo Slack trong đúng một buổi tối.',
+      'Bạn tắt thông báo công việc trong đúng một buổi tối.',
     ],
   },
   {

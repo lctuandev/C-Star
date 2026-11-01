@@ -1,0 +1,12 @@
+**/node_modules
+**/.next
+**/out
+**/dist
+**/.turbo
+**/coverage
+**/*.tsbuildinfo
+apps/e2e/test-results
+apps/e2e/playwright-report
+.git
+.env
+**/.env

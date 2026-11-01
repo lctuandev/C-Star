@@ -9,8 +9,14 @@ Rà soát lần cuối: 2026-11-01.
 
 | Mục                                                                 | Từ       | Xử lý ở  |
 | ------------------------------------------------------------------- | -------- | -------- |
-| Cài thật trên Android và iPhone, cần HTTPS                          | FEAT-001 | TECH-004 |
-| Host phục vụ `/x` cho `x.html`, không cache `sw.js`                 | FEAT-001 | TECH-004 |
+| Cài thật trên Android và iPhone, cần HTTPS                          | FEAT-001 | Khi deploy |
 | Chưa rõ vì sao CDP làm Chromium giữ worker mới (không ảnh hưởng người chơi) | FEAT-001 | Khi có dấu hiệu ở máy thật |
+
+## Nội dung
+
+| Mục                                                     | Từ       | Xử lý ở |
+| ------------------------------------------------------- | -------- | ------- |
+| Sáu xác nhận của owner ở `docs/content-review.md`        | TECH-003 | Owner   |
+| Owner đọc thử giọng văn, chỉnh số liệu và điều kiện ending | M1–M4  | Owner   |
 
 Ý tưởng chưa lên lịch nằm ở `.project/roadmap.md` §8.

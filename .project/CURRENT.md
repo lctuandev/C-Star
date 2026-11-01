@@ -20,11 +20,11 @@ tháng. Web, PWA chơi được offline, điện thoại dọc là chính. Khôn
 
 ## Active Task
 
-**FEAT-026-audio** — đang làm. M0, M1, M2, M4 xong: game chơi trọn tới 6 kết thúc ở bản 2D.
+**TECH-002-3d-office-spike** — đang làm. M0, M1, M2, M4, M5 xong trừ deploy thật. Game chơi trọn ở bản 2D.
 
 ## Blockers
 
-Không có. Các câu hỏi dưới đây không chặn M0.
+Deploy thật (TECH-004) chờ owner chọn tên miền và xác nhận `docs/content-review.md`. Image đã sẵn sàng, có E2E.
 
 ## Open Decisions (owner)
 
