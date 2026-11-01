@@ -47,7 +47,16 @@ const fromCache = async (pathname) => {
 };
 
 /** Keyed by pathname: Next adds queries such as `?_rsc=` to files that are the same on disk. */
-const servePrecached = async (request, pathname) => (await fromCache(pathname)) ?? fetch(request);
+const servePrecached = async (request, pathname) => {
+  const cached = await fromCache(pathname);
+  if (!cached) {
+    return fetch(request);
+  }
+  // next/link checks a page with HEAD before going to it, which has to work offline too.
+  return request.method === 'HEAD'
+    ? new Response(null, { status: cached.status, headers: cached.headers })
+    : cached;
+};
 
 /** An address outside the build: the real answer when online, the game when not. */
 const servePage = async (request) => {
@@ -61,7 +70,8 @@ const servePage = async (request) => {
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
-  if (request.method !== 'GET' || url.origin !== self.location.origin) {
+  const isRead = request.method === 'GET' || request.method === 'HEAD';
+  if (!isRead || url.origin !== self.location.origin) {
     return;
   }
   if (precached.has(url.pathname)) {

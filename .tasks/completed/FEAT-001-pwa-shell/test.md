@@ -8,7 +8,7 @@
 | Unit: danh sách precache, phiên bản build, manifest và icon có thật            | PASS       |
 | Unit: phát hiện bản mới, áp dụng, hết 10 giây, tab khác đã cập nhật            | PASS       |
 | Unit: gợi ý cài, iOS, ghi nhớ, bộ nhớ bị chặn, không đăng ký ở development     | PASS       |
-| Unit tổng: web 54                                                              | PASS       |
+| Unit tổng: web 49                                                              | PASS       |
 | E2E: Chrome nhận là cài được (`Page.getInstallabilityErrors` rỗng), hai viewport | PASS     |
 | E2E: tắt mạng, tải lại, font và mọi request đều có; địa chỉ lạ vẫn ra game     | PASS       |
 | E2E: mọi file build nằm trong cache, so trực tiếp với `apps/web/out`           | PASS       |

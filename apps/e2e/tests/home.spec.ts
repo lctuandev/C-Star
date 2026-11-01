@@ -1,8 +1,10 @@
 import { expect, test } from '@playwright/test';
+import { asReturningPlayer } from '../tools/accepted-disclaimer.js';
 
 test('the static build opens without an error or a sideways scroll', async ({ page }) => {
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
+  await asReturningPlayer(page);
 
   await page.goto('/');
 

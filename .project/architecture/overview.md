@@ -52,11 +52,13 @@ Người chơi bấm → store gọi game-core: applyAction(state, action)
 ## 5. Điều hướng
 
 ```text
-/ → chưa xác nhận cảnh báo? → /disclaimer → menu → game mới (cảnh báo lại) hoặc tiếp tục → /play
+Mọi route → DisclaimerGate → chưa xác nhận: màn cảnh báo, ngay tại địa chỉ đó → xác nhận → nội dung của route
+Menu → Game mới → cảnh báo lại → /play
 ```
 
-Route `/play` tự kiểm tra xác nhận ở client, vì static export không có middleware phía server. TECH-001 chốt
-cách tổ chức route theo docs của Next đang cài.
+`DisclaimerGate` bọc `children` ở root layout (`features/disclaimer`), không dùng route riêng hay redirect, nên route
+thêm sau này tự nằm sau cổng. Static HTML chưa biết thiết bị đã xác nhận chưa, nên cổng không vẽ gì cho tới khi trình
+duyệt kiểm tra.
 
 ---
 

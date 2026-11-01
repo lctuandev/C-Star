@@ -12,14 +12,15 @@ tháng. Web, PWA chơi được offline, điện thoại dọc là chính. Khôn
 
 - TECH-001 xong: monorepo chạy được, chưa có gameplay. `pnpm dev` ở cổng 5200.
 - Repo: <https://github.com/lctuandev/C-Star>, nhánh `main`.
+- FEAT-002 xong: cổng cảnh báo bọc toàn bộ app. Câu chữ chờ owner duyệt.
 - GDD v0.1 viết từ kịch bản ChatGPT của owner. Các phần `[Đề xuất]` và con số chưa được owner duyệt.
 - FEAT-001 xong: PWA chơi offline, cập nhật có chờ, gợi ý cài. Chưa cài thật, cần HTTPS (TECH-004).
 - Logo ở `docs/brand/`.
-- Roadmap M0–M5 xong. Plan chi tiết có cho FEAT-002.
+- Roadmap M0–M5 xong. Plan chi tiết viết khi bắt đầu từng task.
 
 ## Active Task
 
-**FEAT-002-disclaimer-gate** — đang làm.
+**FEAT-003-story-engine** — đang làm. M0 đã xong.
 
 ## Blockers
 

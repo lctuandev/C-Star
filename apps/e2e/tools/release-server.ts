@@ -55,7 +55,9 @@ export const startReleaseServer = async (port: number, pageScript = ''): Promise
         response.end();
         return;
       }
-      const file = path.join(WEB_OUT, pathname === '/' ? 'index.html' : pathname);
+      // `/about` is about.html, as on a static host.
+      const name = pathname === '/' ? 'index.html' : pathname;
+      const file = path.join(WEB_OUT, path.extname(name) ? name : `${name}.html`);
       try {
         let body: Buffer | string = await readFile(file);
         if (pathname === '/sw.js') {

@@ -2,12 +2,16 @@ import { spawn } from 'node:child_process';
 import { mkdtemp, readdir, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
+import { disclaimer } from '@cstar/content';
 import { chromium, devices, expect, test } from '@playwright/test';
 import type { Page } from '@playwright/test';
+import { asReturningPlayer } from '../tools/accepted-disclaimer.js';
 import { startReleaseServer, WEB_OUT } from '../tools/release-server.js';
 
 const RELEASE_PORT = Number(process.env.E2E_RELEASE_PORT ?? 5301);
 const heading = (page: Page) => page.getByRole('heading', { name: 'Công ty C*' });
+
+test.beforeEach(({ page }) => asReturningPlayer(page));
 
 /** Plays the player in the page: waits for the offer, accepts it, says what happened after. */
 const UPDATE_ON_ITS_OWN = `(async () => {
@@ -19,8 +23,10 @@ const UPDATE_ON_ITS_OWN = `(async () => {
       await new Promise((resolve) => setTimeout(resolve, 50));
     }
   };
-  const button = () =>
-    [...document.querySelectorAll('button')].find((item) => item.textContent === 'Cập nhật');
+  const button = () => {
+    [...document.querySelectorAll('button')].find((item) => item.textContent.startsWith('Tôi đã hiểu'))?.click();
+    return [...document.querySelectorAll('button')].find((item) => item.textContent === 'Cập nhật');
+  };
 
   if (sessionStorage.getItem('clicked')) {
     await new Promise((resolve) => setTimeout(resolve, 500));
@@ -59,7 +65,12 @@ test('the whole game opens with no network (SCENARIO-002)', async ({ page, conte
   await untilOfflineReady(page);
 
   const failed: string[] = [];
-  page.on('requestfailed', (request) => failed.push(request.url()));
+  // ERR_ABORTED is the page dropping a prefetch it no longer wants, not a missing file.
+  page.on('requestfailed', (request) => {
+    if (request.failure()?.errorText !== 'net::ERR_ABORTED') {
+      failed.push(`${request.method()} ${request.url()}`);
+    }
+  });
   await context.setOffline(true);
   await page.reload();
 
@@ -71,6 +82,17 @@ test('the whole game opens with no network (SCENARIO-002)', async ({ page, conte
   });
   expect(fontLoaded).toBe(true);
   expect(failed).toEqual([]);
+
+  await page.getByRole('link', { name: 'Về game' }).click();
+  await expect(page.getByRole('link', { name: 'Quay lại' })).toBeVisible();
+  await page.getByRole('link', { name: 'Quay lại' }).click();
+  await page.getByRole('button', { name: 'Game mới' }).click();
+  await page.getByRole('button', { name: disclaimer.confirmLabel }).click();
+  await expect(page.getByRole('heading', { name: 'Văn phòng đang được dọn dẹp' })).toBeVisible();
+  expect(failed).toEqual([]);
+
+  await page.goto('/about');
+  await expect(page.getByRole('link', { name: 'Quay lại' })).toBeVisible();
 
   await page.goto('/khong-co-trang-nay');
   await expect(heading(page)).toBeVisible();
@@ -93,7 +115,7 @@ test('every file of the build is in the cache', async ({ page }) => {
     .map((entry) => `${entry.parentPath.slice(WEB_OUT.length)}/${entry.name}`);
   const outside = files.filter(
     (file) =>
-      !cached.includes(file.replace(/index\.html$/, '')) &&
+      !cached.includes(file.replace(/index\.html$/, '').replace(/\.html$/, '')) &&
       !/^\/(sw\.js|404\.html)$/.test(file) &&
       !file.startsWith('/_not-found'),
   );
@@ -194,6 +216,7 @@ test.describe('the install hint', () => {
     const { userAgent } = devices['iPhone 15'];
     const context = await browser.newContext({ baseURL, userAgent });
     const page = await context.newPage();
+    await asReturningPlayer(page);
     await page.goto('/');
     await expect(page.getByText(/Thêm vào Màn hình chính/)).toBeVisible();
     await context.close();

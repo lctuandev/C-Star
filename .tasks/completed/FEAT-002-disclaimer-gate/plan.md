@@ -1,6 +1,6 @@
 # FEAT-002-disclaimer-gate — Plan
 
-Trạng thái: PLANNING
+Trạng thái: COMPLETED
 
 ## Objective
 

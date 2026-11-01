@@ -2,6 +2,7 @@ import { gameInfo } from '@cstar/content';
 import type { Metadata, Viewport } from 'next';
 import { Be_Vietnam_Pro } from 'next/font/google';
 import type { ReactNode } from 'react';
+import { DisclaimerGate } from '@/features/disclaimer/DisclaimerGate';
 import { PwaBoot } from '@/features/pwa/PwaBoot';
 import './globals.css';
 
@@ -35,7 +36,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => (
   <html lang="vi" className={beVietnamPro.variable}>
     <body>
       <PwaBoot />
-      {children}
+      <DisclaimerGate>{children}</DisclaimerGate>
     </body>
   </html>
 );

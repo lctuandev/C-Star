@@ -137,6 +137,13 @@ describe('service worker', () => {
       expect(worker.network).not.toHaveBeenCalled();
     });
 
+    it('answers next/link’s HEAD check offline, with no body', async () => {
+      worker.network.mockRejectedValue(new TypeError('offline'));
+      const response = await worker.request({ url: `${ORIGIN}/index.txt`, method: 'HEAD' });
+      expect(response?.status).toBe(200);
+      expect(response?.body).toBeNull();
+    });
+
     it('opens the game offline', async () => {
       worker.network.mockRejectedValue(new TypeError('offline'));
       expect(await worker.request(get('/', 'navigate'))).toBeDefined();
