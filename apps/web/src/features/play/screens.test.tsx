@@ -46,7 +46,7 @@ describe('Hud', () => {
     expect(screen.getByText('Tháng 1 · Tuần 1')).toBeInTheDocument();
     expect(screen.getByText('7,4 tr')).toBeInTheDocument();
     expect(screen.getByText('15 tr')).toBeInTheDocument();
-    expect(screen.getByRole('meter', { name: 'Sức' })).toHaveAttribute('aria-valuenow', '80');
+    expect(screen.getByRole('meter', { name: 'Sức khỏe' })).toHaveAttribute('aria-valuenow', '80');
   });
 });
 

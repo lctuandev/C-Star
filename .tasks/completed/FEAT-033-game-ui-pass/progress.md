@@ -6,3 +6,4 @@
 - Cảnh chuyển từ dải giữa HUD và bảng sang tràn màn hình, `fitView` giữ khung hình trong phần được chừa lại.
 - Bản `h-dvh overflow-hidden` có thể cắt mất lựa chọn trên điện thoại nhỏ: các bảng tự cuộn bên trong.
 - Manifest đổi `orientation` từ `portrait` sang `any`, nếu không PWA trên tablet bị khóa dọc.
+- Owner góp ý thanh trạng thái thiếu chữ: đổi thành "Sức khỏe", "Căng thẳng", thêm con số, nền thanh rõ hơn, đặt trong ô nền tối để đọc được trên ảnh sáng.

@@ -6,20 +6,23 @@ import { useEffect, useRef, useState } from 'react';
 import { formatMoneyShort } from '@/lib/format-money';
 
 const Meter = ({ label, value, tone }: { label: string; value: number; tone: string }) => (
-  <div className="flex flex-1 items-center gap-2 wide:w-36 wide:flex-none">
-    <span className="text-ink-secondary text-xs font-bold">{label}</span>
+  <div className="flex min-w-0 flex-1 items-center gap-2">
+    <span className="text-ink-secondary text-xs font-bold whitespace-nowrap">{label}</span>
     <span
       role="meter"
       aria-label={label}
       aria-valuemin={0}
       aria-valuemax={100}
       aria-valuenow={value}
-      className="bg-surface-950/70 h-2.5 flex-1 overflow-hidden rounded-full"
+      className="bg-surface-600/70 h-2.5 min-w-8 flex-1 overflow-hidden rounded-full"
     >
       <span
         className={`block h-full rounded-full transition-[width] duration-500 ${tone}`}
         style={{ width: `${value}%` }}
       />
+    </span>
+    <span aria-hidden className="text-ink-primary w-6 text-right text-xs font-bold tabular-nums">
+      {value}
     </span>
   </div>
 );
@@ -109,9 +112,9 @@ export const Hud = ({ state, kpiTarget }: { state: GameState; kpiTarget: number 
           />
         )}
       </dl>
-      <div className="flex gap-3 wide:order-3 wide:gap-4">
-        <Meter label="Sức" value={mood.energy} tone="bg-fluorescent" />
-        <Meter label="Căng" value={mood.stress} tone="bg-alarm" />
+      <div className="bg-surface-900/85 flex gap-3 rounded-xl px-3 py-2 wide:order-3 wide:max-w-lg wide:flex-1 wide:gap-4 wide:px-4">
+        <Meter label="Sức khỏe" value={mood.energy} tone="bg-fluorescent" />
+        <Meter label="Căng thẳng" value={mood.stress} tone="bg-alarm" />
       </div>
     </header>
   );

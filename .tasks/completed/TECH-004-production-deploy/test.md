@@ -32,3 +32,11 @@
 | File âm thanh, ảnh, GLB trả đúng MIME qua HTTPS                        | PASS       |
 | E2E vào domain thật: sound, disclaimer, home, 26 test                  | PASS       |
 | E2E `pwa.spec` vào domain thật, trừ test so với bản build trên máy: 15 pass | PASS  |
+
+## 2026-11-01, lần phát hành thứ ba (`11ebbbd`, tên nhân vật, tiếng từng lựa chọn, nhạc theo truyện, góp ý theo chương)
+
+| Check                                                                 | Result     |
+| --------------------------------------------------------------------- | ---------- |
+| Owner đồng ý deploy                                                    | PASS       |
+| CI của commit này                                                      | PASS       |
+| E2E vào domain thật: sound, disclaimer, home, pwa, 41 test             | PASS       |
