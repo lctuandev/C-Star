@@ -23,10 +23,16 @@ GameState
 
 ## 2. Trạng thái lượt chơi
 
+`phase` chỉ có `scene`, `week`, `payslip`, `ended`. Mọi chuyển pha đi qua `continueCalendar` trong
+`game-core/src/calendar/calendar.ts`:
+
 ```text
-PROLOGUE → WEEK_ACTIONS → WEEK_RESOLVE → (cuối tháng) PAYDAY → BILLS → STORY_BEAT → WEEK_ACTIONS …
-Bất kỳ lúc nào: chỉ số chạm ngưỡng → CRISIS → quay lại trạng thái trước
-Cuối Chương 6 → ENDING → (Ending 5) LOOPED hoặc FINISHED
+beginRun → scene → hết cảnh → continueCalendar
+continueCalendar: có cảnh tới hạn? → scene
+                  đang ngày lương? → payslip
+                  còn lại          → week
+week: hết lượt → sang tuần sau, hoặc hết tuần 4 → tính phiếu lương → continueCalendar
+payslip: đóng phiếu → tháng sau, hoặc hết nội dung → ended
 ```
 
 Chuyển trạng thái sai bị từ chối. Không dùng nhiều boolean rời nhau.

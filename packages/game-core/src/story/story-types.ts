@@ -1,11 +1,23 @@
+export type Stat = 'cash' | 'arrears' | 'companyDebt' | 'energy' | 'stress' | 'month';
+
 /** Conditions and effects are data, not functions: the validator can check them, saves can hold them. */
 export type Condition =
   | { type: 'flag'; flag: string }
+  | { type: 'stat'; stat: Stat; min?: number; max?: number }
   | { type: 'not'; condition: Condition }
   | { type: 'all'; conditions: Condition[] }
   | { type: 'any'; conditions: Condition[] };
 
-export type Effect = { type: 'setFlag'; flag: string; value?: boolean };
+export type Effect =
+  | { type: 'setFlag'; flag: string; value?: boolean }
+  /** A negative amount the player cannot cover goes to arrears: cash never drops below zero. */
+  | { type: 'addCash'; amount: number }
+  /** The only way the company's debt goes down (contracts/gameplay.md §3). */
+  | { type: 'companyPays'; amount: number }
+  | { type: 'addEnergy'; amount: number }
+  | { type: 'addStress'; amount: number }
+  /** Drawn from the run's RNG, so a replay gets the same luck. */
+  | { type: 'chance'; chance: number; then: Effect[]; otherwise?: Effect[] };
 
 export interface Choice {
   id: string;

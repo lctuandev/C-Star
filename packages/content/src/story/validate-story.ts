@@ -1,5 +1,5 @@
 import { isRouteNode } from '@cstar/game-core';
-import type { Condition, Effect, Scene, StoryGraph, StoryNode } from '@cstar/game-core';
+import type { Condition, Effect, GameWorld, Scene, StoryGraph, StoryNode } from '@cstar/game-core';
 
 export interface StoryIssue {
   scene: string;
@@ -38,6 +38,8 @@ const flagsIn = (condition: Condition): string[] => {
   switch (condition.type) {
     case 'flag':
       return [condition.flag];
+    case 'stat':
+      return [];
     case 'not':
       return flagsIn(condition.condition);
     case 'all':
@@ -45,6 +47,17 @@ const flagsIn = (condition: Condition): string[] => {
       return condition.conditions.flatMap(flagsIn);
   }
 };
+
+/** Effects inside a `chance` count too. */
+const flattenEffects = (effects: readonly Effect[]): Effect[] =>
+  effects.flatMap((effect) =>
+    effect.type === 'chance'
+      ? [effect, ...flattenEffects(effect.then), ...flattenEffects(effect.otherwise ?? [])]
+      : [effect],
+  );
+
+const flagsSetBy = (effects: readonly Effect[]): string[] =>
+  flattenEffects(effects).flatMap((effect) => (effect.type === 'setFlag' ? [effect.flag] : []));
 
 const conditionsOf = (node: StoryNode): Condition[] =>
   isRouteNode(node)
@@ -145,17 +158,22 @@ const checkScene = (key: string, scene: Scene, catalog: StoryCatalog): StoryIssu
 };
 
 /** Every way a story can trap or confuse a player that can be seen without playing it. */
-export const validateStory = (story: StoryGraph, catalog: StoryCatalog): StoryIssue[] => {
+export const validateStory = (
+  story: StoryGraph,
+  catalog: StoryCatalog,
+  flagsSetElsewhere: readonly string[] = [],
+): StoryIssue[] => {
   const scenes = Object.entries(story.scenes);
   const issues = scenes.flatMap(([key, scene]) => checkScene(key, scene, catalog));
 
-  const setFlags = new Set(
-    scenes.flatMap(([, scene]) =>
+  const setFlags = new Set([
+    ...flagsSetElsewhere,
+    ...scenes.flatMap(([, scene]) =>
       Object.values(scene.nodes)
         .flatMap(effectsOf)
-        .flatMap((effect) => (effect.type === 'setFlag' ? [effect.flag] : [])),
+        .flatMap((effect) => flagsSetBy([effect])),
     ),
-  );
+  ]);
   for (const [key, scene] of scenes) {
     for (const [nodeId, node] of Object.entries(scene.nodes)) {
       for (const flag of conditionsOf(node).flatMap(flagsIn)) {
@@ -163,6 +181,53 @@ export const validateStory = (story: StoryGraph, catalog: StoryCatalog): StoryIs
           issues.push({ scene: key, node: nodeId, message: `reads flag "${flag}", set nowhere` });
         }
       }
+    }
+  }
+  return issues;
+};
+
+/** The story plus what ties it to the calendar. */
+export const validateWorld = (world: GameWorld, catalog: StoryCatalog): StoryIssue[] => {
+  const scenes = world.story.scenes;
+  const issues = validateStory(
+    world.story,
+    catalog,
+    world.actions.flatMap((action) => flagsSetBy(action.effects)),
+  );
+  const report = (scene: string, message: string) => issues.push({ scene, message });
+
+  if (!(world.openingScene in scenes)) {
+    report(world.openingScene, 'the opening scene does not exist');
+  }
+  const beatScenes = world.beats.map((beat) => beat.scene);
+  for (const beat of world.beats) {
+    if (!(beat.scene in scenes)) {
+      report(beat.scene, `month ${beat.month} plays a scene that does not exist`);
+    }
+    if (beat.month > world.rules.lastMonth) {
+      report(beat.scene, `planned for month ${beat.month}, after the last month`);
+    }
+    if (beat.week !== undefined && (beat.week < 1 || beat.week > world.rules.weeksPerMonth)) {
+      report(beat.scene, `planned for week ${beat.week}, which no month has`);
+    }
+  }
+  for (const key of Object.keys(scenes)) {
+    if (key !== world.openingScene && !beatScenes.includes(key)) {
+      report(key, 'no beat ever plays this scene');
+    }
+  }
+  if (world.actions.every((action) => action.requires)) {
+    report('week', 'every weekly action can be locked: the player could get stuck');
+  }
+  if (world.surprises.length === 0 && world.rules.surpriseChance > 0) {
+    report('week', 'a surprise bill can come up with none to pick from');
+  }
+  for (const action of world.actions) {
+    if (action.requires && !action.lockedReason) {
+      report('week', `action "${action.id}" has no lockedReason`);
+    }
+    if (action.outcomes.length === 0) {
+      report('week', `action "${action.id}" has no outcome line`);
     }
   }
   return issues;

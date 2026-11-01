@@ -5,20 +5,38 @@ import { z } from 'zod';
 const id = z.string().min(1);
 const text = z.string().trim().min(1);
 
-const conditionSchema: z.ZodType<Condition> = z.lazy(() =>
+export const conditionSchema: z.ZodType<Condition> = z.lazy(() =>
   z.discriminatedUnion('type', [
     z.strictObject({ type: z.literal('flag'), flag: id }),
+    z.strictObject({
+      type: z.literal('stat'),
+      stat: z.enum(['cash', 'arrears', 'companyDebt', 'energy', 'stress', 'month']),
+      min: z.number().optional(),
+      max: z.number().optional(),
+    }),
     z.strictObject({ type: z.literal('not'), condition: conditionSchema }),
     z.strictObject({ type: z.literal('all'), conditions: z.array(conditionSchema).min(1) }),
     z.strictObject({ type: z.literal('any'), conditions: z.array(conditionSchema).min(1) }),
   ]),
 );
 
-const effectSchema: z.ZodType<Effect> = z.strictObject({
-  type: z.literal('setFlag'),
-  flag: id,
-  value: z.boolean().optional(),
-});
+const amount = z.number().int();
+
+export const effectSchema: z.ZodType<Effect> = z.lazy(() =>
+  z.discriminatedUnion('type', [
+    z.strictObject({ type: z.literal('setFlag'), flag: id, value: z.boolean().optional() }),
+    z.strictObject({ type: z.literal('addCash'), amount }),
+    z.strictObject({ type: z.literal('companyPays'), amount: amount.positive() }),
+    z.strictObject({ type: z.literal('addEnergy'), amount }),
+    z.strictObject({ type: z.literal('addStress'), amount }),
+    z.strictObject({
+      type: z.literal('chance'),
+      chance: z.number().min(0).max(1),
+      then: z.array(effectSchema),
+      otherwise: z.array(effectSchema).optional(),
+    }),
+  ]),
+);
 
 const choiceSchema = z.strictObject({
   id,

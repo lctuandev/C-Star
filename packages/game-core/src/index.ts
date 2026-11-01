@@ -1,11 +1,23 @@
-export { applyAction, replay } from './actions/apply-action.js';
-export type { ActionResult, GameAction, GameWorld } from './actions/apply-action.js';
+export { applyAction, beginRun, replay } from './actions/apply-action.js';
+export type { ActionResult, GameAction } from './actions/apply-action.js';
+export { weekActions } from './calendar/calendar.js';
+export type { ActionView } from './calendar/calendar.js';
+export type { Beat, Bill, GameRules, GameWorld, WeeklyAction } from './calendar/world-types.js';
 export { shouldShowDisclaimer } from './disclaimer/disclaimer-rule.js';
 export type { DisclaimerCheck } from './disclaimer/disclaimer-rule.js';
 export { drawRandom, seedRng } from './rng/seeded-rng.js';
 export type { RngDraw, RngState } from './rng/seeded-rng.js';
 export { createGameState } from './state/game-state.js';
-export type { GameState, StoryProgress } from './state/game-state.js';
+export type {
+  Calendar,
+  GameState,
+  Money,
+  Mood,
+  Payslip,
+  PayslipLine,
+  Phase,
+  StoryProgress,
+} from './state/game-state.js';
 export { viewOf } from './story/story-engine.js';
 export type { ChoiceView, NodeView } from './story/story-engine.js';
 export { isRouteNode, PLACES } from './story/story-types.js';
@@ -17,6 +29,7 @@ export type {
   Place,
   RouteNode,
   Scene,
+  Stat,
   StoryGraph,
   StoryNode,
 } from './story/story-types.js';

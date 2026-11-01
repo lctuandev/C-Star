@@ -18,7 +18,7 @@ Những điều luôn phải đúng, dù cài đặt thế nào. Đổi hợp đ
 ## 3. Tiền
 
 - Tiền là số nguyên VND, không bao giờ âm.
-- Thiếu tiền trả hóa đơn thì mở khủng hoảng, không để số âm. Khoản vay ghi riêng.
+- Thiếu tiền thì phần thiếu vào `arrears`, không để số âm, và được trả trước ở phiếu lương sau. Khoản vay ghi riêng.
 - Sổ nợ của công ty chỉ giảm khi công ty thật sự trả trong cốt truyện.
 
 ## 4. Chỉ số

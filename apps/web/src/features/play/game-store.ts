@@ -1,9 +1,9 @@
-import { OPENING_SCENE, story } from '@cstar/content';
-import { applyAction, createGameState, viewOf } from '@cstar/game-core';
-import type { GameAction, GameState, GameWorld } from '@cstar/game-core';
+import { world } from '@cstar/content';
+import { applyAction, beginRun, viewOf } from '@cstar/game-core';
+import type { GameAction, GameState } from '@cstar/game-core';
 import { create } from 'zustand';
 
-export const world: GameWorld = { story };
+export { world };
 
 export interface HistoryLine {
   key: string;
@@ -40,12 +40,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
   history: [],
 
   newRun: (seed) => {
-    const started = applyAction(
-      createGameState(seed),
-      { type: 'startScene', sceneId: OPENING_SCENE },
-      world,
-    );
-    set({ state: started.state, history: withLine([], started.state) });
+    const state = beginRun(seed, world);
+    set({ state, history: withLine([], state) });
   },
 
   dispatch: (action) => {

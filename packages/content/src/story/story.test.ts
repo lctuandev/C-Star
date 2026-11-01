@@ -1,13 +1,14 @@
 import { describe, expect, it } from 'vitest';
-import { characters, OPENING_SCENE, story } from './index.js';
-import { validateStory } from './validate-story.js';
+import { world } from '../world.js';
+import { characters } from './index.js';
+import { validateWorld } from './validate-story.js';
 
-describe('the story', () => {
+describe('the content', () => {
   it('passes the validator', () => {
-    expect(validateStory(story, { characters })).toEqual([]);
+    expect(validateWorld(world, { characters })).toEqual([]);
   });
 
-  it('has the scene every run opens on', () => {
-    expect(story.scenes).toHaveProperty(OPENING_SCENE);
+  it('never pays more than the salary', () => {
+    expect(world.payroll.every((share) => share <= 1)).toBe(true);
   });
 });

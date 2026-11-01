@@ -1,6 +1,5 @@
-import { OPENING_SCENE } from '@cstar/content';
 import { beforeEach, describe, expect, it } from 'vitest';
-import { useGameStore } from './game-store';
+import { useGameStore, world } from './game-store';
 
 const initial = useGameStore.getState();
 
@@ -11,7 +10,7 @@ describe('useGameStore', () => {
 
   it('opens a run on the first scene', () => {
     useGameStore.getState().newRun(1);
-    expect(useGameStore.getState().state?.story.sceneId).toBe(OPENING_SCENE);
+    expect(useGameStore.getState().state?.story.sceneId).toBe(world.openingScene);
     expect(useGameStore.getState().history).toHaveLength(1);
   });
 

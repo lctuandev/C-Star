@@ -20,6 +20,9 @@
   --color-fluorescent: #c8f0e4;
   --color-paycheck: #f2c879;
   --color-ally: #9fd0f5;
+  --color-alarm: #f08a7a;
+  --color-paper: #ece6d6;
+  --color-ink-paper: #2b2a26;
 }
 
 @layer base {

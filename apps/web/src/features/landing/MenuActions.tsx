@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/Button';
 import { useDisclaimerStore } from '@/features/disclaimer/disclaimer-store';
+import { useGameStore } from '@/features/play/game-store';
 
 export const MenuActions = () => {
   const router = useRouter();
@@ -11,7 +12,16 @@ export const MenuActions = () => {
 
   return (
     <nav className="mt-4 flex w-full max-w-xs flex-col gap-3">
-      <Button onClick={() => askForNewGame(() => router.push('/play'))}>Game mới</Button>
+      <Button
+        onClick={() =>
+          askForNewGame(() => {
+            useGameStore.getState().newRun(Date.now());
+            router.push('/play');
+          })
+        }
+      >
+        Game mới
+      </Button>
       <Link
         href="/about"
         className="bg-surface-700 flex min-h-11 items-center justify-center rounded-xl px-4 font-bold"

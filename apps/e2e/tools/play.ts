@@ -1,0 +1,40 @@
+import { disclaimer } from '@cstar/content';
+import { expect } from '@playwright/test';
+import type { Locator, Page } from '@playwright/test';
+import { asReturningPlayer } from './accepted-disclaimer.js';
+
+/** From the menu into a new run, with text shown at once. */
+export const startGame = async (page: Page) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await asReturningPlayer(page);
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Game mới' }).click();
+  await page.getByRole('button', { name: disclaimer.confirmLabel }).click();
+  await expect(page).toHaveURL(/\/play$/);
+};
+
+/** Reads through scenes, taking the first choice open, until `target` shows. */
+export const playUntil = async (page: Page, target: Locator) => {
+  const box = page.getByRole('button', { name: 'Đọc tiếp' });
+  const choices = page.getByRole('group', { name: 'Lựa chọn' }).getByRole('button');
+
+  await expect
+    .poll(
+      async () => {
+        if (await target.isVisible()) {
+          return true;
+        }
+        if ((await choices.count()) > 0) {
+          await choices.and(page.locator(':enabled')).first().click();
+        } else if (await box.isVisible()) {
+          await box.click();
+        }
+        return false;
+      },
+      { timeout: 20_000, intervals: [10] },
+    )
+    .toBe(true);
+};
+
+/** The heading of the week screen. */
+export const weekHeading = (page: Page) => page.getByRole('heading', { name: /Tuần này còn/ });

@@ -5,6 +5,10 @@ import type { Place } from '@cstar/game-core';
 import { useEffect, useState } from 'react';
 import { DialogueBox } from '@/features/dialogue/DialogueBox';
 import { HistorySheet } from '@/features/dialogue/HistorySheet';
+import { Hud } from '@/features/hud/Hud';
+import { PayslipScreen } from '@/features/payslip/PayslipScreen';
+import { WeekScreen } from '@/features/week/WeekScreen';
+import { EndOfContent } from './EndOfContent';
 import { useGameStore, world } from './game-store';
 
 /** Stand-ins until the art pass: cold light at work, warm light at home (GDD §7). */
@@ -29,14 +33,22 @@ export const PlayScreen = () => {
     }
   }, [newRun]);
 
-  const view = state ? viewOf(state, world.story) : null;
-  const sceneId = state?.story.sceneId;
+  if (!state) {
+    return null;
+  }
+
+  const view = viewOf(state, world.story);
+  const sceneId = state.story.sceneId;
   const place = sceneId ? world.story.scenes[sceneId]?.place : undefined;
 
   return (
     <main
-      className={`flex min-h-dvh flex-col justify-end bg-gradient-to-b pt-[env(safe-area-inset-top)] ${BACKDROPS[place ?? 'office']}`}
+      className={`flex min-h-dvh flex-col bg-gradient-to-b pt-[env(safe-area-inset-top)] ${BACKDROPS[place ?? 'office']}`}
     >
+      <Hud state={state} />
+      {state.phase === 'week' && <WeekScreen state={state} />}
+      {state.phase === 'payslip' && state.payslip && <PayslipScreen payslip={state.payslip} />}
+      {state.phase === 'ended' && <EndOfContent />}
       {view && (
         <>
           <div className="flex flex-1 items-start justify-end p-4">

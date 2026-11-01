@@ -1,54 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import { createGameState } from '../state/game-state.js';
-import type { GameState } from '../state/game-state.js';
 import { viewOf } from '../story/story-engine.js';
-import type { StoryGraph } from '../story/story-types.js';
-import { applyAction, replay } from './apply-action.js';
-import type { GameAction, GameWorld } from './apply-action.js';
+import type { GameState } from '../state/game-state.js';
+import { testWorld as world } from '../test-world.fixture.js';
+import { applyAction, beginRun, replay } from './apply-action.js';
+import type { GameAction } from './apply-action.js';
 
-const story: StoryGraph = {
-  scenes: {
-    meeting: {
-      id: 'meeting',
-      place: 'meeting',
-      start: 'hello',
-      nodes: {
-        hello: { speaker: 'boss', text: 'Chào em.', next: 'ask' },
-        ask: {
-          speaker: 'boss',
-          text: 'Em thấy sao?',
-          effects: [{ type: 'setFlag', flag: 'heardTheAsk' }],
-          choices: [
-            {
-              id: 'polite',
-              text: 'Dạ tốt ạ.',
-              effects: [{ type: 'setFlag', flag: 'polite' }],
-              next: 'turn',
-            },
-            {
-              id: 'blunt',
-              text: 'Lương đâu ạ?',
-              requires: { type: 'flag', flag: 'hasReceipts' },
-              lockedReason: 'Chưa có phiếu lương trong tay',
-              next: 'turn',
-            },
-          ],
-        },
-        turn: {
-          routes: [{ when: { type: 'flag', flag: 'polite' }, next: 'nice' }],
-          otherwise: 'cold',
-        },
-        nice: { speaker: 'boss', text: 'Tốt lắm.' },
-        cold: { speaker: 'boss', text: 'Ừ.' },
-      },
-    },
-    empty: { id: 'empty', place: 'home', start: 'only', nodes: { only: { text: 'Hết.' } } },
-  },
-};
-
-const world: GameWorld = { story };
-const start: GameAction = { type: 'startScene', sceneId: 'meeting' };
-const toTheChoice: GameAction[] = [start, { type: 'advance' }];
+const { story } = world;
+const toTheChoice: GameAction[] = [{ type: 'advance' }];
 
 const expectOk = (state: GameState, action: GameAction) => {
   const result = applyAction(state, action, world);
@@ -63,17 +21,14 @@ const refused = (state: GameState, action: GameAction) => {
 };
 
 describe('a scene (SCENARIO-013)', () => {
-  it('runs line by line and ends', () => {
-    let state = expectOk(createGameState(1), { type: 'startScene', sceneId: 'empty' });
-    expect(viewOf(state, story)?.text).toBe('Hết.');
-    state = expectOk(state, { type: 'advance' });
-    expect(viewOf(state, story)).toBeNull();
-    expect(state.story.seenScenes).toEqual(['empty']);
+  it('opens the run', () => {
+    const state = beginRun(1, world);
+    expect(state.phase).toBe('scene');
+    expect(state.story.seenScenes).toEqual(['meeting']);
   });
 
   it('shows who speaks', () => {
-    const state = expectOk(createGameState(1), start);
-    expect(viewOf(state, story)).toMatchObject({
+    expect(viewOf(beginRun(1, world), story)).toMatchObject({
       speaker: 'boss',
       text: 'Chào em.',
       canAdvance: true,
@@ -82,17 +37,26 @@ describe('a scene (SCENARIO-013)', () => {
   });
 
   it('applies a line’s effects on arrival', () => {
-    const state = replay(1, toTheChoice, world);
-    expect(state.story.flags.heardTheAsk).toBe(true);
+    expect(replay(1, toTheChoice, world).story.flags.heardTheAsk).toBe(true);
   });
 
-  it('refuses to start over a running scene, or a scene that does not exist', () => {
-    refused(expectOk(createGameState(1), start), start);
-    refused(createGameState(1), { type: 'startScene', sceneId: 'nowhere' });
+  it('ends, and the calendar takes over', () => {
+    const state = replay(
+      1,
+      [...toTheChoice, { type: 'choose', choiceId: 'polite' }, { type: 'advance' }],
+      world,
+    );
+    expect(viewOf(state, story)).toBeNull();
+    expect(state.phase).toBe('week');
   });
 
   it('refuses to advance with no scene', () => {
-    refused(createGameState(1), { type: 'advance' });
+    const inTheWeek = replay(
+      1,
+      [...toTheChoice, { type: 'choose', choiceId: 'polite' }, { type: 'advance' }],
+      world,
+    );
+    refused(inTheWeek, { type: 'advance' });
   });
 });
 
@@ -109,7 +73,7 @@ describe('a choice (SCENARIO-014)', () => {
 
   it('refuses a choice that is not on screen', () => {
     refused(replay(1, toTheChoice, world), { type: 'choose', choiceId: 'nope' });
-    refused(expectOk(createGameState(1), start), { type: 'choose', choiceId: 'polite' });
+    refused(beginRun(1, world), { type: 'choose', choiceId: 'polite' });
   });
 });
 
@@ -153,8 +117,7 @@ describe('a route (SCENARIO-017)', () => {
       ...atChoice,
       story: { ...atChoice.story, flags: { hasReceipts: true } },
     };
-    const after = expectOk(state, { type: 'choose', choiceId: 'blunt' });
-    expect(after.story.nodeId).toBe('cold');
+    expect(expectOk(state, { type: 'choose', choiceId: 'blunt' }).story.nodeId).toBe('cold');
   });
 });
 
@@ -168,15 +131,15 @@ describe('replay (SCENARIO-018)', () => {
   it('survives a trip through JSON, as a save does', () => {
     const atChoice = replay(9, toTheChoice, world);
     const loaded = JSON.parse(JSON.stringify(atChoice)) as GameState;
-    expect(expectOk(loaded, script[2]!)).toEqual(replay(9, script, world));
+    expect(expectOk(loaded, script[1]!)).toEqual(replay(9, script, world));
   });
 
   it('says which action a wrong script broke on', () => {
-    expect(() => replay(1, [{ type: 'advance' }], world)).toThrow('Action 0');
+    expect(() => replay(1, [{ type: 'closePayslip' }], world)).toThrow('Action 0');
   });
 
   it('never changes the state it was given', () => {
     const state = Object.freeze(replay(9, toTheChoice, world));
-    expect(() => applyAction(state, script[2]!, world)).not.toThrow();
+    expect(() => applyAction(state, script[1]!, world)).not.toThrow();
   });
 });

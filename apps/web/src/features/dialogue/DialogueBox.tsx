@@ -76,7 +76,7 @@ export const DialogueBox = ({ view, onAdvance, onChoose }: DialogueBoxProps) => 
       </button>
 
       {done && view.choices.length > 0 && (
-        <div className="flex flex-col gap-3">
+        <div role="group" aria-label="Lựa chọn" className="flex flex-col gap-3">
           {view.choices.map((choice) => (
             <div key={choice.id} className="flex flex-col gap-1">
               <Button
