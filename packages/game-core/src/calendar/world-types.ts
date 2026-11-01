@@ -29,11 +29,15 @@ export interface WeeklyAction {
   label: string;
   /** What it costs and gives, in the player's words. */
   hint: string;
+  /** Not offered at all until this holds: the story has not got that far. */
+  appearsWhen?: Condition;
   requires?: Condition;
   lockedReason?: string;
   effects: Effect[];
   /** One is picked at random and shown under the week. */
   outcomes: string[];
+  /** Join `outcomes` once the company owes the player: said earlier, they spoil the story. */
+  outcomesOnceOwed?: string[];
   /** Plays a round of tickets before the action counts. */
   tickets?: boolean;
 }

@@ -65,7 +65,9 @@ export const PayslipScreen = ({ payslip, playerName = '' }: PayslipScreenProps) 
             <Row label="Còn thiếu" amount={formatMoney(payslip.arrears)} strong />
           )}
           {payslip.loans > 0 && <Row label="Đang vay" amount={formatMoney(payslip.loans)} />}
-          <Row label="Công ty đang nợ bạn" amount={formatMoney(payslip.companyDebt)} strong />
+          {payslip.companyDebt > 0 && (
+            <Row label="Công ty đang nợ bạn" amount={formatMoney(payslip.companyDebt)} strong />
+          )}
         </dl>
       </div>
       {!paidInFull && (

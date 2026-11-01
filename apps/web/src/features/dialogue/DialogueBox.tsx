@@ -4,6 +4,7 @@ import type { CharacterId } from '@cstar/content';
 import type { NodeView } from '@cstar/game-core';
 import { useEffect } from 'react';
 import { Button } from '@/components/ui/Button';
+import { audioEngine } from '@/features/audio/audio-engine';
 import { Portrait, speakerLabel } from './Portrait';
 import { useTypewriter } from './use-typewriter';
 
@@ -19,6 +20,13 @@ export const DialogueBox = ({ view, playerName = '', onAdvance, onChoose }: Dial
   const { shown, done, finish } = useTypewriter(view.text);
   const speaker = view.speaker as CharacterId | null;
   const name = speaker ? speakerLabel(speaker, playerName) : null;
+
+  // A tick every other glyph: the voice of the line, not a rattle.
+  useEffect(() => {
+    if (!done && shown.length % 2 === 1 && !shown.endsWith(' ')) {
+      audioEngine.typeFor(view.speaker);
+    }
+  }, [shown, done, view.speaker]);
 
   const tap = () => {
     if (!done) {

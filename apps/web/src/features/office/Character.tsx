@@ -14,6 +14,7 @@ import { headingOf, stepToward, WALK_SPEED } from './walk';
 
 const TURN_RATE = 9;
 const BLEND_RATE = 10;
+const STEP_SECONDS = 0.33;
 
 const contactShadow = () => {
   const canvas = document.createElement('canvas');
@@ -54,6 +55,8 @@ interface CharacterProps {
   faces?: Vec3 | null;
   /** Runs when the character reaches `to`. */
   onArrive?: () => void;
+  /** Runs at every footfall. */
+  onStep?: () => void;
   seed?: number;
 }
 
@@ -65,6 +68,7 @@ export const Character = ({
   heading = 0,
   faces = null,
   onArrive,
+  onStep,
   seed = 0,
 }: CharacterProps) => {
   const { scene } = useLoader(GLTFLoader, PEOPLE_URL, withMeshopt);
@@ -77,10 +81,11 @@ export const Character = ({
   const lift = useRef(0);
   const yaw = useRef(heading);
   const blink = useRef(2 + seed);
-  const latest = useRef({ to, rest, heading, faces, onArrive });
+  const stride = useRef(0);
+  const latest = useRef({ to, rest, heading, faces, onArrive, onStep });
 
   useEffect(() => {
-    latest.current = { to, rest, heading, faces, onArrive };
+    latest.current = { to, rest, heading, faces, onArrive, onStep };
   });
 
   shadowMaterial ??= contactShadow();
@@ -118,6 +123,13 @@ export const Character = ({
         walking = true;
       }
       place.current = stepped;
+    }
+    if (walking) {
+      stride.current += delta;
+      if (stride.current > STEP_SECONDS) {
+        stride.current = 0;
+        now.onStep?.();
+      }
     }
     if (route.current.length === 0 && arriving.current) {
       arriving.current = false;

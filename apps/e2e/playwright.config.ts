@@ -14,7 +14,8 @@ export default defineConfig({
   fullyParallel: false,
   workers: 1,
   retries: 0,
-  reporter: [['list']],
+  // On CI the failures also become annotations: those can be read without signing in to GitHub.
+  reporter: process.env.CI ? [['list'], ['github']] : [['list']],
   use: {
     baseURL: E2E_WEB_URL,
     locale: 'vi-VN',

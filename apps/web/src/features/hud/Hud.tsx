@@ -98,13 +98,16 @@ export const Hud = ({ state, kpiTarget }: { state: GameState; kpiTarget: number 
       </div>
       <dl className="flex gap-2 wide:order-2 wide:gap-3">
         <Money label="Trong ví" amount={money.cash} gain="text-fluorescent" loss="text-alarm" />
-        <Money
-          label="Công ty nợ bạn"
-          amount={money.companyDebt}
-          tone="text-paycheck"
-          gain="text-alarm"
-          loss="text-fluorescent"
-        />
+        {/* Nothing is owed yet at the start: this box appears the day it stops being true. */}
+        {money.companyDebt > 0 && (
+          <Money
+            label="Công ty nợ bạn"
+            amount={money.companyDebt}
+            tone="text-paycheck"
+            gain="text-alarm"
+            loss="text-fluorescent"
+          />
+        )}
       </dl>
       <div className="flex gap-3 wide:order-3 wide:gap-4">
         <Meter label="Sức" value={mood.energy} tone="bg-fluorescent" />

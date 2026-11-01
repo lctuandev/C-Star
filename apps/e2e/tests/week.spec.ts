@@ -12,7 +12,7 @@ test('a week of actions (SCENARIO-024)', async ({ page }) => {
 
   await expect(page.getByText('Tháng 1 · Tuần 1')).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Tuần này còn 3 lượt' })).toBeVisible();
-  await expect(page.getByRole('button', { name: /Nhận việc ngoài/ })).toBeDisabled();
+  await expect(page.getByRole('button', { name: /Nhận việc ngoài/ })).toBeHidden();
 
   await rest(page);
   await expect(page.getByRole('heading', { name: 'Tuần này còn 2 lượt' })).toBeVisible();

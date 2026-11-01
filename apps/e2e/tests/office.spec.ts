@@ -59,10 +59,12 @@ test.describe('with WebGL', () => {
     expect(warnings).toEqual([]);
   });
 
-  test('a locked place cannot be walked to (SCENARIO-053)', async ({ page }) => {
+  test('a place the story has not reached is not on the map (SCENARIO-086)', async ({ page }) => {
     await startGame(page, '3d');
     await playUntil(page, weekHeading(page));
-    await expect(page.getByRole('button', { name: 'Tủ hồ sơ' })).toBeDisabled();
+    await expect(page.getByRole('button', { name: 'Tủ hồ sơ' })).toBeHidden();
+    await expect(page.getByRole('button', { name: 'Điện thoại' })).toBeHidden();
+    await expect(page.getByRole('button', { name: 'Ghế nghỉ' })).toBeEnabled();
   });
 
   test('it can be turned off (SCENARIO-054)', async ({ page }) => {

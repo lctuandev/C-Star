@@ -56,7 +56,8 @@ const GRAPHICS: readonly { value: Settings['graphics']; label: string }[] = [
 ];
 
 export const SettingsScreen = () => {
-  const { textSize, textSpeed, volume, ambience, graphics, change } = useSettingsStore();
+  const { textSize, textSpeed, volume, ambience, music, typing, graphics, change } =
+    useSettingsStore();
 
   return (
     <PageFrame title="Cài đặt">
@@ -90,7 +91,25 @@ export const SettingsScreen = () => {
         />
       </label>
       <label className="flex min-h-11 items-center justify-between gap-3 font-bold">
-        Tiếng đèn huỳnh quang
+        Nhạc nền
+        <input
+          type="checkbox"
+          checked={music}
+          onChange={(event) => change({ music: event.target.checked })}
+          className="accent-paycheck size-6"
+        />
+      </label>
+      <label className="flex min-h-11 items-center justify-between gap-3 font-bold">
+        Tiếng gõ chữ khi hội thoại
+        <input
+          type="checkbox"
+          checked={typing}
+          onChange={(event) => change({ typing: event.target.checked })}
+          className="accent-paycheck size-6"
+        />
+      </label>
+      <label className="flex min-h-11 items-center justify-between gap-3 font-bold">
+        Tiếng văn phòng
         <input
           type="checkbox"
           checked={ambience}

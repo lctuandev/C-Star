@@ -184,7 +184,9 @@ const referencesOf = (world: GameWorld) => {
     places.push({
       scene: 'week',
       effects: action.effects,
-      conditions: action.requires ? [action.requires] : [],
+      conditions: [action.requires, action.appearsWhen].filter(
+        (condition) => condition !== undefined,
+      ),
     });
   }
   for (const beat of world.beats) {

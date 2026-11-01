@@ -59,14 +59,9 @@ export const weeklyActions: readonly WeeklyAction[] = [
     id: 'side-gig',
     label: 'Nhận việc ngoài',
     hint: 'Có tiền ngay, mất sức nhiều',
-    requires: {
-      type: 'all',
-      conditions: [
-        { type: 'stat', stat: 'month', min: 2 },
-        { type: 'stat', stat: 'energy', min: 20 },
-      ],
-    },
-    lockedReason: 'Tháng này còn tin vào lương, hoặc đã hết sức',
+    appearsWhen: { type: 'stat', stat: 'companyDebt', min: 1 },
+    requires: { type: 'stat', stat: 'energy', min: 20 },
+    lockedReason: 'Không còn sức để làm thêm',
     effects: [
       { type: 'addCash', amount: 1_200_000 },
       { type: 'addEnergy', amount: -20 },
@@ -105,17 +100,21 @@ export const weeklyActions: readonly WeeklyAction[] = [
     ],
     outcomes: [
       'Dân bảo công ty sắp có đợt gọi vốn mới. Dân bảo thế từ năm ngoái.',
+      'Khoa rủ cả nhóm đi team building năm nay. Uyên hỏi ai trả tiền.',
+      'Cả nhóm bàn nên gọi trà sữa vị gì. Cuộc họp này có kết luận rõ hơn mọi cuộc họp khác.',
+    ],
+    outcomesOnceOwed: [
       'Uyên đã ghi lại ngày giờ mọi lời hứa vào một file riêng.',
       'Khoa tin tuần sau có lương. Tuần trước Khoa cũng tin vậy.',
       'Cả nhóm cười về trái cây thứ Sáu. Thứ Sáu này chỉ còn một quả chuối.',
+      'Anh Minh hỏi thăm từng người tháng này xoay xở thế nào. Không ai trả lời thật.',
     ],
   },
   {
     id: 'investigate',
     label: 'Lưu giấy tờ',
     hint: 'Giữ lại giấy tờ của mình, HR có thể để ý',
-    requires: { type: 'flag', flag: 'startedNotes' },
-    lockedReason: 'Chưa nghĩ tới chuyện phải giữ giấy tờ',
+    appearsWhen: { type: 'flag', flag: 'startedNotes' },
     effects: [
       { type: 'findEvidence' },
       { type: 'addEnergy', amount: -5 },

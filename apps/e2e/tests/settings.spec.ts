@@ -37,7 +37,7 @@ test('the sound never throws, before or after a gesture (SCENARIO-050)', async (
   await page.goto('/');
   await page.getByRole('link', { name: 'Cài đặt' }).click();
   await page.getByRole('slider').fill('30');
-  await page.getByRole('checkbox', { name: 'Tiếng đèn huỳnh quang' }).click();
-  await page.getByRole('checkbox', { name: 'Tiếng đèn huỳnh quang' }).click();
+  await page.getByRole('checkbox', { name: 'Tiếng văn phòng' }).click();
+  await page.getByRole('checkbox', { name: 'Tiếng văn phòng' }).click();
   expect(errors).toEqual([]);
 });

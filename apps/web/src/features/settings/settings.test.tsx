@@ -78,7 +78,11 @@ describe('settings (SCENARIO-051)', () => {
 
   it('change the sound', async () => {
     render(<SettingsScreen />);
-    await userEvent.click(screen.getByRole('checkbox', { name: 'Tiếng đèn huỳnh quang' }));
+    await userEvent.click(screen.getByRole('checkbox', { name: 'Tiếng văn phòng' }));
     expect(useSettingsStore.getState().ambience).toBe(false);
+    await userEvent.click(screen.getByRole('checkbox', { name: 'Nhạc nền' }));
+    expect(useSettingsStore.getState().music).toBe(false);
+    await userEvent.click(screen.getByRole('checkbox', { name: 'Tiếng gõ chữ khi hội thoại' }));
+    expect(useSettingsStore.getState().typing).toBe(false);
   });
 });

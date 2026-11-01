@@ -14,20 +14,25 @@ export interface ActionView {
   lockedReason?: string;
 }
 
+const isOffered = (state: GameState, action: WeeklyAction) =>
+  action.appearsWhen === undefined || meets(state, action.appearsWhen);
+
 const isOpen = (state: GameState, action: WeeklyAction) =>
-  action.requires === undefined || meets(state, action.requires);
+  isOffered(state, action) && (action.requires === undefined || meets(state, action.requires));
 
 export const weekActions = (state: GameState, world: GameWorld): ActionView[] =>
-  world.actions.map((action) => {
-    const available = isOpen(state, action);
-    return {
-      id: action.id,
-      label: action.label,
-      hint: action.hint,
-      available,
-      ...(!available && { lockedReason: action.lockedReason }),
-    };
-  });
+  world.actions
+    .filter((action) => isOffered(state, action))
+    .map((action) => {
+      const available = isOpen(state, action);
+      return {
+        id: action.id,
+        label: action.label,
+        hint: action.hint,
+        available,
+        ...(!available && { lockedReason: action.lockedReason }),
+      };
+    });
 
 export const kpiTargetOf = (world: GameWorld, month: number): number =>
   world.rules.kpiTargets[month - 1] ?? 0;
@@ -179,7 +184,8 @@ const finishAction = (
   action: WeeklyAction,
   evidenceBefore: number,
 ): GameState => {
-  const told = pickOutcome(state, action.outcomes);
+  const owed = state.money.companyDebt > 0 ? (action.outcomesOnceOwed ?? []) : [];
+  const told = pickOutcome(state, [...action.outcomes, ...owed]);
   const found = world.evidence.find(({ id }) => id === told.evidence[evidenceBefore]);
   return continueCalendar(
     {

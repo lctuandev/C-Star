@@ -66,10 +66,26 @@ describe('WeekScreen', () => {
     expect(useGameStore.getState().state?.lastOutcome).toBeTruthy();
   });
 
-  it('shows why an action is locked', () => {
+  it('offers nothing that assumes the salary is late before it is (SCENARIO-086)', () => {
     render(<WeekScreen state={week()} onOpenDossier={vi.fn()} />);
+    expect(screen.queryByRole('button', { name: /Nhận việc ngoài/ })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /Lưu giấy tờ/ })).not.toBeInTheDocument();
+  });
+
+  it('shows why an action is locked', () => {
+    const owed = week();
+    render(
+      <WeekScreen
+        state={{
+          ...owed,
+          money: { ...owed.money, companyDebt: 15_000_000 },
+          mood: { ...owed.mood, energy: 5 },
+        }}
+        onOpenDossier={vi.fn()}
+      />,
+    );
     expect(screen.getByRole('button', { name: /Nhận việc ngoài/ })).toBeDisabled();
-    expect(screen.getByText(/còn tin vào lương/)).toBeInTheDocument();
+    expect(screen.getByText('Không còn sức để làm thêm')).toBeInTheDocument();
   });
 
   it('says what the last action did', () => {

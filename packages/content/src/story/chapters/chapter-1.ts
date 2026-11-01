@@ -10,7 +10,7 @@ export const chapter1Scenes = {
         next: 'offer',
       },
       offer: {
-        text: 'Công ty C*. Vị trí: Chuyên viên. Lương: 15 triệu. Phúc lợi: "văn hóa gia đình, cơ hội không giới hạn, trái cây thứ Sáu".',
+        text: 'Công ty C*. Vị trí: Chuyên viên. Lương: 15 triệu, cộng tiền KPI hằng tháng. Phúc lợi: "văn hóa gia đình, cơ hội không giới hạn, trái cây thứ Sáu".',
         next: 'reaction',
       },
       reaction: {

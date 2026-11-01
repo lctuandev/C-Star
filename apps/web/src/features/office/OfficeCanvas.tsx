@@ -7,6 +7,7 @@ import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import type { RefObject } from 'react';
 import { AdditiveBlending, BufferAttribute, Color, Vector3 } from 'three';
 import type { HemisphereLight, Mesh, PerspectiveCamera } from 'three';
+import { audioEngine } from '@/features/audio/audio-engine';
 import { useGameStore, world } from '@/features/play/game-store';
 import { useSettingsStore } from '@/features/settings/settings-store';
 import { Character } from './Character';
@@ -233,12 +234,21 @@ interface OfficeSceneProps {
   state: GameState;
   place: Place;
   view: View;
+  places: readonly Hotspot[];
   openActions: ReadonlySet<string>;
   labels: RefObject<Map<string, HTMLElement>>;
   onTooSlow: () => void;
 }
 
-const OfficeScene = ({ state, place, view, openActions, labels, onTooSlow }: OfficeSceneProps) => {
+const OfficeScene = ({
+  state,
+  place,
+  view,
+  places,
+  openActions,
+  labels,
+  onTooSlow,
+}: OfficeSceneProps) => {
   const dispatch = useGameStore((store) => store.dispatch);
   const graphics = useSettingsStore((settings) => settings.graphics);
   const walk = useOfficeStore((store) => store.walk);
@@ -312,6 +322,7 @@ const OfficeScene = ({ state, place, view, openActions, labels, onTooSlow }: Off
           rest={atDesk ? 'type' : 'stand'}
           heading={atDesk ? PLAYER_DESK.heading : Math.PI}
           faces={inScene && speaker && speaker in NPC_SEATS ? STAGE[place] : null}
+          onStep={() => audioEngine.play('step')}
           onArrive={() => {
             const order = arrive();
             if (order) {
@@ -320,10 +331,9 @@ const OfficeScene = ({ state, place, view, openActions, labels, onTooSlow }: Off
           }}
         />
 
-        {state.phase === 'week' &&
-          HOTSPOTS.map((spot) => (
-            <Ring key={spot.actionId} spot={spot} open={openActions.has(spot.actionId)} />
-          ))}
+        {places.map((spot) => (
+          <Ring key={spot.actionId} spot={spot} open={openActions.has(spot.actionId)} />
+        ))}
       </Suspense>
     </>
   );
@@ -343,17 +353,12 @@ const OfficeCanvas = ({ state, place, onTooSlow }: OfficeCanvasProps) => {
 
   useEffect(() => () => void useOfficeStore.setState({ walk: null }), []);
 
+  const offered = useMemo(() => (state.phase === 'week' ? weekActions(state, world) : []), [state]);
   const openActions = useMemo(
-    () =>
-      new Set(
-        state.phase === 'week'
-          ? weekActions(state, world)
-              .filter((action) => action.available)
-              .map(({ id }) => id)
-          : [],
-      ),
-    [state],
+    () => new Set(offered.filter((action) => action.available).map(({ id }) => id)),
+    [offered],
   );
+  const places = HOTSPOTS.filter((spot) => offered.some(({ id }) => id === spot.actionId));
 
   const view: View =
     state.phase === 'week'
@@ -384,35 +389,35 @@ const OfficeCanvas = ({ state, place, onTooSlow }: OfficeCanvasProps) => {
           state={state}
           place={place}
           view={view}
+          places={places}
           openActions={openActions}
           labels={labels}
           onTooSlow={onTooSlow}
         />
       </Canvas>
-      {state.phase === 'week' &&
-        HOTSPOTS.map((spot) => {
-          const open = openActions.has(spot.actionId);
-          return (
-            <button
-              key={spot.actionId}
-              type="button"
-              ref={(element) => {
-                if (element) {
-                  labels.current.set(spot.actionId, element);
-                } else {
-                  labels.current.delete(spot.actionId);
-                }
-              }}
-              disabled={!open || walk !== null}
-              onClick={() => walkTo({ to: spot.stand, actionId: spot.actionId })}
-              className={`absolute top-0 left-0 z-10 min-h-9 rounded-full px-3 text-xs font-extrabold whitespace-nowrap transition-colors ${
-                open ? 'bg-paycheck text-surface-950' : 'bg-surface-900/90 text-ink-muted'
-              }`}
-            >
-              {spot.label}
-            </button>
-          );
-        })}
+      {places.map((spot) => {
+        const open = openActions.has(spot.actionId);
+        return (
+          <button
+            key={spot.actionId}
+            type="button"
+            ref={(element) => {
+              if (element) {
+                labels.current.set(spot.actionId, element);
+              } else {
+                labels.current.delete(spot.actionId);
+              }
+            }}
+            disabled={!open || walk !== null}
+            onClick={() => walkTo({ to: spot.stand, actionId: spot.actionId })}
+            className={`absolute top-0 left-0 z-10 min-h-9 rounded-full px-3 text-xs font-extrabold whitespace-nowrap transition-colors ${
+              open ? 'bg-paycheck text-surface-950' : 'bg-surface-900/90 text-ink-muted'
+            }`}
+          >
+            {spot.label}
+          </button>
+        );
+      })}
     </>
   );
 };

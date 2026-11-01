@@ -19,6 +19,8 @@ interface GameStore {
   state: GameState | null;
   /** Lines already shown: UI state, never saved (contracts/save.md §2). */
   history: readonly HistoryLine[];
+  /** What the player last asked for: the sound of it depends on what, not just on the result. */
+  lastAction: GameAction | null;
   /** Set by the menu on the way to the application form: a new run replaces the one saved. */
   startingNewGame: boolean;
   setStartingNewGame: (starting: boolean) => void;
@@ -45,6 +47,7 @@ const withLine = (history: readonly HistoryLine[], state: GameState) => {
 export const useGameStore = create<GameStore>((set, get) => ({
   state: null,
   history: [],
+  lastAction: null,
   startingNewGame: false,
   setStartingNewGame: (startingNewGame) => set({ startingNewGame }),
 
@@ -66,7 +69,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }
     const result = applyAction(state, action, world);
     if (result.ok) {
-      set({ state: result.state, history: withLine(history, result.state) });
+      set({
+        state: result.state,
+        history: withLine(history, result.state),
+        lastAction: action,
+      });
       useSaveStore.getState().autosave(result.state);
       if (state.phase !== 'ended' && result.state.phase === 'ended' && result.state.ending) {
         void useProgressStore.getState().record(result.state.ending);

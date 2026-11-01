@@ -7,6 +7,9 @@ const settingsSchema = z.strictObject({
   /** 0 to 1. */
   volume: z.number().min(0).max(1),
   ambience: z.boolean(),
+  /** Older settings have neither of these two. */
+  music: z.boolean().default(true),
+  typing: z.boolean().default(true),
   /**
    * `auto`: the 3D office, until the device turns out too slow for it. `3d` keeps it regardless.
    * Older settings have no value here.
@@ -21,6 +24,8 @@ export const DEFAULT_SETTINGS: Settings = {
   textSpeed: 'normal',
   volume: 0.7,
   ambience: true,
+  music: true,
+  typing: true,
   graphics: 'auto',
 };
 
@@ -55,8 +60,8 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
   load: () => set(readSettings()),
 
   change: (change) => {
-    const { textSize, textSpeed, volume, ambience, graphics } = get();
-    const next = { textSize, textSpeed, volume, ambience, graphics, ...change };
+    const { textSize, textSpeed, volume, ambience, music, typing, graphics } = get();
+    const next = { textSize, textSpeed, volume, ambience, music, typing, graphics, ...change };
     writeSettings(next);
     set(next);
   },
