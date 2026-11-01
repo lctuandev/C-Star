@@ -1,5 +1,5 @@
 import { disclaimer, gameInfo } from '@cstar/content';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 import { useDisclaimerStore } from '@/features/disclaimer/disclaimer-store';
@@ -22,7 +22,7 @@ describe('LandingScreen', () => {
     expect(push).not.toHaveBeenCalled();
 
     useDisclaimerStore.getState().accept();
-    expect(push).toHaveBeenCalledWith('/play');
+    await waitFor(() => expect(push).toHaveBeenCalledWith('/play'));
   });
 
   it('links to the full text', () => {

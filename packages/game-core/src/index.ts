@@ -1,4 +1,4 @@
-export { applyAction, beginRun, replay } from './actions/apply-action.js';
+export { applyAction, beginRun, replay, resumeRun } from './actions/apply-action.js';
 export type { ActionResult, GameAction } from './actions/apply-action.js';
 export { weekActions } from './calendar/calendar.js';
 export type { ActionView } from './calendar/calendar.js';

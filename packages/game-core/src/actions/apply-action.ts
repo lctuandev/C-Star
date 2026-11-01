@@ -44,6 +44,22 @@ export const applyAction = (
 export const beginRun = (seed: number, world: GameWorld): GameState =>
   startScene(createGameState(seed, world.rules), world.story, world.openingScene);
 
+/**
+ * Takes up a loaded run. A save can outlive a scene a later version renamed: it must not strand the
+ * player on a line that no longer exists.
+ */
+export const resumeRun = (state: GameState, world: GameWorld): GameState => {
+  const { sceneId, nodeId } = state.story;
+  const known = sceneId !== null && nodeId !== null && world.story.scenes[sceneId]?.nodes[nodeId];
+  if (state.phase !== 'scene' || known) {
+    return state;
+  }
+  return continueCalendar(
+    { ...state, story: { ...state.story, sceneId: null, nodeId: null } },
+    world,
+  );
+};
+
 /** Replays a run from its seed. An action that is refused here means the script is wrong. */
 export const replay = (seed: number, actions: readonly GameAction[], world: GameWorld): GameState =>
   actions.reduce(

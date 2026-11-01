@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { viewOf } from '../story/story-engine.js';
 import type { GameState } from '../state/game-state.js';
 import { testWorld as world } from '../test-world.fixture.js';
-import { applyAction, beginRun, replay } from './apply-action.js';
+import { applyAction, beginRun, replay, resumeRun } from './apply-action.js';
 import type { GameAction } from './apply-action.js';
 
 const { story } = world;
@@ -141,5 +141,27 @@ describe('replay (SCENARIO-018)', () => {
   it('never changes the state it was given', () => {
     const state = Object.freeze(replay(9, toTheChoice, world));
     expect(() => applyAction(state, script[1]!, world)).not.toThrow();
+  });
+});
+
+describe('resumeRun', () => {
+  it('leaves a sound run alone', () => {
+    const state = replay(1, toTheChoice, world);
+    expect(resumeRun(state, world)).toBe(state);
+  });
+
+  it('moves on from a line that no longer exists', () => {
+    const state = replay(1, toTheChoice, world);
+    const stale: GameState = { ...state, story: { ...state.story, nodeId: 'renamed' } };
+    expect(resumeRun(stale, world)).toMatchObject({
+      phase: 'week',
+      story: { sceneId: null, nodeId: null },
+    });
+  });
+
+  it('moves on from a scene that no longer exists', () => {
+    const state = replay(1, toTheChoice, world);
+    const stale: GameState = { ...state, story: { ...state.story, sceneId: 'gone' } };
+    expect(resumeRun(stale, world).phase).toBe('week');
   });
 });

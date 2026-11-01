@@ -1,7 +1,8 @@
 import { world } from '@cstar/content';
-import { applyAction, beginRun, viewOf } from '@cstar/game-core';
+import { applyAction, beginRun, resumeRun, viewOf } from '@cstar/game-core';
 import type { GameAction, GameState } from '@cstar/game-core';
 import { create } from 'zustand';
+import { useSaveStore } from '@/features/save/save-store';
 
 export { world };
 
@@ -18,6 +19,8 @@ interface GameStore {
   /** Lines already shown: UI state, never saved (contracts/save.md §2). */
   history: readonly HistoryLine[];
   newRun: (seed: number) => void;
+  /** Takes up a saved run. */
+  resume: (state: GameState) => void;
   dispatch: (action: GameAction) => void;
 }
 
@@ -42,6 +45,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
   newRun: (seed) => {
     const state = beginRun(seed, world);
     set({ state, history: withLine([], state) });
+    useSaveStore.getState().autosave(state);
+  },
+
+  resume: (saved) => {
+    const state = resumeRun(saved, world);
+    set({ state, history: withLine([], state) });
   },
 
   dispatch: (action) => {
@@ -52,6 +61,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const result = applyAction(state, action, world);
     if (result.ok) {
       set({ state: result.state, history: withLine(history, result.state) });
+      useSaveStore.getState().autosave(result.state);
     }
   },
 }));

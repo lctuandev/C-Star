@@ -2,11 +2,13 @@
 
 import { viewOf } from '@cstar/game-core';
 import type { Place } from '@cstar/game-core';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { DialogueBox } from '@/features/dialogue/DialogueBox';
 import { HistorySheet } from '@/features/dialogue/HistorySheet';
 import { Hud } from '@/features/hud/Hud';
 import { PayslipScreen } from '@/features/payslip/PayslipScreen';
+import { useSaveStore } from '@/features/save/save-store';
 import { WeekScreen } from '@/features/week/WeekScreen';
 import { EndOfContent } from './EndOfContent';
 import { useGameStore, world } from './game-store';
@@ -24,14 +26,29 @@ export const PlayScreen = () => {
   const state = useGameStore((store) => store.state);
   const history = useGameStore((store) => store.history);
   const dispatch = useGameStore((store) => store.dispatch);
-  const newRun = useGameStore((store) => store.newRun);
+  const writeFailed = useSaveStore((store) => store.writeFailed);
+  const router = useRouter();
   const [showHistory, setShowHistory] = useState(false);
 
+  // A reload or a direct link: take up the saved run, or start one if there is none.
   useEffect(() => {
-    if (useGameStore.getState().state === null) {
-      newRun(Date.now());
+    const game = useGameStore.getState();
+    if (game.state !== null) {
+      return;
     }
-  }, [newRun]);
+    const saves = useSaveStore.getState();
+    void saves.refresh().then(() => {
+      const { status, file } = useSaveStore.getState();
+      if (status === 'broken') {
+        // The menu deals with it: a new run here would write over the broken save.
+        router.replace('/');
+      } else if (status === 'found' && file && file.state.phase !== 'ended') {
+        game.resume(file.state);
+      } else {
+        game.newRun(Date.now());
+      }
+    });
+  }, [router]);
 
   if (!state) {
     return null;
@@ -46,6 +63,11 @@ export const PlayScreen = () => {
       className={`flex min-h-dvh flex-col bg-gradient-to-b pt-[env(safe-area-inset-top)] ${BACKDROPS[place ?? 'office']}`}
     >
       <Hud state={state} />
+      {writeFailed && (
+        <p role="alert" className="bg-surface-800 text-alarm px-4 py-2 text-sm">
+          Tiến độ chưa được lưu: trình duyệt đang chặn bộ nhớ.
+        </p>
+      )}
       {state.phase === 'week' && <WeekScreen state={state} />}
       {state.phase === 'payslip' && state.payslip && <PayslipScreen payslip={state.payslip} />}
       {state.phase === 'ended' && <EndOfContent />}
