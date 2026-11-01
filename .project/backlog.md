@@ -9,7 +9,7 @@ Rà soát lần cuối: 2026-11-01 (sau M6).
 
 | Mục                                                                 | Từ       | Xử lý ở  |
 | ------------------------------------------------------------------- | -------- | -------- |
-| Cài thật trên Android và iPhone, cần HTTPS                          | FEAT-001 | Khi deploy |
+| Cài thật trên Android và iPhone                                     | FEAT-001 | Owner    |
 | Chưa rõ vì sao CDP làm Chromium giữ worker mới (không ảnh hưởng người chơi) | FEAT-001 | Khi có dấu hiệu ở máy thật |
 
 ## 3D

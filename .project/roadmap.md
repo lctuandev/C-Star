@@ -3,7 +3,7 @@
 Nguồn: `docs/Cong_Ty_C_GDD_v0.1.md`. File này chia GDD thành các cột mốc và Task ID. Chi tiết từng task nằm
 trong `.tasks/`, trạng thái hiện tại ở `.project/CURRENT.md`.
 
-Cập nhật: 2026-11-01. **M0–M6 xong. Xem `.project/CURRENT.md`.**
+Cập nhật: 2026-11-01. **M0–M6 xong, đang chạy công khai. Xem `.project/CURRENT.md`.**
 
 ---
 

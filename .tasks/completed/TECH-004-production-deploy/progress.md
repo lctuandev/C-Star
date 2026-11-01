@@ -4,3 +4,6 @@
 
 - Mọi thứ cần có của host đã nằm trong `deploy/nginx.conf`, có E2E chứng minh.
 - Hai test lệch vì image tự build, tên file băm khác `apps/web/out`. Mount đúng bản build thì pass.
+
+- Thêm kiểu MIME cho `webp`, `glb` và gzip vào nginx: bản 3D mới cần, image cũ không có.
+- Container chỉ mở cổng trên `127.0.0.1`: đường vào công khai duy nhất là tunnel.

@@ -8,7 +8,7 @@ không nhắm vào cá nhân hay tổ chức nào.
 
 ## Trạng thái
 
-Chơi trọn được: 37 cảnh, 6 kết thúc, PWA offline, văn phòng 3D có ánh sáng bake, nhân vật có xương, chạy trên điện thoại, tablet và PC. Chưa deploy. Xem [.project/CURRENT.md](.project/CURRENT.md).
+Chơi trọn được: 37 cảnh, 6 kết thúc, PWA offline, văn phòng 3D có ánh sáng bake, nhân vật có xương, chạy trên điện thoại, tablet và PC. Bản chạy thật: <https://c-star.lctuan.space>. Xem [.project/CURRENT.md](.project/CURRENT.md).
 
 ## Chạy dự án
 
