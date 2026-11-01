@@ -48,10 +48,10 @@ export const weeklyActions: readonly WeeklyAction[] = [
   {
     id: 'work',
     label: 'Làm task',
-    hint: 'Có KPI, sếp vui hơn, bạn mệt hơn',
+    hint: 'Lấy KPI cho tháng này, sếp thêm ưng',
     tickets: true,
     requires: { type: 'stat', stat: 'energy', min: 15 },
-    lockedReason: 'Không còn sức để giả vờ bận',
+    lockedReason: 'Quá mệt rồi, cần ít nhất 15 sức khỏe',
     effects: [
       { type: 'addEnergy', amount: -15 },
       { type: 'addStress', amount: 3 },
@@ -67,10 +67,10 @@ export const weeklyActions: readonly WeeklyAction[] = [
   {
     id: 'side-gig',
     label: 'Nhận việc ngoài',
-    hint: 'Có tiền ngay, mất sức nhiều',
+    hint: 'Có tiền ngay, không phải lương công ty',
     appearsWhen: { type: 'stat', stat: 'companyDebt', min: 1 },
     requires: { type: 'stat', stat: 'energy', min: 20 },
-    lockedReason: 'Không còn sức để làm thêm',
+    lockedReason: 'Việc ngoài nặng lắm, cần ít nhất 20 sức khỏe',
     effects: [
       { type: 'addCash', amount: 1_200_000 },
       { type: 'addEnergy', amount: -20 },
@@ -99,7 +99,7 @@ export const weeklyActions: readonly WeeklyAction[] = [
   {
     id: 'chat',
     label: 'Tám với đồng nghiệp',
-    hint: 'Bớt căng, thân nhau hơn',
+    hint: 'Bớt căng, thân với đồng nghiệp hơn',
     effects: [
       { type: 'addEnergy', amount: -5 },
       { type: 'addStress', amount: -8 },
@@ -137,7 +137,7 @@ export const weeklyActions: readonly WeeklyAction[] = [
   {
     id: 'investigate',
     label: 'Lưu giấy tờ',
-    hint: 'Giữ lại giấy tờ của mình, HR có thể để ý',
+    hint: 'Thêm một giấy tờ vào Hồ sơ, HR có thể để ý',
     appearsWhen: { type: 'flag', flag: 'startedNotes' },
     effects: [
       { type: 'findEvidence' },

@@ -1,5 +1,6 @@
 'use client';
 
+import { ticketGuide } from '@cstar/content';
 import { ticketView } from '@cstar/game-core';
 import type { GameState } from '@cstar/game-core';
 import { Button } from '@/components/ui/Button';
@@ -19,7 +20,7 @@ export const TicketScreen = ({ state }: { state: GameState }) => {
       {last && (
         <p role="status" className="text-ink-secondary text-base leading-7">
           <span className={`font-bold ${last.correct ? 'text-fluorescent' : 'text-alarm'}`}>
-            {last.correct ? 'Đúng việc. ' : 'Sai việc. '}
+            {last.correct ? 'Đúng việc, +1 KPI. ' : 'Sai việc, không có KPI. '}
           </span>
           {last.reply}
         </p>
@@ -33,6 +34,7 @@ export const TicketScreen = ({ state }: { state: GameState }) => {
             </p>
             <h2 className="text-lg leading-7 font-bold">{ticket.text}</h2>
           </article>
+          <p className="text-ink-secondary text-sm">{ticketGuide}</p>
           <div className="flex gap-3">
             <Button
               className="flex-1"
@@ -53,7 +55,7 @@ export const TicketScreen = ({ state }: { state: GameState }) => {
             onClick={() => dispatch({ type: 'skipTickets' })}
             className="text-ink-muted min-h-11 text-sm underline"
           >
-            Làm cho có
+            Làm cho có: xong ngay, được {world.rules.quickTaskPoints} KPI
           </button>
         </>
       ) : (

@@ -100,7 +100,7 @@ describe('TicketScreen (SCENARIO-038)', () => {
     for (let index = 0; index < world.rules.ticketsPerRound; index += 1) {
       await userEvent.click(screen.getByRole('button', { name: 'Làm ngay' }));
       rerender(<TicketScreen state={current()} />);
-      expect(screen.getByRole('status')).toHaveTextContent(/việc\./);
+      expect(screen.getByRole('status')).toHaveTextContent(/việc, .*KPI\./);
     }
 
     await userEvent.click(screen.getByRole('button', { name: 'Xong việc' }));
@@ -110,7 +110,7 @@ describe('TicketScreen (SCENARIO-038)', () => {
 
   it('can be skipped', async () => {
     render(<TicketScreen state={current()} />);
-    await userEvent.click(screen.getByRole('button', { name: 'Làm cho có' }));
+    await userEvent.click(screen.getByRole('button', { name: /Làm cho có/ }));
     expect(current()).toMatchObject({ phase: 'week', kpi: world.rules.quickTaskPoints });
   });
 });

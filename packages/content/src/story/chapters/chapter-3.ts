@@ -101,7 +101,7 @@ export const chapter3Scenes = {
       },
       'uyen-idea': {
         speaker: 'uyen',
-        text: 'Mình ghi lại từng khoản, từng lời hứa, ngày giờ đầy đủ. Bạn muốn làm cùng không? Có gì còn biết mình đang được nợ bao nhiêu.',
+        text: 'Mình ghi từng khoản, từng lời hứa, đủ ngày giờ. Hồi công ty cũ đóng cửa, mình không có nổi một tờ giấy để đối chiếu. Lần này thì khác. Bạn làm cùng không?',
         choices: [
           {
             id: 'start-notes',
@@ -146,7 +146,7 @@ export const chapter3Scenes = {
       },
       'khoa-rent': {
         speaker: 'khoa',
-        text: 'Mọi người ơi, tháng này ai dư, cho mình mượn tạm tiền nhà được không? Tuần sau có lương là mình trả liền.',
+        text: 'Mọi người ơi, tháng này ai dư hong, cho mình mượn tạm tiền nhà với, toang thật rồi. Tuần sau có lương là mình trả liền!',
         next: 'react',
       },
       react: {
@@ -155,6 +155,8 @@ export const chapter3Scenes = {
           {
             id: 'lend',
             text: 'Cho Khoa mượn 1 triệu',
+            requires: { type: 'stat', stat: 'cash', min: 1_000_000 },
+            lockedReason: 'Trong ví không còn đủ 1 triệu',
             effects: [
               { type: 'addCash', amount: -1_000_000 },
               { type: 'addRelation', npc: 'khoa', amount: 18 },
@@ -177,7 +179,7 @@ export const chapter3Scenes = {
       },
       refused: {
         speaker: 'khoa',
-        text: 'Không sao đâu! Mình hỏi vậy thôi! Tại tuần sau là có rồi mà!',
+        text: 'Hong sao đâu! Mình hỏi chơi thôi! Tuần sau có rồi mà!',
       },
     },
   },
@@ -269,6 +271,11 @@ export const chapter3Scenes = {
       },
       'end-tense': {
         text: 'Sếp mỉm cười, ghi gì đó vào sổ, và kết thúc cuộc họp sớm 40 phút. Không ai biết như thế là tốt hay xấu.',
+        next: 'uyen-thanks',
+      },
+      'uyen-thanks': {
+        speaker: 'uyen',
+        text: 'Cảm ơn bạn. Ít nhất lần này mình không phải người duy nhất hỏi.',
       },
       'end-smooth': {
         text: 'Sếp vỗ vai bạn. Uyên gập sổ lại. Trên đường về, không ai nói gì với ai.',
@@ -292,7 +299,7 @@ export const chapter3Scenes = {
       },
       uyen: {
         speaker: 'uyen',
-        text: 'Bạn ấy có hỏi mình cách lấy lại giấy tờ trước khi đi. Không phải ai cũng biết mình có quyền giữ chúng.',
+        text: 'Bạn ấy có hỏi mình cách lấy lại giấy tờ trước khi đi. Nghỉ việc không xóa được khoản đã làm, nhưng không có giấy thì khó đòi.',
         next: 'thought',
       },
       thought: {
@@ -320,7 +327,7 @@ export const chapter3Scenes = {
       },
       uyen: {
         speaker: 'uyen',
-        text: 'Hai tháng rồi, không một dòng nào về kế hoạch trả lương hay tình hình công ty. Mình lưu email này lại, bạn cũng nên làm thế.',
+        text: 'Hai tháng rồi, họ vẫn chưa đưa ra một ngày cụ thể. Mình lưu email này lại. Ít nhất sau này biết họ đã nói gì, vào lúc nào.',
         next: 'check',
       },
       check: {
@@ -333,7 +340,7 @@ export const chapter3Scenes = {
         next: 'end',
       },
       end: {
-        text: 'Bạn mở lịch ra, cạnh trái tim nhỏ của tháng đầu tiên. Không có ngày nào để đánh dấu cả.',
+        text: 'Bạn mở lịch ra. Trái tim nhỏ của tháng đầu tiên vẫn còn đó. Bạn định xóa nó đi, rồi thôi.',
       },
     },
   },
@@ -387,7 +394,7 @@ export const chapter3Scenes = {
         ],
       },
       'after-minh': {
-        text: 'Anh Huấn gật đầu rồi quay lại với chồng việc của cả phòng. Anh ấy yêu nơi này thật, bạn nhìn là biết. Chính vì vậy mà anh ấy không nói dối bạn.',
+        text: 'Anh Huấn gật đầu rồi quay lại với chồng việc của cả phòng. Anh ấy yêu nơi này thật, bạn nhìn là biết. Anh không hứa với bạn điều gì. Có lẽ anh cũng không biết nên tin vào điều gì nữa.',
       },
       'after-tin': {
         text: 'Anh Roger vỗ vai bạn hai cái. Bạn thấy vững lòng được đúng tới giờ ăn trưa.',
@@ -410,7 +417,7 @@ export const chapter3Scenes = {
         choices: [
           {
             id: 'stay-on',
-            text: 'Từ chối. Đi lúc này là mất hết những gì công ty còn nợ',
+            text: 'Từ chối. Nghỉ lúc này thì chưa biết phải đòi khoản còn thiếu thế nào',
             next: 'stayed',
           },
           {
@@ -494,7 +501,7 @@ export const chapter3Scenes = {
         text: 'Bạn về chỗ. Trên nhóm chat, danh sách thành viên dài dần. Uyên chụp lại tấm băng rôn. Không có gì đâu, quen tay thôi.',
       },
       'joined-dragons': {
-        text: 'Ting. 5.000.000 đ, nội dung "BENEFIT VUOT THAC". Vẫn chỉ một phần ba tháng lương. Tối đó bạn ở lại tới 10 giờ: lần đầu tiên bạn làm thêm để được trả tiền cho việc đã làm.',
+        text: 'Ting. 5.000.000 đ, nội dung "BENEFIT VUOT THAC". Vẫn chỉ một phần ba tháng lương, và trong sổ của bạn nó chỉ là phần còn thiếu của tháng 2. Tối đó bạn ở lại tới 10 giờ: lần đầu tiên bạn làm thêm để được trả tiền cho việc đã làm.',
       },
     },
   },
@@ -521,6 +528,10 @@ export const chapter3Scenes = {
       'tin-2': {
         speaker: 'manager',
         text: 'Là mình phải có niềm tin, em ạ. Tuần sau mình sync tiếp.',
+        next: 'refresh',
+      },
+      refresh: {
+        text: 'Anh vừa nói vừa bấm tải lại hộp thư, dù chẳng có email nào mới.',
         next: 'minh',
       },
       minh: {
@@ -541,12 +552,16 @@ export const chapter3Scenes = {
       },
       dan: {
         speaker: 'dan',
-        text: 'Tôi không sợ chậm, tôi sợ không ai nói gì. Nhà đầu tư nào cũng có báo cáo. Bọn mình làm ở đây mà không biết công ty còn bao nhiêu tiền.',
+        text: 'Tôi không sợ chậm, tôi sợ không ai nói gì. Nhà đầu tư nào cũng có báo cáo. Bọn mình làm ở đây mà không biết công ty còn bao nhiêu tiền. Tôi hỏi ba người về cái biên bản ghi nhớ rồi, chưa ai tận mắt thấy.',
         next: 'khoa',
       },
       khoa: {
         speaker: 'khoa',
-        text: 'Chủ nhà mình hỏi bao giờ có tiền, mình cũng không biết nói sao. Mình cười hoài cũng mệt.',
+        text: 'Chủ nhà nhắn mà mình seen hoài cũng kỳ, trả lời thì biết nói gì. Cười hoài cũng mệt á.',
+        next: 'intern',
+      },
+      intern: {
+        text: 'Một bạn thực tập nhắn vào nhóm chung: "Cho em hỏi tuần sau là tuần nào ạ, em hỏi thật". Hai phút sau tin nhắn bị thu hồi.',
         next: 'uyen',
       },
       uyen: {

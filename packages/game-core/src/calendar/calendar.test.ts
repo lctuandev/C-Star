@@ -62,9 +62,15 @@ describe('the week (SCENARIO-024)', () => {
     refused(replay(1, toPayslip, world), act('rest'));
   });
 
+  it('tells the screen what an action costs', () => {
+    const [work] = weekActions(week(), world);
+    expect(work?.effects).toEqual(world.actions[0]?.effects);
+  });
+
   it('locks an action with its reason, and leaves another open', () => {
     const tired: GameState = { ...week(), mood: { energy: 10, stress: 0 } };
-    expect(weekActions(tired, world)).toEqual([
+    const shown = weekActions(tired, world).map(({ effects: _effects, ...rest }) => rest);
+    expect(shown).toEqual([
       {
         id: 'work',
         label: 'Làm task',

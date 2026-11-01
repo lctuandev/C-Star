@@ -80,6 +80,10 @@ export const chapter6Scenes = {
       'chairman-answers': {
         speaker: 'chairman',
         text: 'Em còn trẻ. Đó là câu hỏi của người làm thuê. Hãy hỏi mình đã cống hiến được gì cho công ty.',
+        next: 'after-question',
+      },
+      'after-question': {
+        text: 'Một trợ lý cúi xuống ghi gì đó vào điện thoại. Chủ tịch không nói thêm. Những người đang nhìn bạn bắt đầu nhìn xuống sàn, nhưng từ lúc đó không ai nhắc lại câu kia nữa.',
         next: 'tin-check',
       },
       noted: {
@@ -116,10 +120,14 @@ export const chapter6Scenes = {
       },
       'pledge-check': {
         routes: [{ when: { type: 'flag', flag: 'soughtAdvice' }, next: 'advice-echo' }],
-        otherwise: 'boss-asks',
+        otherwise: 'fine-print',
       },
       'advice-echo': {
         text: 'Bạn nhớ câu hỏi của người tư vấn: "Bạn có lưu lại không?". Bạn chụp lại tờ cam kết trước khi làm bất cứ điều gì.',
+        next: 'fine-print',
+      },
+      'fine-print': {
+        text: 'Bạn đọc tờ cam kết một lượt. Không có ngày thanh toán. Không có số tiền. Chỉ có chỗ ký tên.',
         next: 'boss-asks',
       },
       'boss-asks': {
@@ -193,7 +201,7 @@ export const chapter6Scenes = {
         next: 'ting',
       },
       ting: {
-        text: 'Ting. Lần này bạn không reo lên. Bạn chỉ ngồi yên một lúc.',
+        text: 'Ting. Lần này bạn không reo lên, dù cả phần KPI bị giữ cũng đã về. Bạn chỉ ngồi yên một lúc.',
         effects: [{ type: 'companyPays', amount: COMPANY_PAYS_ALL }],
         next: 'loan-check',
       },
@@ -246,7 +254,7 @@ export const chapter6Scenes = {
         next: 'deal',
       },
       deal: {
-        text: 'Công ty chốt lộ trình trả dần cho cả nhóm. Không trọn vẹn, nhưng có văn bản, và lần này là chung một văn bản.',
+        text: 'Công ty chốt lộ trình trả dần cho cả nhóm. Không trọn vẹn, nhưng có văn bản, và lần này là chung một văn bản. Đợt đầu về tài khoản bạn 30 triệu.',
         effects: [{ type: 'companyPays', amount: 30_000_000 }],
         next: 'minh',
       },
@@ -272,7 +280,7 @@ export const chapter6Scenes = {
         otherwise: 'year',
       },
       'roger-signs': {
-        text: 'Hôm cuối, anh Roger đến trễ, không nói gì, ký vào dòng cuối của danh sách. Anh xin lỗi từng người anh đã giới thiệu vào công ty, từng người một.',
+        text: 'Hôm cuối, anh Roger đến trễ, không nói gì, ký vào dòng cuối của danh sách. Anh xin lỗi từng người anh đã giới thiệu vào công ty, từng người một. Có người gật đầu. Có người không nhìn anh. Anh không giải thích thêm.',
         next: 'year',
       },
       year: {
@@ -292,7 +300,7 @@ export const chapter6Scenes = {
       },
       long: {
         text: 'Việc đó tốn nhiều tháng và nhiều giấc ngủ, nhưng khoản của bạn cuối cùng cũng được giải quyết. Chỉ khoản của bạn.',
-        effects: [{ type: 'companyPays', amount: 45_000_000 }],
+        effects: [{ type: 'companyPays', amount: COMPANY_PAYS_ALL }],
         next: 'after',
       },
       after: {
@@ -340,7 +348,7 @@ export const chapter6Scenes = {
         next: 'also-a-pity',
       },
       'also-a-pity': {
-        text: 'Bạn đọc tin nhắn trong giờ nghỉ trưa, bên phần cơm mua bằng lương tháng này. Bạn cũng thấy tiếc. Tiếc là đã không đi sớm hơn.',
+        text: 'Bạn đọc tin nhắn trong giờ nghỉ trưa, bên phần cơm mua bằng lương tháng này. Vẫn một khoản tiền chưa có, một đợt gọi vốn chưa xảy ra. Bạn cũng thấy tiếc. Tiếc là đã không đi sớm hơn.',
         next: 'year',
       },
       'on-time': {
@@ -408,8 +416,16 @@ export const chapter6Scenes = {
   'ending-empty-promise': {
     id: 'ending-empty-promise',
     place: 'desk',
-    start: 'nothing',
+    start: 'tried-check',
     nodes: {
+      'tried-check': {
+        routes: [{ when: { type: 'flag', flag: 'chosePursue' }, next: 'filed' }],
+        otherwise: 'nothing',
+      },
+      filed: {
+        text: 'Hồ sơ của bạn được đóng dấu "Đã tiếp nhận", rồi nằm đó. Giấy tờ còn thiếu, người đi cùng cũng không có, nên công ty chỉ cần chờ. Công ty rất giỏi chờ.',
+        next: 'nothing',
+      },
       nothing: {
         text: 'Sáng thứ Hai. Bạn mở máy. Có một ticket mới. Có một thông báo: lộ trình thanh toán tiếp tục được điều chỉnh.',
         next: 'by-heart',
@@ -420,7 +436,14 @@ export const chapter6Scenes = {
       },
       same: {
         text: 'Không ai đuổi bạn. Không ai trả bạn. Mọi thứ vẫn tiếp tục, y như một bài hát không có đoạn kết.',
-        next: 'year',
+        next: 'year-check',
+      },
+      'year-check': {
+        routes: [{ when: { type: 'flag', flag: 'chosePursue' }, next: 'year-tried' }],
+        otherwise: 'year',
+      },
+      'year-tried': {
+        text: 'Một năm sau. Hay là hôm qua, bạn không còn chắc nữa. Bạn đã từng hỏi, từng ghi chép, từng nghĩ mình sẽ làm được gì đó. Sáng nay có email chào mừng một nhân viên mới. Bạn được giao hướng dẫn bạn ấy.',
       },
       year: {
         text: 'Một năm sau. Hay là hôm qua, bạn không còn chắc nữa. Bạn chưa từng sai ở nhiệm vụ nào, và cũng chưa từng quyết định điều gì. Sáng nay có email chào mừng một nhân viên mới. Bạn được giao hướng dẫn bạn ấy.',
@@ -461,7 +484,7 @@ export const chapter6Scenes = {
         next: 'wall',
       },
       'desk-flask': {
-        text: 'Bàn của Khoa trống. Cái phích vẫn ở đó từ tháng 5, không ai dám dọn.',
+        text: 'Bàn của Khoa trống. Cái phích vẫn ở đó từ tháng 5. Không ai biết nên trả nó cho ai, cũng không ai muốn là người mang nó đi.',
         next: 'wall',
       },
       wall: {

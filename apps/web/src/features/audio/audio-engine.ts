@@ -2,10 +2,6 @@ import { MusicPlayer } from './music';
 import type { Track } from './score';
 import type { SoundCue } from './sound-cues';
 
-/** A strip light's hum sits about here (mains hum and its harmonic), very quietly. */
-const HUM_FREQUENCY = 100;
-const HUM_LEVEL = 0.012;
-
 /** No matter how fast the text runs: a tick per glyph is a rattle, not a voice. */
 const TYPE_GAP = 0.05;
 const TYPE_LEVEL = 0.1;
@@ -204,7 +200,6 @@ const SYNTHESIZED: Record<SoundCue, readonly Note[]> = {
 export class AudioEngine {
   private context: AudioContext | null = null;
   private master: GainNode | null = null;
-  private hum: OscillatorNode | null = null;
   private music: MusicPlayer | null = null;
   private noise: AudioBuffer | null = null;
   private readonly buffers = new Map<Sample, AudioBuffer>();
@@ -233,7 +228,6 @@ export class AudioEngine {
     } else {
       this.master.connect(this.context.destination);
     }
-    this.applyAmbience();
     this.applyMusic();
     void this.loadSamples(this.context);
   }
@@ -246,9 +240,9 @@ export class AudioEngine {
     this.applyMusic();
   }
 
+  /** The room's distant keyboards. The strip light's hum went: players found it grating. */
   setAmbience(on: boolean): void {
     this.ambience = on;
-    this.applyAmbience();
   }
 
   setMusic(on: boolean): void {
@@ -412,27 +406,6 @@ export class AudioEngine {
         });
       }
     }, ROOM_TICK_MS);
-  }
-
-  private applyAmbience(): void {
-    const { context, master } = this;
-    if (!context || !master) {
-      return;
-    }
-    if (!this.ambience) {
-      this.hum?.stop();
-      this.hum = null;
-      return;
-    }
-    if (!this.hum) {
-      const gain = context.createGain();
-      gain.gain.value = HUM_LEVEL;
-      this.hum = context.createOscillator();
-      this.hum.type = 'sawtooth';
-      this.hum.frequency.value = HUM_FREQUENCY;
-      this.hum.connect(gain).connect(master);
-      this.hum.start();
-    }
   }
 }
 

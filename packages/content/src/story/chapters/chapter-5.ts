@@ -19,7 +19,7 @@ export const chapter5Scenes = {
       },
       'table-uyen': {
         speaker: 'uyen',
-        text: 'Đây chưa phải để kiện ai. Đây là để lần đầu tiên mọi người biết chính xác mình đang nói về cái gì.',
+        text: 'Mỗi dòng phải có nguồn. Sao kê ghi sao kê, hợp đồng ghi hợp đồng, ai nhớ bằng lời thì đánh dấu chưa xác minh. Đây chưa phải để kiện ai, chỉ để biết chính xác mình đang nói về cái gì.',
       },
       alone: {
         text: 'Bạn tự lập một bảng tính, một mình, lúc một giờ sáng. Hàng duy nhất là tên bạn. Nó trông nhỏ hơn bạn tưởng.',
@@ -67,11 +67,12 @@ export const chapter5Scenes = {
           {
             id: 'advice',
             text: 'Đi hỏi người có chuyên môn trước đã',
+            requires: { type: 'stat', stat: 'cash', min: 500_000 },
+            lockedReason: 'Không còn đủ 500 nghìn tiền tư vấn',
             effects: [
-              { type: 'addAwareness', amount: 20 },
+              { type: 'addAwareness', amount: 15 },
               { type: 'setFlag', flag: 'soughtAdvice' },
               { type: 'addCash', amount: -500_000 },
-              { type: 'addStress', amount: -5 },
             ],
             next: 'advice-given',
           },
@@ -90,11 +91,11 @@ export const chapter5Scenes = {
         text: 'Bạn gửi email lúc 9 giờ đúng, nêu rõ từng khoản bị nợ, kèm tệp đính kèm, có yêu cầu xác nhận đã đọc. Bạn lưu lại bản gửi đi: công ty trả lời hay không, đây cũng là bằng chứng bạn đã đòi. Tay bạn hơi run. Nhưng không phải vì sợ.',
       },
       'advice-given': {
-        text: 'Người ta nghe bạn trình bày, xem qua giấy tờ, rồi hỏi: "Bạn có lưu lại không?". Đó là câu hỏi đúng nhất bạn được nghe trong bảy tháng.',
+        text: 'Người ta nghe bạn trình bày, xem qua giấy tờ, rồi hỏi: "Bạn có lưu lại không?". Đó là câu hỏi đúng nhất bạn được nghe trong bảy tháng. Người ta cũng nói thẳng: hồ sơ này còn thiếu, thiếu thì khó đi xa.',
       },
       'talk-again': {
         speaker: 'hr',
-        text: 'Chị hiểu mà em. Chị cũng là nạn nhân thôi. Nhưng em đừng làm căng, ảnh hưởng tới lộ trình của em lắm.',
+        text: 'Chị hiểu mà em. Chị sẽ ghi nhận ý kiến của em, nhưng chị không xác nhận được ngày nào nếu bên trên chưa có thông báo. Em đừng làm căng, ảnh hưởng tới lộ trình của em lắm.',
       },
     },
   },
@@ -164,12 +165,12 @@ export const chapter5Scenes = {
       },
       'bad-table': {
         speaker: 'accountant',
-        text: 'À, bảng của nhóm em có một dòng sai. Bên trên thấy rồi, nên giờ bên trên bảo cả bảng không đáng tin.',
+        text: 'À, có người báo với cô là bảng của nhóm em có một dòng sai. Bên trên nghe được rồi, nên giờ bên trên bảo cả bảng không đáng tin.',
         effects: [{ type: 'addStress', amount: 6 }],
         next: 'mail-check',
       },
       'mail-reply': {
-        text: 'Bức email hôm trước có hồi âm, đúng một dòng: "Công ty đã tiếp nhận". Bạn lưu nó cùng thư mục. Một dòng thôi, nhưng có ngày, có người gửi.',
+        text: 'Bức email hôm trước có hồi âm, đúng một dòng: "Công ty đã tiếp nhận". Tiếp nhận chứ chưa phải xác nhận số tiền. Bạn vẫn lưu nó cùng thư mục. Một dòng thôi, nhưng có ngày, có người gửi.',
       },
       'no-mail': {
         text: 'Bạn về chỗ, nhìn ba lời giải thích, và nghĩ tới những thứ mà mình chưa có trên giấy.',
@@ -230,7 +231,7 @@ export const chapter5Scenes = {
       },
       title: {
         speaker: 'boss',
-        text: 'Anh muốn em làm Trưởng nhóm. Danh thiếp mới, ghế mới, và một vị trí trong chương trình lãnh đạo tương lai.',
+        text: 'Anh muốn em làm Trưởng nhóm, báo cáo thẳng cho anh. Danh thiếp mới, ghế mới, một vị trí trong chương trình lãnh đạo tương lai. Quyền hạn cụ thể anh thông báo sau.',
         next: 'detail',
       },
       detail: {
@@ -256,14 +257,8 @@ export const chapter5Scenes = {
           {
             id: 'negotiate',
             text: 'Ra điều kiện: trả hết phần đã nợ, em sẽ nhận',
-            requires: {
-              type: 'all',
-              conditions: [
-                { type: 'stat', stat: 'trust', min: 30 },
-                { type: 'stat', stat: 'awareness', min: 50 },
-              ],
-            },
-            lockedReason: 'Cần còn chút niềm tin, và hiểu rõ quyền lợi của mình',
+            requires: { type: 'stat', stat: 'awareness', min: 50 },
+            lockedReason: 'Cần hiểu rõ quyền lợi của mình hơn (từ 50)',
             effects: [
               { type: 'setFlag', flag: 'heldOutForPay' },
               { type: 'addRelation', npc: 'boss', amount: -6 },
@@ -286,7 +281,7 @@ export const chapter5Scenes = {
       negotiated: {
         speaker: 'boss',
         text: 'Em đang đàm phán với anh đấy à? Hay lắm. Lâu rồi mới có người làm thế. Nhưng chuyện đó thì next week mình nói tiếp.',
-        next: 'tin-pleads',
+        next: 'tin-doubt',
       },
       took: {
         text: 'Ngày mai bạn có ba mươi tấm danh thiếp mới in rất đẹp. Bạn không gửi tấm nào. Uyên nhìn tấm danh thiếp trên bàn bạn, rồi nhìn đi chỗ khác. Từ hôm đó cô không nhắn gì cho bạn nữa.',
@@ -294,19 +289,20 @@ export const chapter5Scenes = {
       refused: {
         speaker: 'boss',
         text: 'Em còn trẻ. Rồi em sẽ hiểu tầm nhìn là gì.',
-        next: 'tin-pleads',
+        next: 'tin-doubt',
       },
       'tin-pleads': {
         speaker: 'manager',
-        text: 'Em đừng nghe nhóm kia. Luật với giấy tờ làm gì, anh có đọc bao giờ đâu. Chủ tịch đã nói thì tiền sẽ về. Ở lại với anh đi, rồi cả phòng mình cùng hưởng.',
-        next: 'tin-doubt',
+        text: 'Anh biết em lo. Luật với giấy tờ anh không giỏi, nhưng anh vẫn tin Chủ tịch. Em đừng nghe nhóm kia, cũng đừng vội đi, rồi cả phòng mình cùng hưởng.',
+        next: 'minh-check',
       },
       'tin-doubt': {
         routes: [{ when: { type: 'flag', flag: 'rogerDoubts' }, next: 'tin-falters' }],
-        otherwise: 'minh-check',
+        otherwise: 'tin-pleads',
       },
       'tin-falters': {
-        text: 'Nói xong anh Roger nhìn xuống bàn. Bạn nhớ tấm ảnh hôm đó. Có vẻ anh đang nói câu này cho chính mình nghe.',
+        speaker: 'manager',
+        text: 'Anh muốn tin là tiền sẽ về. Nhưng anh không dám hứa thay cho ai nữa. Anh chỉ mong em đừng nghĩ tám năm anh ở đây là vô nghĩa.',
         next: 'minh-check',
       },
       'minh-check': {
@@ -335,19 +331,21 @@ export const chapter5Scenes = {
       },
       'crumb-check': {
         routes: [
-          {
-            when: {
-              type: 'any',
-              conditions: [
-                { type: 'flag', flag: 'joinedDragons' },
-                { type: 'flag', flag: 'tookPromotion' },
-                { type: 'flag', flag: 'heldOutForPay' },
-              ],
-            },
-            next: 'crumb',
-          },
+          { when: { type: 'flag', flag: 'tookPromotion' }, next: 'crumb-title' },
+          { when: { type: 'flag', flag: 'heldOutForPay' }, next: 'crumb-held' },
+          { when: { type: 'flag', flag: 'joinedDragons' }, next: 'crumb' },
         ],
         otherwise: 'no-crumb',
+      },
+      'crumb-title': {
+        text: 'Ting. 5.000.000 đ, nội dung "HO TRO TRUONG NHOM". Vẫn là một phần ba tháng lương, chỉ là giờ nó có tên khác. Phần còn lại được nợ tiếp.',
+        effects: [{ type: 'companyPays', amount: 5_000_000 }],
+        next: 'mom',
+      },
+      'crumb-held': {
+        text: 'Ting. 5.000.000 đ, đúng tuần sau hôm bạn ra điều kiện. Không ai giải thích gì. Nó chỉ là một phần ba tháng lương, nhưng bạn biết vì sao mình có nó.',
+        effects: [{ type: 'companyPays', amount: 5_000_000 }],
+        next: 'mom',
       },
       crumb: {
         text: 'Ting. 5.000.000 đ, lại một phần ba tháng lương, đúng tuần mọi người bắt đầu đòi giấy tờ. Phần còn lại được nợ tiếp.',
@@ -410,7 +408,7 @@ export const chapter5Scenes = {
       },
       wrong: {
         speaker: 'uyen',
-        text: 'Khoan. Khoản đó là của công ty khác trong tập đoàn. Và... dòng tháng 4 của mình bị cộng trùng. Mình sai. Mình chưa bao giờ sai.',
+        text: 'Khoan. Mình vừa đối chiếu: khoản đó về tài khoản một công ty khác trong tập đoàn. Với cả dòng tháng 4 mình cộng trùng một khoản ứng. Mình sai. Mình chưa bao giờ sai.',
         next: 'quiet',
       },
       quiet: {
@@ -517,7 +515,7 @@ export const chapter5Scenes = {
       },
       told: {
         speaker: 'uyen',
-        text: 'Mình biết rồi. Không sao. Cái gì của mình thì mình giữ, có gì sai đâu mà sợ.',
+        text: 'Cảm ơn bạn. Chuyện nghe được chỉ để mình hiểu tình hình thôi, đừng đưa vào bảng. Cái gì của mình thì mình giữ, có gì sai đâu mà sợ.',
       },
       'walked-in': {
         text: 'Ba người nhìn bạn. Chị HR đóng laptop lại. Phó giám đốc cười, nụ cười của những buổi họp toàn công ty: "Được. Tuần sau em vào gặp anh."',

@@ -173,19 +173,12 @@ describe('AudioEngine', () => {
     expect(created.oscillators).toHaveLength(2);
   });
 
-  it('hums only when asked, and stops', () => {
+  it('has no strip-light hum: nothing plays until something happens (FEAT-042)', () => {
     const created = fakeContext();
     const engine = new AudioEngine();
     engine.unlock();
+    engine.setAmbience(true);
     expect(created.oscillators).toHaveLength(0);
-
-    engine.setAmbience(true);
-    expect(created.oscillators).toHaveLength(1);
-    engine.setAmbience(true);
-    expect(created.oscillators).toHaveLength(1);
-
-    engine.setAmbience(false);
-    expect(created.oscillators[0]?.stop).toHaveBeenCalled();
   });
 
   it('wakes the context again on a later gesture', () => {

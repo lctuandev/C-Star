@@ -85,7 +85,7 @@ describe('WeekScreen', () => {
       />,
     );
     expect(screen.getByRole('button', { name: /Nhận việc ngoài/ })).toBeDisabled();
-    expect(screen.getByText('Không còn sức để làm thêm')).toBeInTheDocument();
+    expect(screen.getByText('Việc ngoài nặng lắm, cần ít nhất 20 sức khỏe')).toBeInTheDocument();
   });
 
   it('says what the last action did', () => {

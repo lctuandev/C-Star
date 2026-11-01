@@ -129,7 +129,7 @@ export const chapter1Scenes = {
       },
       'meet-dan': {
         speaker: 'dan',
-        text: 'Lính mới à? Khôn đấy. Ngồi đây nghe được tin trước. Công ty sắp gọi vốn, đợt này to lắm, ông nghe tôi.',
+        text: 'Lính mới hả? Khôn đấy. Ngồi đây là nghe được tin sớm. Công ty sắp gọi vốn, đợt này to lắm, ông cứ nghe tôi.',
         next: 'all-three',
       },
       'meet-uyen': {
@@ -139,7 +139,7 @@ export const chapter1Scenes = {
       },
       'meet-khoa': {
         speaker: 'khoa',
-        text: 'Ủa bạn mới hả! Ở đây vui lắm! Năm ngoái mình còn được đi team building, ngủ lều, sếp hát bài của sếp!',
+        text: 'Ủa bạn mới hả? Công ty mình chill lắm luôn! Năm ngoái đi team building, ngủ lều, sếp còn hát nguyên bài tự sáng tác nữa á!',
         next: 'all-three',
       },
       'all-three': {
@@ -153,7 +153,7 @@ export const chapter1Scenes = {
       },
       'deputy-hello': {
         speaker: 'deputy',
-        text: 'Chào {name}, anh là Huấn, phó phòng, mọi người gọi là Huni cho gọn. Cần gì cứ hỏi anh, từ chỗ để xe tới cách xin nghỉ phép. Giờ nghỉ trưa thì nghỉ thật nhé, đừng ăn ở bàn.',
+        text: 'Chào {name}, anh là Huấn, phó phòng, mọi người gọi là Huni cho gọn. Có gì cứ hỏi anh, từ chỗ gửi xe tới cách xin nghỉ phép. Mà trưa nhớ ra ngoài ăn nhé, đừng ngồi lì ở bàn.',
         next: 'first-task',
       },
       'first-task': {
@@ -261,7 +261,7 @@ export const chapter1Scenes = {
       },
       'dan-talks': {
         speaker: 'dan',
-        text: 'Ăn đi. Đợt trước còn có sầu riêng cơ. Công ty mà vào vòng gọi vốn này thì còn hơn nữa.',
+        text: 'Ăn đi ông. Đợt trước còn có sầu riêng cơ. Công ty mà gọi được vòng này thì còn hơn nữa.',
         next: 'uyen-talks',
       },
       'uyen-talks': {
@@ -271,7 +271,7 @@ export const chapter1Scenes = {
       },
       'khoa-talks': {
         speaker: 'khoa',
-        text: 'Thì tại mùa thôi! Trái cây cũng có mùa mà Uyên!',
+        text: 'Trời ơi Uyên khó tính quá! Trái cây cũng có mùa mà!',
         next: 'thought',
       },
       thought: {
@@ -405,7 +405,7 @@ export const chapter1Scenes = {
       },
       khoa: {
         speaker: 'khoa',
-        text: 'Tại mình mới ra trường mà có việc ở công ty lớn! Ba mẹ mình khoe khắp xóm luôn!',
+        text: 'Mới ra trường mà vô được công ty xịn, hong cười sao được! Ba mẹ mình khoe khắp xóm luôn, in cả email trúng tuyển dán tủ lạnh nữa!',
       },
     },
   },

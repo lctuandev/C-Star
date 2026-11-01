@@ -83,7 +83,7 @@ export const crisisScenes = {
       },
       'quit-line': {
         speaker: 'player',
-        text: 'Lần thứ ba. Mình không thể tiếp tục trả tiền để được đi làm nữa.',
+        text: 'Đủ rồi. Mình không thể tiếp tục trả tiền để được đi làm nữa.',
       },
     },
   },

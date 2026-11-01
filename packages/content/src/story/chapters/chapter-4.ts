@@ -7,18 +7,15 @@ export const chapter4Scenes = {
     nodes: {
       check: {
         routes: [
-          {
-            when: {
-              type: 'any',
-              conditions: [
-                { type: 'flag', flag: 'joinedDragons' },
-                { type: 'relation', npc: 'boss', min: 8 },
-              ],
-            },
-            next: 'ting',
-          },
+          { when: { type: 'flag', flag: 'joinedDragons' }, next: 'ting' },
+          { when: { type: 'relation', npc: 'boss', min: 8 }, next: 'ting-private' },
         ],
         otherwise: 'nothing',
+      },
+      'ting-private': {
+        text: 'Ting. 5.000.000 đ, giảm còn một phần ba tháng lương, không kèm thông báo nào. Chị HR nhắn riêng: "Khoản ứng riêng của em, đừng nói với ai nhé".',
+        effects: [{ type: 'companyPays', amount: 5_000_000 }],
+        next: 'who',
       },
       ting: {
         text: 'Ting. 5.000.000 đ, giảm còn một phần ba tháng lương. Nội dung: "UNG DOT 1 CUA DOT 2 LUONG T2 BU T3". Bạn đọc ba lần và hiểu ít hơn sau mỗi lần.',
@@ -129,7 +126,7 @@ export const chapter4Scenes = {
       },
       'khoa-gift': {
         speaker: 'khoa',
-        text: 'Mình từng tin tuần sau có lương. Mười mấy tuần rồi đó. Mình gửi bạn file chấm công của nhóm mình, ai cần thì có. Bạn đừng tin như mình.',
+        text: 'Mình từng tin tuần sau có lương. Mười mấy tuần rồi đó. Mình gửi bạn bản chấm công của mình với mấy bạn đã đồng ý, ai cần thì có. Bạn đừng tin như mình nha.',
         effects: [
           { type: 'addEvidence', evidence: 'timesheet' },
           { type: 'setFlag', flag: 'khoaSaidGoodbye' },
@@ -188,7 +185,7 @@ export const chapter4Scenes = {
       },
       uyen: {
         speaker: 'uyen',
-        text: 'Lần thứ 7. Mình đếm rồi.',
+        text: 'Lần thứ bảy công ty đổi cách nói về lịch trả lương. Mình đếm rồi.',
       },
     },
   },
@@ -213,7 +210,7 @@ export const chapter4Scenes = {
       },
       'uyen-list': {
         speaker: 'uyen',
-        text: 'Mình hỏi được mười một người. Không ai giống ai. Người được đợt 1, người chưa, người được ứng riêng. Chia nhỏ ra thì không ai biết mình bị nợ nhiều hay ít so với người khác.',
+        text: 'Sau bảy người hôm trước, mình hỏi thêm bốn người nữa. Mười một người, không ai giống ai. Người được đợt 1, người chưa, người được ứng riêng. Chia nhỏ ra thì không ai biết mình bị nợ nhiều hay ít so với người khác.',
         next: 'reaction',
       },
       reaction: {
@@ -353,7 +350,7 @@ export const chapter4Scenes = {
         otherwise: 'decide',
       },
       'eleven-seconds': {
-        text: 'Bạn đã ký hợp đồng này trong 11 giây. Đêm nay bạn mở lại, đọc tới trang 14, cỡ chữ 6: "Thời điểm thanh toán có thể được điều chỉnh". Bạn mất sáu tháng để đọc tới đó.',
+        text: 'Bạn đã ký hợp đồng này trong 11 giây. Đêm nay bạn mở lại, đọc tới trang 14, cỡ chữ 6: "Thời điểm thanh toán có thể được điều chỉnh để phù hợp với lộ trình phát triển chung". Bạn mất sáu tháng để đọc tới đó.',
         next: 'decide',
       },
       decide: {
@@ -442,11 +439,11 @@ export const chapter4Scenes = {
           },
           {
             id: 'share',
-            text: 'Kể thật khoản mình đang thiếu',
+            text: 'Kể thật tình hình tiền bạc của mình',
             effects: [
               { type: 'addRelation', npc: 'deputy', amount: 6 },
               { type: 'addRelation', npc: 'uyen', amount: 6 },
-              { type: 'addStress', amount: -4 },
+              { type: 'addStress', amount: -2 },
             ],
             next: 'shared',
           },
@@ -479,12 +476,12 @@ export const chapter4Scenes = {
       },
       uyen: {
         speaker: 'uyen',
-        text: 'Dạ anh ơi, là 1 triệu hay 2 triệu ạ? Và bao giờ tiền về ạ?',
+        text: 'Dạ anh ơi, là 1 triệu hay 2 triệu ạ? Với khoản đợt trước anh báo đã về chưa ạ?',
         next: 'boss-2',
       },
       'boss-2': {
         speaker: 'boss',
-        text: 'Cái đó nằm ở khâu thủ tục. Quan trọng là đã có. Và đây mới là tin lớn: công ty đang hướng tới IPO.',
+        text: 'Hai việc khác nhau, các bạn đừng nhầm lẫn giữa các giai đoạn. Quan trọng là đã có. Và đây mới là tin lớn: công ty đang hướng tới IPO.',
         next: 'boss-shares',
       },
       'boss-shares': {
@@ -644,7 +641,7 @@ export const chapter4Scenes = {
       },
       parents: {
         speaker: 'khoa',
-        text: 'Mình vừa gọi về nhà. Ba mẹ hỏi bao giờ về thăm. Mình từng nói công ty này tốt lắm, ba mẹ khoe khắp xóm. Giờ mình không biết về rồi giải thích sao.',
+        text: 'Mình mới gọi về nhà. Ba mẹ hỏi chừng nào về. Hồi đó mình flex công ty ghê lắm, ba mẹ khoe khắp xóm. Giờ về rồi biết nói sao đây.',
         next: 'failed',
       },
       failed: {
@@ -662,7 +659,7 @@ export const chapter4Scenes = {
           },
           {
             id: 'then-go',
-            text: '"Mệt quá thì nghỉ đi, đừng nghĩ nhiều"',
+            text: '"Ở đây làm bạn kiệt sức thì nghỉ cũng đâu phải thất bại"',
             effects: [
               { type: 'addRelation', npc: 'khoa', amount: 5 },
               { type: 'setFlag', flag: 'khoaConfided' },
@@ -671,10 +668,9 @@ export const chapter4Scenes = {
           },
           {
             id: 'not-your-fault',
-            text: '"Không. Bị nợ lương không phải lỗi của bạn"',
+            text: '"Công ty nợ lương, chứ bạn có nợ công ty đâu. Đừng nhận lỗi về mình"',
             effects: [
-              { type: 'addRelation', npc: 'khoa', amount: 10 },
-              { type: 'addStress', amount: -4 },
+              { type: 'addRelation', npc: 'khoa', amount: 8 },
               { type: 'setFlag', flag: 'khoaConfided' },
             ],
             next: 'not-fault',
@@ -740,9 +736,9 @@ export const chapter4Scenes = {
           },
           {
             id: 'no-need-to-defend',
-            text: '"Anh không cần bảo vệ công ty nữa đâu"',
+            text: '"Anh đâu cần giải thích thay công ty những điều chính anh cũng chưa biết"',
             effects: [
-              { type: 'addRelation', npc: 'manager', amount: 8 },
+              { type: 'addRelation', npc: 'manager', amount: 4 },
               { type: 'setFlag', flag: 'rogerDoubts' },
             ],
             next: 'admits',
@@ -788,7 +784,7 @@ export const chapter4Scenes = {
       },
       'boss-2': {
         speaker: 'boss',
-        text: 'Chúng ta không nên để những vấn đề ngắn hạn ảnh hưởng tới mục tiêu dài hạn.',
+        text: 'Ghi nhận hiệu suất và giải ngân là hai quy trình khác nhau. Chúng ta không nên để những vấn đề ngắn hạn ảnh hưởng tới mục tiêu dài hạn.',
         choices: [
           {
             id: 'sit-it-out',

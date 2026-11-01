@@ -188,7 +188,7 @@ lại trễ, kỳ lương sau là "Coming Soon™". Game quay lại đầu với
 | Bàn làm việc   | Máy tính, task, thông báo, hóa đơn chưa trả    |
 | Hành lang      | Nơi nhân viên nói chuyện thật ngoài cuộc họp   |
 
-`[Đề xuất]` Âm thanh: tiếng đèn huỳnh quang rè, tiếng ting tin nhắn ngân hàng (và sự thiếu vắng của nó vào
+`[Đề xuất]` Âm thanh: tiếng ting tin nhắn ngân hàng (và sự thiếu vắng của nó vào
 ngày lương).
 
 ---

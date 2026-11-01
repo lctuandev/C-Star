@@ -6,6 +6,7 @@ export { gameInfo, gameInfoSchema } from './game-info.js';
 export type { GameInfo } from './game-info.js';
 export { characterInfo, characters } from './story/index.js';
 export type { CharacterId, CharacterInfo } from './story/index.js';
+export { ticketGuide, weekGuide } from './week-guide.js';
 export { KPI_SHARE, kpiWasPaid, promiseFor, slipIsMissing, syncLineFor } from './promises.js';
 export { storySchema } from './story/story-schema.js';
 export { validateStory, validateWorld } from './story/validate-story.js';

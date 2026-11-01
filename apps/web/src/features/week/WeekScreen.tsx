@@ -1,12 +1,13 @@
 'use client';
 
-import { syncLineFor } from '@cstar/content';
+import { syncLineFor, weekGuide } from '@cstar/content';
 import { weekActions } from '@cstar/game-core';
 import type { GameState } from '@cstar/game-core';
 import { Button } from '@/components/ui/Button';
 import { Portrait } from '@/features/dialogue/Portrait';
 import { useOfficeStore } from '@/features/office/office-store';
 import { useGameStore, world } from '@/features/play/game-store';
+import { costLine } from './action-cost';
 import { ActionIcon } from './ActionIcon';
 
 interface WeekScreenProps {
@@ -26,6 +27,9 @@ export const WeekScreen = ({ state, onOpenDossier }: WeekScreenProps) => {
         <p role="status" className="text-ink-secondary text-base leading-7">
           {state.lastOutcome}
         </p>
+      )}
+      {month === 1 && week === 1 && (
+        <p className="bg-surface-800 rounded-xl p-3 text-sm">{weekGuide}</p>
       )}
       <div className="flex items-center justify-between gap-3">
         <h2 className="text-lg font-extrabold">Tuần này còn {actionsLeft} lượt</h2>
@@ -62,6 +66,11 @@ export const WeekScreen = ({ state, onOpenDossier }: WeekScreenProps) => {
             <span className="text-xs font-medium opacity-80">
               {action.lockedReason ?? action.hint}
             </span>
+            {action.available && costLine(action.effects) && (
+              <span className="text-xs font-bold tabular-nums opacity-80">
+                {costLine(action.effects)}
+              </span>
+            )}
           </Button>
         ))}
       </div>

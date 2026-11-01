@@ -62,7 +62,7 @@ const FLAGS = {
   joinedDragons: 'vào nhóm Vượt thác',
   chosePursue: 'chọn theo đuổi quyền lợi',
   choseLeave: 'chọn rời đi',
-  choseStay: 'chọn ở lại',
+  choseStay: 'ký cam kết ở lại',
   sentFormalRequest: 'đã gửi email đòi quyền lợi',
   tookPromotion: 'nhận chức Trưởng nhóm',
   heardDollars: 'đã nghe màn 1–2 triệu đô',
@@ -104,7 +104,7 @@ const FLAGS = {
 
 const STATS = {
   cash: 'tiền trong ví',
-  arrears: 'tiền còn thiếu',
+  arrears: 'hóa đơn chưa trả được (đồng)',
   loans: 'tiền đang vay',
   companyDebt: 'công ty đang nợ',
   energy: 'sức khỏe',
@@ -128,7 +128,7 @@ const MONTHS = [
   [
     '5',
     'Trả 1/3 chọn lọc chia rẽ cả phòng, Khoa rời đi, ai cũng vay mượn, Uyên bắt đầu gom người.',
-    '5 triệu nếu vào Vượt thác hoặc được sếp để ý',
+    '5 triệu nếu vào Vượt thác (danh sách ưu tiên) hoặc được sếp để ý (khoản ứng riêng)',
   ],
   [
     '6',
@@ -193,7 +193,7 @@ const conditionText = (condition) => {
     case 'stat': {
       const limits = [
         condition.min !== undefined && `từ ${condition.min}`,
-        condition.max !== undefined && `tới ${condition.max}`,
+        condition.max !== undefined && `không quá ${condition.max}`,
       ].filter(Boolean);
       return `${STATS[condition.stat] ?? condition.stat} ${limits.join(' ')}`;
     }
@@ -229,7 +229,9 @@ const effectText = (effect) => {
     case 'addCash':
       return `${effect.amount > 0 ? 'có thêm' : 'mất'} ${money(Math.abs(effect.amount))}`;
     case 'companyPays':
-      return `công ty trả ${money(effect.amount)}`;
+      return effect.amount >= 1_000_000_000
+        ? 'công ty trả hết phần còn nợ theo sổ lương'
+        : `công ty trả ${money(effect.amount)}`;
     case 'addEnergy':
       return `sức khỏe ${signed(effect.amount)}`;
     case 'addStress':
@@ -247,7 +249,7 @@ const effectText = (effect) => {
     case 'takeLoan':
       return `vay ${money(effect.amount)}`;
     case 'payArrears':
-      return 'trả khoản đang thiếu';
+      return 'dùng tiền có được trả hóa đơn, thiếu thì nợ tiếp';
     case 'loseWeek':
       return 'mất một tuần';
     case 'chance':
@@ -268,7 +270,9 @@ const whenOf = (scene) => {
   if (!beat) {
     return '';
   }
-  return beat.week ? `tháng ${beat.month}, tuần ${beat.week}` : `ngày lương tháng ${beat.month}`;
+  return beat.week
+    ? `tháng ${beat.month}, tuần ${beat.week}`
+    : `ngày lương tháng ${beat.month} (mùng 5 tháng ${beat.month + 1})`;
 };
 
 const PLACES = {
@@ -282,7 +286,17 @@ const PLACES = {
 const sceneText = (scene, heading = '###') => {
   const entries = Object.entries(scene.nodes);
   const labels = new Map();
+  const incoming = new Map();
+  const arrive = (id) => incoming.set(id, (incoming.get(id) ?? 0) + 1);
   for (const [, node] of entries) {
+    [
+      node.next,
+      node.otherwise,
+      ...(node.choices ?? []).map(({ next }) => next),
+      ...(node.routes ?? []).map(({ next }) => next),
+    ]
+      .filter(Boolean)
+      .forEach(arrive);
     for (const choice of node.choices ?? []) {
       labels.set(choice.next, `Nếu chọn "${spoken(choice.text).replaceAll('"', '')}"`);
     }
@@ -302,7 +316,8 @@ const sceneText = (scene, heading = '###') => {
   ];
   for (const [id, node] of entries) {
     if (labels.has(id)) {
-      lines.push(`*${labels.get(id)}:*`, '');
+      const shared = incoming.get(id) > 1;
+      lines.push(shared ? '*Các nhánh trên gặp lại ở đây:*' : `*${labels.get(id)}:*`, '');
     }
     if ('routes' in node) {
       continue;
@@ -378,7 +393,7 @@ const flagUse = () => {
     (outcomesWhen ?? []).forEach(({ when }) => reads(when, `hành động ${id}`));
   });
   return [...setAt.keys()]
-    .filter((flag) => !['runOver', 'choseStay'].includes(flag))
+    .filter((flag) => flag !== 'runOver')
     .map((flag) => ({ flag, setAt: [...setAt.get(flag)], readAt: [...(readAt.get(flag) ?? [])] }));
 };
 
@@ -387,9 +402,12 @@ parts.push(
   '',
   'Mỗi tháng có 4 tuần, mỗi tuần 3 lượt. "Ngày lương" là mùng 5 của tháng sau, nên tiền lương tháng N đến sau tuần 4 của tháng N.',
   '',
-  '| Tháng | Chuyện chính | Tiền công ty trả trong tháng |',
-  '| --- | --- | --- |',
-  ...MONTHS.map(([month, events, pay]) => `| ${month} | ${events} | ${pay} |`),
+  '| Chương | Tháng | Chuyện chính | Tiền công ty trả trong tháng |',
+  '| --- | --- | --- | --- |',
+  ...MONTHS.map(([month, events, pay], index) => {
+    const chapter = [1, 2, 3, 3, 4, 4, 5, 6][index];
+    return `| ${chapter} | ${month} | ${events} | ${pay} |`;
+  }),
   '',
   'Tiền trả muộn được tính vào tháng lương cũ nhất còn thiếu, đúng như nội dung chuyển khoản. Mốc thời gian dùng trong lời thoại: tháng lương đầu bị lỡ là tháng 2, nên tuần 3 tháng 7 là "gần sáu tháng" làm không công, và sang tháng 8 thì quá sáu tháng.',
   '',

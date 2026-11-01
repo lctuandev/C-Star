@@ -25,7 +25,7 @@ export const chapter2Scenes = {
       },
       'khoa-mug': {
         speaker: 'khoa',
-        text: 'Mình mang phích sẵn rồi nè! Phích của công ty tặng năm ngoái đó!',
+        text: 'Mình có phích rồi nè! Phích công ty tặng năm ngoái đó, xịn lắm!',
       },
     },
   },
@@ -100,12 +100,12 @@ export const chapter2Scenes = {
       },
       group: {
         speaker: 'khoa',
-        text: 'Mọi người ơi bên mình đã ai có lương chưa? Hay tại ngân hàng mình?',
+        text: 'Ủa mọi người ơi, có ai nhận lương chưa vậy? Hay app ngân hàng mình bị lag?',
         next: 'group-dan',
       },
       'group-dan': {
         speaker: 'dan',
-        text: 'Chưa. Chắc đợi lệnh chuyển tiền của nhà đầu tư, có độ trễ quốc tế.',
+        text: 'Chưa ông. Chắc đang chờ lệnh chuyển tiền của nhà đầu tư, tiền quốc tế nó có độ trễ.',
         next: 'hr-post',
       },
       'hr-post': {
@@ -132,7 +132,7 @@ export const chapter2Scenes = {
             text: 'Nhắn riêng chị HR cho lịch sự',
             effects: [
               { type: 'setFlag', flag: 'askedHrPrivately' },
-              { type: 'addRelation', npc: 'hr', amount: 5 },
+              { type: 'addRelation', npc: 'hr', amount: 2 },
             ],
             next: 'private-answer',
           },
@@ -163,7 +163,7 @@ export const chapter2Scenes = {
       },
       'private-answer': {
         speaker: 'hr',
-        text: 'Em yên tâm, chị cũng đang chờ như em. Mà em đừng chia sẻ chuyện này ra ngoài nhé, ảnh hưởng tinh thần chung.',
+        text: 'Chị hiểu em lo. Chị không có ngày cụ thể để nói với em, cũng không muốn nói một ngày rồi lại phải xin lỗi. Mà em đừng chia sẻ chuyện này ra ngoài nhé, ảnh hưởng tinh thần chung.',
         next: 'uyen-note',
       },
       quiet: {

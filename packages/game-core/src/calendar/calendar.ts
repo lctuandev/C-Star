@@ -9,6 +9,7 @@ import {
   withRelation,
 } from '../story/effects.js';
 import { startScene } from '../story/story-engine.js';
+import type { Effect } from '../story/story-types.js';
 import { roundIsOver, startKpiRound } from './tickets.js';
 import type { EndingRule, GameWorld, WeeklyAction } from './world-types.js';
 
@@ -16,6 +17,8 @@ export interface ActionView {
   id: string;
   label: string;
   hint: string;
+  /** What it costs and pays: the screen spells it out. */
+  effects: readonly Effect[];
   available: boolean;
   lockedReason?: string;
 }
@@ -35,6 +38,7 @@ export const weekActions = (state: GameState, world: GameWorld): ActionView[] =>
         id: action.id,
         label: action.label,
         hint: action.hint,
+        effects: action.effects,
         available,
         ...(!available && { lockedReason: action.lockedReason }),
       };

@@ -33,7 +33,7 @@ export const endings: readonly EndingRule[] = [
     summary: 'Một mình, với một tập giấy tờ có ngày tháng rõ ràng.',
     hint: 'Đủ giấy tờ và đi tới cùng, không cần ai bên cạnh.',
     scene: 'ending-investigator',
-    when: allOf(PURSUING, ENOUGH_EVIDENCE),
+    when: allOf(PURSUING, ENOUGH_EVIDENCE, { type: 'not', condition: IN_A_GROUP }),
   },
   {
     id: 'survivor',
@@ -46,7 +46,6 @@ export const endings: readonly EndingRule[] = [
       conditions: [
         { type: 'flag', flag: 'choseLeave' },
         { type: 'flag', flag: 'quitEarly' },
-        PURSUING,
       ],
     },
   },
@@ -56,13 +55,13 @@ export const endings: readonly EndingRule[] = [
     summary: 'Bạn tin đến cùng. Công ty rất trân trọng điều đó.',
     hint: 'Ở lại, và thật lòng tin vào tầm nhìn.',
     scene: 'ending-believer',
-    when: { type: 'relation', npc: 'boss', min: 20 },
+    when: allOf({ type: 'flag', flag: 'choseStay' }, { type: 'relation', npc: 'boss', min: 20 }),
   },
   {
     id: 'empty-promise',
     title: 'The Empty Promise',
     summary: 'Công ty tiếp tục hứa hẹn. Mọi thứ vẫn chưa thay đổi.',
-    hint: 'Không làm gì cả. Rất nhiều người đã đạt kết thúc này.',
+    hint: 'Không làm gì cả, hoặc làm mà chưa đủ. Rất nhiều người đã đạt kết thúc này.',
     scene: 'ending-empty-promise',
     loops: true,
   },

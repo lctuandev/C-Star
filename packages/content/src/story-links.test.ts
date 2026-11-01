@@ -3,8 +3,8 @@ import type { Condition, Effect, GameState, StoryNode } from '@cstar/game-core';
 import { describe, expect, it } from 'vitest';
 import { world } from './world.js';
 
-/** Flags the rules read rather than the story: not choices that lead nowhere. */
-const NOT_A_CHOICE = new Set(['runOver', 'choseStay']);
+/** Read by the rules, not the story: it ends the run. */
+const NOT_A_CHOICE = new Set(['runOver']);
 
 const flagsIn = (condition: Condition | undefined): string[] => {
   if (!condition) {
