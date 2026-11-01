@@ -1,5 +1,5 @@
-import { applyAction, beginRun } from '@cstar/game-core';
-import type { Condition, Effect, GameState, StoryNode } from '@cstar/game-core';
+import { applyAction, beginRun, startScene, viewOf } from '@cstar/game-core';
+import type { Condition, Effect, GameAction, GameState, StoryNode } from '@cstar/game-core';
 import { describe, expect, it } from 'vitest';
 import { world } from './world.js';
 
@@ -77,6 +77,72 @@ const ticketsDealt = (khoaLeft: boolean) =>
 
 const chatLines = (khoaLeft: boolean) =>
   SEEDS.map((seed) => take(runWith(seed, khoaLeft), 'chat').lastOutcome);
+
+/** Plays one scene from its start, taking the choice asked for, or else the first open one. */
+const playScene = (state: GameState, sceneId: string, choiceId?: string): GameState => {
+  let current = startScene({ ...state, phase: 'scene' }, world.story, sceneId, world.evidence);
+  for (let step = 0; step < 60 && current.story.sceneId === sceneId; step += 1) {
+    const view = viewOf(current, world.story);
+    const open = view?.choices.filter(({ available }) => available) ?? [];
+    const action: GameAction = view?.canAdvance
+      ? { type: 'advance' }
+      : {
+          type: 'choose',
+          choiceId: open.find(({ id }) => id === choiceId)?.id ?? open[0]?.id ?? '',
+        };
+    current = applyAction(current, action, world).state;
+  }
+  return current;
+};
+
+const paidIn = (state: GameState) =>
+  Object.values(state.paidByMonth).reduce((sum, paid) => sum + paid, 0);
+
+describe('a payment only happens once (FEAT-042)', () => {
+  const qualified = (flags: Record<string, boolean>): GameState => ({
+    ...runWith(1, false),
+    story: { ...runWith(1, false).story, flags },
+    relations: { boss: 40 },
+    money: { ...runWith(1, false).money, companyDebt: 60_000_000 },
+    paidByMonth: {},
+  });
+
+  it("pays 5 million in month 5 to someone on both the list and the boss's good side", () => {
+    const after = playScene(qualified({ joinedDragons: true }), 'ch4-second-tranche');
+    expect(paidIn(after)).toBe(5_000_000);
+  });
+
+  it('pays 5 million in month 7, however many reasons there are', () => {
+    const flags = { joinedDragons: true, tookPromotion: true, heldOutForPay: true };
+    expect(paidIn(playScene(qualified(flags), 'ch5-payday'))).toBe(5_000_000);
+  });
+});
+
+describe('the rules GPT asked to pin down (FEAT-042)', () => {
+  it('sends someone who gives up to The Survivor, not to a run with no ending', () => {
+    const worn: GameState = { ...runWith(1, false), outlook: { trust: 20, awareness: 20 } };
+    const after = playScene(worn, 'ch4-six-months', 'walk-away');
+    expect(after.story.flags.quitEarly).toBe(true);
+    expect(after.ending).toBe('survivor');
+  });
+
+  it('counts a paper once, whoever hands it over', () => {
+    const run = runWith(1, false);
+    const held: GameState = {
+      ...run,
+      evidence: ['timesheet'],
+      story: { ...run.story, flags: { helpedKhoa: true } },
+    };
+    expect(playScene(held, 'ch4-khoa-leaves').evidence).toEqual(['timesheet']);
+  });
+
+  it("pays Khoa's loan back once, and only if there was one", () => {
+    const run = runWith(1, false);
+    const owed: GameState = { ...run, story: { ...run.story, flags: { helpedKhoa: true } } };
+    expect(playScene(owed, 'ch6-empty-office').money.cash).toBe(owed.money.cash + 1_000_000);
+    expect(playScene(run, 'ch6-empty-office').money.cash).toBe(run.money.cash);
+  });
+});
 
 describe('Khoa after he has left (FEAT-041)', () => {
   it('sends no more tickets', () => {

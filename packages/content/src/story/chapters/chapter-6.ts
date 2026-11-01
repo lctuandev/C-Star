@@ -254,7 +254,7 @@ export const chapter6Scenes = {
         next: 'deal',
       },
       deal: {
-        text: 'Công ty chốt lộ trình trả dần cho cả nhóm. Không trọn vẹn, nhưng có văn bản, và lần này là chung một văn bản. Đợt đầu về tài khoản bạn 30 triệu.',
+        text: 'Công ty chốt lộ trình trả dần cho cả nhóm. Không trọn vẹn, nhưng có văn bản, và lần này là chung một văn bản. Đợt đầu của riêng bạn là 30 triệu.',
         effects: [{ type: 'companyPays', amount: 30_000_000 }],
         next: 'minh',
       },

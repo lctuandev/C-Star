@@ -61,6 +61,12 @@ describe('the end of a run (SCENARIO-047)', () => {
 });
 
 describe('renewing the contract (SCENARIO-048)', () => {
+  it('does not forgive what the player borrowed', () => {
+    const owing = over();
+    const state = { ...owing, money: { ...owing.money, loans: 8_000 } };
+    expect(step(state, renew).money.loans).toBe(8_000);
+  });
+
   const over = () => step(step(atFinale(), advance), advance);
 
   it('starts over and keeps the debt', () => {

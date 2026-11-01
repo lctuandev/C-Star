@@ -164,9 +164,9 @@ Tên và ý nghĩa `[Nguồn]`, điều kiện `[Đề xuất]`. Xét từ trên
 | 6   | The Good Ending   | Quyền lợi được giải quyết, bước sang chương mới     | Đủ bằng chứng, nhóm đủ người, đã gửi yêu cầu chính thức             |
 | 4   | The Collective    | Nhân viên đoàn kết cùng tìm hướng giải quyết        | Nhóm đủ người, nhưng thiếu bằng chứng                               |
 | 3   | The Investigator  | Đủ bằng chứng và tự theo đuổi quyền lợi             | Đủ bằng chứng, theo đuổi một mình                                   |
-| 2   | The Survivor      | Rời công ty và bắt đầu lại                          | Chọn rời đi ở Chương 6, hoặc buộc phải rời vì khủng hoảng lặp lại   |
-| 1   | The Believer      | Tiếp tục tin lời hứa                                | Ở lại, lòng tin vào sếp cao                                         |
-| 5   | The Empty Promise | Công ty tiếp tục hứa, không có gì thay đổi          | Các trường hợp còn lại                                              |
+| 2   | The Survivor      | Rời công ty và bắt đầu lại                          | Chọn rời đi ở Chương 6, nghỉ sớm, hoặc buộc phải rời vì khủng hoảng lặp lại   |
+| 1   | The Believer      | Tiếp tục tin lời hứa                                | Ký bản cam kết, quan hệ với sếp cao                                         |
+| 5   | The Empty Promise | Công ty tiếp tục hứa, không có gì thay đổi          | Các trường hợp còn lại, gồm cả đòi quyền lợi mà chưa đủ                                              |
 
 Ngày cuối xoay quanh Bản cam kết đồng hành: ở lại nghĩa là ký, khoản lương cũ được chuyển sang "kỳ phát triển mới".
 Cả sáu kết thúc đều có đoạn "Một năm sau" kể tiếp đời nhân vật, một phần tùy lựa chọn trước đó (anh Roger,

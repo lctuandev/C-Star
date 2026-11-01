@@ -46,7 +46,8 @@ const renewContract = (state: GameState, world: GameWorld): GameState | null => 
   const renewed: GameState = {
     ...fresh,
     loops: state.loops + 1,
-    money: { ...fresh.money, companyDebt: state.money.companyDebt },
+    // A new contract clears neither what the company owes nor what the player borrowed to survive.
+    money: { ...fresh.money, companyDebt: state.money.companyDebt, loans: state.money.loans },
     story: { ...fresh.story, flags: { [RENEWED_FLAG]: true } },
   };
   return startScene(renewed, world.story, world.renewalScene, world.evidence);

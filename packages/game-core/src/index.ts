@@ -36,7 +36,7 @@ export type {
   Phase,
   StoryProgress,
 } from './state/game-state.js';
-export { viewOf } from './story/story-engine.js';
+export { startScene, viewOf } from './story/story-engine.js';
 export type { ChoiceView, NodeView } from './story/story-engine.js';
 export { isRouteNode, PLACES } from './story/story-types.js';
 export type {

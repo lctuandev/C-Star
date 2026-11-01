@@ -138,12 +138,12 @@ export const chapter5Scenes = {
       },
       'player-1': {
         speaker: 'player',
-        text: 'Bọn em đã cho công ty gần sáu tháng rồi chị.',
+        text: 'Bọn em đã cho công ty mượn năm kỳ lương rồi chị.',
         next: 'hr-2',
       },
       'hr-2': {
         speaker: 'hr',
-        text: 'Thời gian đó công ty rất trân trọng ạ.',
+        text: 'Sự đồng hành đó công ty rất trân trọng ạ.',
         next: 'accountant',
       },
       accountant: {

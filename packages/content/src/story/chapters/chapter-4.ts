@@ -337,7 +337,7 @@ export const chapter4Scenes = {
     start: 'date',
     nodes: {
       date: {
-        text: 'Hơn sáu tháng rồi. Bạn mở lại email "Hành trình phi thường của bạn bắt đầu từ đây". Bạn đã từng thấy nó vui đến thế.',
+        text: 'Hơn sáu tháng kể từ ngày nhận email "Hành trình phi thường của bạn bắt đầu từ đây". Bạn mở lại nó. Bạn đã từng thấy nó vui đến thế.',
         effects: [{ type: 'addTrust', amount: -6 }],
         next: 'debt',
       },

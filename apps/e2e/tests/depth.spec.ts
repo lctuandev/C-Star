@@ -10,7 +10,7 @@ test('a round of tickets at the desk (SCENARIO-038)', async ({ page }) => {
   for (let number = 1; number <= 4; number += 1) {
     await expect(page.getByText(`Ticket ${number}/4`, { exact: false })).toBeVisible();
     await page.getByRole('button', { name: 'Làm ngay' }).click();
-    await expect(page.getByRole('status')).toContainText('việc.');
+    await expect(page.getByRole('status')).toContainText('KPI.');
   }
   await page.getByRole('button', { name: 'Xong việc' }).click();
   await expect(page.getByRole('heading', { name: 'Tuần này còn 2 lượt' })).toBeVisible();

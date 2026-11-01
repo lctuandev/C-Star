@@ -409,7 +409,7 @@ parts.push(
     return `| ${chapter} | ${month} | ${events} | ${pay} |`;
   }),
   '',
-  'Tiền trả muộn được tính vào tháng lương cũ nhất còn thiếu, đúng như nội dung chuyển khoản. Mốc thời gian dùng trong lời thoại: tháng lương đầu bị lỡ là tháng 2, nên tuần 3 tháng 7 là "gần sáu tháng" làm không công, và sang tháng 8 thì quá sáu tháng.',
+  'Tiền trả muộn được tính vào tháng lương cũ nhất còn thiếu, đúng như nội dung chuyển khoản. Cách tính mốc: người chơi nhận email trước tháng 1, nên cuối tháng 6 là "hơn sáu tháng" kể từ email đó. Kỳ lương đầu bị lỡ là lương tháng 2, nên tuần 3 tháng 7 công ty đã lỡ năm kỳ (T2 đến T6), và tới tháng 8 là sáu kỳ (T2 đến T7).',
   '',
   '### Thứ tự các cảnh',
   '',
@@ -561,6 +561,22 @@ parts.push(
   `- Niềm tin vào công ty bắt đầu từ ${rules.startingTrust}, hiểu quyền lợi từ ${rules.startingAwareness}. Mỗi tháng không có lương mất 8 niềm tin, mỗi khoản công ty trả được cộng lại 4. Hai chỉ số này hiện ở Hồ sơ, và mở khóa lựa chọn "Ra điều kiện" ở chương 5, "nghỉ luôn" ở chương 4`,
   '- Sổ lương trong Hồ sơ ghi từng tháng: hợp đồng, đã nhận, còn thiếu, KPI bị giữ. Màn kết thúc cộng lại tất cả, kèm số lần nghe hứa và số người còn liên lạc',
   `- Tổng số cảnh: ${Object.keys(story.scenes).length}`,
+  '',
+);
+
+parts.push(
+  '### Luật tiền, niềm tin, giấy tờ',
+  '',
+  '- **Thứ tự cộng trừ tiền:** tiền vào ví trước, hóa đơn trừ sau. Không đủ thì ví về 0, phần thiếu thành "hóa đơn chưa trả". Tiền không bao giờ âm.',
+  '- **Vay:** tiền vào ví, đồng thời ghi riêng ở "đang vay". Vay dư thì phần dư ở lại ví. Vay thiếu thì hóa đơn còn lại vẫn nợ tiếp và khủng hoảng có thể quay lại tháng sau.',
+  '- **Khủng hoảng:** mỗi loại tối đa một lần mỗi tháng, xét thiếu tiền trước, kiệt sức sau.',
+  '- **Lương:** kỳ nào không đủ 15 triệu thì tính là kỳ thiếu: mất 8 niềm tin, thêm 12 căng thẳng. Khoản trả giữa chừng (10 hoặc 5 triệu) cộng 4 niềm tin và trừ vào tháng lương cũ nhất còn thiếu, kể cả khi nó được gọi là "benefit".',
+  '- **Niềm tin:** các mức trong cốt truyện, như -6 ở `ch4-six-months`, là khoản riêng, cộng thêm vào luật trên.',
+  '- **KPI:** tiền KPI là 30% lương theo hợp đồng, cố định, chỉ trả tháng 1 rồi bị giữ. Chỉ tiêu tháng tính bằng điểm ticket (chọn đúng 1 điểm, "Làm cho có" 2 điểm) và chỉ ảnh hưởng đánh giá của sếp và căng thẳng.',
+  '- **Giấy tờ:** 8 loại, mỗi loại tính một lần dù nhận từ hai nguồn.',
+  '- **Gia hạn hợp đồng (vòng lặp):** giữ nguyên số công ty nợ, khoản đang vay, tên người chơi. Làm lại từ đầu tiền trong ví, sức khỏe, quan hệ, giấy tờ, cờ sự kiện.',
+  '- **Nhánh:** ở mỗi cụm điều kiện chỉ chạy nhánh đầu tiên đúng, nên một người đủ nhiều điều kiện vẫn chỉ nhận một khoản.',
+  '- **Tính toàn vẹn:** validator chạy khi build bảo đảm mọi cảnh, nút, điều kiện đều tồn tại, không có ngõ cụt. Test người chơi ngẫu nhiên đi qua đủ mọi dòng thoại và cả sáu kết thúc.',
   '',
 );
 
