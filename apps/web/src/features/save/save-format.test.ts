@@ -39,6 +39,15 @@ describe('a save file', () => {
     expect(file?.state.evidence).toEqual([]);
   });
 
+  it('remembers that Khoa has left, for a run saved before the game kept track', () => {
+    const old = load('save-v4.json') as { state: { story: { seenScenes: string[] } } };
+    const flagsAfter = (seenScenes: string[]) =>
+      readSaveFile({ ...old, state: { ...old.state, story: { ...old.state.story, seenScenes } } })
+        ?.state.story.flags;
+    expect(flagsAfter(['ch4-khoa-leaves'])).toMatchObject({ khoaLeft: true });
+    expect(flagsAfter(['ch3-dragon'])).not.toHaveProperty('khoaLeft');
+  });
+
   it.each([
     ['nothing', null],
     ['a string', 'save'],
