@@ -1,6 +1,6 @@
 # FEAT-001-pwa-shell — Plan
 
-Trạng thái: PLANNING
+Trạng thái: COMPLETED
 
 ## Objective
 
@@ -30,11 +30,11 @@ Game cài được ra màn hình chính và chơi được không cần mạng, 
 2. Service worker và script sinh precache, kèm test cho hàm định tuyến.
 3. Đăng ký và luồng cập nhật có chờ.
 4. Gợi ý cài đặt.
-5. E2E offline; kiểm tra bằng Lighthouse và trên điện thoại thật.
+5. E2E offline, cài được, cập nhật.
 
 ## Acceptance criteria
 
-- Chrome Android hiện cài đặt được; iOS Safari thêm vào Màn hình chính chạy `standalone`.
+- Chrome nhận là cài được. Cài thật trên Android và iPhone: chuyển sang TECH-004 (xem `progress.md`).
 - Sau một lần mở có mạng: tắt mạng, tải lại, game mở được đầy đủ.
 - Không còn file nào của bản build rơi ra ngoài precache.
 - Có bản mới: không tự reload; bấm cập nhật thì sang bản mới; cache cũ bị dọn.

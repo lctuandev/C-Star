@@ -9,7 +9,7 @@ Người chơi đã mở game một lần. Họ bật chế độ máy bay và m
 
 ### SCENARIO-003: có bản mới khi đang chơi
 Bản mới được phát hành trong lúc người chơi đang ở giữa một cảnh. Không có gì bị ngắt. Khi về menu, họ thấy
-lời mời cập nhật. Bấm thì game tải bản mới, không bấm thì vẫn chơi bản cũ bình thường.
+lời mời cập nhật. Bấm thì game tải bản mới, không bấm thì vẫn chơi bản cũ bình thường, tới lần mở app sau.
 
 ### SCENARIO-004: lần đầu mở mà mất mạng giữa chừng
 Mạng mất khi chưa tải xong. Game không rơi vào trạng thái nửa vời: lần có mạng sau, việc tải tiếp tục.

@@ -5,6 +5,12 @@ vào `plan.md` của task đó; xong thì xóa ở đây.
 
 Rà soát lần cuối: 2026-11-01.
 
-## Chưa có mục nào
+## PWA
 
-Dự án mới bắt đầu. Ý tưởng chưa lên lịch nằm ở `.project/roadmap.md` §8.
+| Mục                                                                 | Từ       | Xử lý ở  |
+| ------------------------------------------------------------------- | -------- | -------- |
+| Cài thật trên Android và iPhone, cần HTTPS                          | FEAT-001 | TECH-004 |
+| Host phục vụ `/x` cho `x.html`, không cache `sw.js`                 | FEAT-001 | TECH-004 |
+| Chưa rõ vì sao CDP làm Chromium giữ worker mới (không ảnh hưởng người chơi) | FEAT-001 | Khi có dấu hiệu ở máy thật |
+
+Ý tưởng chưa lên lịch nằm ở `.project/roadmap.md` §8.

@@ -8,7 +8,8 @@ chú thích ở cuối hợp đồng. Một cánh tối hơn là ống đèn s�
 | `logo-mark.svg`                  | Bản gốc, nền trong suốt, sửa ở đây     |
 | `logo.svg`, `logo.png`           | Logo trên nền tối, bo góc              |
 | `apps/web/src/app/icon.svg`      | Favicon                                |
-| `apps/web/public/icons/`         | Icon PWA 192, 512, maskable, apple-touch |
+| `apps/web/src/app/apple-icon.png` | Icon màn hình chính trên iOS           |
+| `apps/web/public/icons/`         | Icon PWA 192, 512, maskable            |
 
 Màu: `#c8f0e4` (đèn), `#4f6a65` (đèn sắp cháy), `#0c1113` (nền). Bản maskable thu nhỏ còn 62 % để nằm trong vùng cắt
 tròn của launcher.

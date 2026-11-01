@@ -1,4 +1,5 @@
 import { gameInfo } from '@cstar/content';
+import { PwaPrompts } from '@/features/pwa/PwaPrompts';
 
 /** A welcome screen until the menu exists (FEAT-002 puts the disclaimer in front of it). */
 export const LandingScreen = () => (
@@ -6,5 +7,6 @@ export const LandingScreen = () => (
     <h1 className="text-fluorescent text-5xl font-extrabold">{gameInfo.title}</h1>
     <p className="text-ink-secondary text-lg">{gameInfo.tagline}</p>
     <p className="text-ink-muted max-w-sm text-sm">{gameInfo.fictionNote}</p>
+    <PwaPrompts />
   </main>
 );

@@ -2,6 +2,7 @@ import { gameInfo } from '@cstar/content';
 import type { Metadata, Viewport } from 'next';
 import { Be_Vietnam_Pro } from 'next/font/google';
 import type { ReactNode } from 'react';
+import { PwaBoot } from '@/features/pwa/PwaBoot';
 import './globals.css';
 
 const beVietnamPro = Be_Vietnam_Pro({
@@ -15,6 +16,11 @@ export const metadata: Metadata = {
   title: gameInfo.title,
   description: gameInfo.tagline,
   applicationName: gameInfo.title,
+  appleWebApp: {
+    capable: true,
+    title: gameInfo.title,
+    statusBarStyle: 'black-translucent',
+  },
   formatDetection: { telephone: false },
 };
 
@@ -27,7 +33,10 @@ export const viewport: Viewport = {
 
 const RootLayout = ({ children }: { children: ReactNode }) => (
   <html lang="vi" className={beVietnamPro.variable}>
-    <body>{children}</body>
+    <body>
+      <PwaBoot />
+      {children}
+    </body>
   </html>
 );
 

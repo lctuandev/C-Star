@@ -13,14 +13,13 @@ tháng. Web, PWA chơi được offline, điện thoại dọc là chính. Khôn
 - TECH-001 xong: monorepo chạy được, chưa có gameplay. `pnpm dev` ở cổng 5200.
 - Repo: <https://github.com/lctuandev/C-Star>, nhánh `main`.
 - GDD v0.1 viết từ kịch bản ChatGPT của owner. Các phần `[Đề xuất]` và con số chưa được owner duyệt.
-- Logo ở `docs/brand/`, icon PWA đã sinh, chưa nối vào manifest.
-- Roadmap M0–M5 xong. Plan chi tiết có cho FEAT-001 và FEAT-002.
+- FEAT-001 xong: PWA chơi offline, cập nhật có chờ, gợi ý cài. Chưa cài thật, cần HTTPS (TECH-004).
+- Logo ở `docs/brand/`.
+- Roadmap M0–M5 xong. Plan chi tiết có cho FEAT-002.
 
 ## Active Task
 
-**FEAT-001-pwa-shell** — PLANNING, chưa bắt đầu.
-
-Hàng đợi M0: FEAT-002-disclaimer-gate. Hai task độc lập, thứ tự nào cũng được.
+**FEAT-002-disclaimer-gate** — đang làm.
 
 ## Blockers
 
@@ -34,4 +33,4 @@ Không có. Các câu hỏi dưới đây không chặn M0.
 
 ## Next Step
 
-`/implement` FEAT-001: manifest, service worker, precache toàn bộ `apps/web/out`.
+Làm hết roadmap theo thứ tự, không dừng hỏi (owner, 2026-11-01). Mỗi task xong thì commit và push.

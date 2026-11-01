@@ -62,8 +62,9 @@ cách tổ chức route theo docs của Next đang cài.
 
 ## 6. PWA
 
-Xem ADR-002. Service worker precache toàn bộ bản build, cập nhật chỉ áp dụng khi người chơi đồng ý, save không
-đi qua cache.
+Xem ADR-002. `apps/web/scripts/build-sw.mjs` chạy sau `next build`, ghép danh sách toàn bộ file vào
+`features/pwa/sw.template.js` thành `out/sw.js`. Cập nhật chỉ áp dụng khi người chơi đồng ý, chờ tối đa 10 giây rồi
+reload. Save không đi qua cache. Phát triển không dùng service worker.
 
 ---
 

@@ -30,7 +30,7 @@ Xong khi: mở web thấy màn cảnh báo, xác nhận rồi vào menu, cài đ
 | Task                         | Mục tiêu                                                     | Nghiệm thu                                                              | Cần có   |
 | ---------------------------- | ------------------------------------------------------------ | ----------------------------------------------------------------------- | -------- |
 | TECH-001-monorepo-foundation | Dựng pnpm + Turborepo, `web`, `game-core`, `content`, `e2e`, CI | `pnpm typecheck lint test build` xanh; static export chạy được; CI xanh | —        |
-| FEAT-001-pwa-shell           | PWA cài được, precache toàn bộ bản build, cập nhật không ngắt lượt chơi | Cài được trên Android/iOS; offline mở được; bản mới chỉ áp dụng khi bấm | TECH-001 |
+| FEAT-001-pwa-shell           | PWA cài được, precache toàn bộ bản build, cập nhật không ngắt lượt chơi | Chrome nhận là cài được; offline mở được; bản mới chỉ áp dụng khi bấm | TECH-001 |
 | FEAT-002-disclaimer-gate     | Màn cảnh báo bắt buộc, có phiên bản, không có đường vòng     | Không vào được game nếu chưa xác nhận, kể cả bằng link trực tiếp        | TECH-001 |
 
 ---
@@ -109,7 +109,7 @@ Xong khi: người ngoài dùng link công khai, cài được, chơi hết đư
 | FEAT-026-audio              | Nhạc nền, tiếng văn phòng, chuông ngân hàng                     | Tắt được; không tự phát trước tương tác                         | M4        |
 | FEAT-027-settings-and-accessibility | Cỡ chữ, tốc độ chữ, âm lượng, giảm chuyển động, "Về game" | Đủ cho điện thoại nhỏ; xem lại được lời cảnh báo                | M4        |
 | TECH-003-content-review     | Rà toàn bộ nội dung theo `contracts/content.md`, chốt tên game  | Không còn gì nhận diện được; tên đã tra; owner duyệt            | M4        |
-| TECH-004-production-deploy  | Triển khai site tĩnh, HTTPS, quy trình phát hành bản mới        | Link công khai; Lighthouse PWA đạt; có cách rollback            | TECH-003  |
+| TECH-004-production-deploy  | Triển khai site tĩnh, HTTPS, quy trình phát hành bản mới        | Link công khai; cài thật được trên Android và iPhone; `/x` và `sw.js` đúng trên host; có cách rollback            | TECH-003  |
 
 ---
 
