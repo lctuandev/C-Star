@@ -12,7 +12,7 @@ tháng. Web, PWA chơi được offline, điện thoại dọc là chính. Khôn
 
 - **Game hoàn chỉnh**: 44 cảnh, 6 kết thúc, văn phòng 3D bake ánh sáng, 10 nhân vật có tên, âm thanh từng hành động và nhạc đổi theo tháng (ADR-006), cài đặt, save v4, PWA offline, màn cảnh báo, điền tên người chơi, bố cục riêng cho điện thoại, tablet và PC.
 - Art dựng bằng Blender từ code: `tools/art-pipeline`, ADR-005.
-- Đang chạy công khai: <https://c-star.lctuan.space> (Docker `127.0.0.1:6000`, Cloudflare Tunnel, cách phát hành ở `.tasks/completed/TECH-004-production-deploy/result.md`). Site đang ở commit `c61dc49`, chưa có âm thanh mới và phần mở đầu đã sửa (`88fa31f`): chờ owner đồng ý deploy.
+- Đang chạy công khai: <https://c-star.lctuan.space> (Docker `127.0.0.1:6000`, Cloudflare Tunnel, cách phát hành ở `.tasks/completed/TECH-004-production-deploy/result.md`). Site đang ở commit `ecd9f1e`.
 - Repo: <https://github.com/lctuandev/C-Star>, nhánh `main`, **public**.
 - Toàn bộ roadmap xong trừ phần cần owner, ghi ở `backlog.md`.
 - Số liệu, điều kiện ending, giọng văn, câu chữ cảnh báo đều chưa được owner duyệt.
@@ -29,7 +29,6 @@ Không có.
 
 - Xác nhận sáu mục ở `docs/content-review.md`, nhất là tên "C\*".
 - Bốn cái tên owner đưa cho lãnh đạo (FEAT-034, Fiction Check) chưa dùng: game dùng chức danh và tên hư cấu cho tới khi owner xác nhận chúng hoàn toàn do tưởng tượng.
-- Đồng ý deploy bản `88fa31f`.
 - Chơi thử trên điện thoại thật: giọng văn, số liệu, 3D có mượt không, và nghe thử âm thanh: chưa ai nghe bằng tai.
 
 ## Next Step

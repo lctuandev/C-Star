@@ -23,3 +23,12 @@
 
 - `every file of the build is in the cache` đỏ ở cả hai cấu hình: test so cache của bản đã deploy với `apps/web/out` trên máy, hai bản khác mã build. Báo động giả, cùng lý do như lần chạy trên nginx trước.
 - Một lần `page.goto` quá 30 giây ở trang menu. Chạy lặp 18 lần đều qua, không tái hiện được: coi là chập chờn mạng qua tunnel, chưa rõ nguyên nhân.
+
+## 2026-11-01, lần phát hành thứ hai (`ecd9f1e`, có âm thanh)
+
+| Check                                                                 | Result     |
+| --------------------------------------------------------------------- | ---------- |
+| Owner đồng ý deploy                                                    | PASS       |
+| File âm thanh, ảnh, GLB trả đúng MIME qua HTTPS                        | PASS       |
+| E2E vào domain thật: sound, disclaimer, home, 26 test                  | PASS       |
+| E2E `pwa.spec` vào domain thật, trừ test so với bản build trên máy: 15 pass | PASS  |
