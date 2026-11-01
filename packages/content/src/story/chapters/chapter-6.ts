@@ -12,17 +12,70 @@ export const chapter6Scenes = {
         next: 'visit',
       },
       visit: {
-        text: 'Giữa buổi sáng, cả tầng bỗng đứng dậy. Một người tóc bạc bước vào, sau lưng là hai trợ lý. Lần đầu tiên bạn thấy Chủ tịch ngoài màn hình.',
+        text: 'Giữa buổi sáng, cả tầng được gọi ra giữa phòng. Một người tóc bạc bước vào, sau lưng là hai trợ lý. Lần đầu tiên bạn thấy Chủ tịch ngoài màn hình.',
         next: 'chairman',
       },
       chairman: {
         speaker: 'chairman',
-        text: 'Văn phòng đẹp. Công ty này... làm về mảng nào nhỉ? Thôi, cố lên nhé các bạn. Tôi có cuộc họp ở công ty khác.',
+        text: 'Văn phòng đẹp. Công ty này... làm về mảng nào nhỉ? Thôi không sao. Hôm nay tôi đến để trò chuyện với các em như người trong nhà.',
+        next: 'chairman-2',
+      },
+      'chairman-2': {
+        speaker: 'chairman',
+        text: 'Người ta hay hỏi tôi bí quyết thành công. Là đừng hỏi lương. Người làm việc lớn không đếm tháng. Các em không phải đang bị nợ, các em đang đầu tư vào chính mình.',
+        next: 'chairman-3',
+      },
+      'chairman-3': {
+        speaker: 'chairman',
+        text: 'Ai còn nghĩ tới tiền là chưa hiểu công ty. Ai hiểu công ty rồi thì tiền sẽ tự đến, hoặc không cần đến nữa. Các em nhắc lại với tôi nào: "Tôi đang đầu tư vào chính mình".',
+        next: 'room',
+      },
+      room: {
+        text: 'Anh Roger nhắc lại to nhất. Vài chục người nhắc theo, nhỏ dần. Chủ tịch gật đầu, rồi nhìn thẳng về phía bạn.',
+        choices: [
+          {
+            id: 'repeat-after',
+            text: 'Lẩm nhẩm nhắc theo cho xong',
+            effects: [{ type: 'addRelation', npc: 'manager', amount: 3 }],
+            next: 'repeated',
+          },
+          {
+            id: 'ask-chairman',
+            text: 'Giơ tay: "Dạ thưa Chủ tịch, bao giờ công ty trả lương ạ?"',
+            effects: [
+              { type: 'setFlag', flag: 'askedChairman' },
+              { type: 'addStress', amount: 6 },
+              { type: 'addRelation', npc: 'deputy', amount: 5 },
+              { type: 'addRelation', npc: 'uyen', amount: 5 },
+            ],
+            next: 'chairman-answers',
+          },
+          {
+            id: 'note-chairman',
+            text: 'Ghi lại nguyên văn vào sổ',
+            requires: { type: 'flag', flag: 'startedNotes' },
+            lockedReason: 'Bạn chưa có thói quen ghi chép',
+            effects: [{ type: 'addEvidence', evidence: 'group-notes' }],
+            next: 'noted',
+          },
+        ],
+      },
+      repeated: {
+        text: 'Bạn nghe giọng mình nói câu đó. Nó nhỏ, nhưng là giọng của bạn. Cảm giác đó ở lại lâu hơn bạn tưởng.',
+        next: 'tin-moved',
+      },
+      'chairman-answers': {
+        speaker: 'chairman',
+        text: 'Em còn trẻ. Đó là câu hỏi của người làm thuê. Hãy hỏi mình đã cống hiến được gì cho công ty.',
+        next: 'tin-moved',
+      },
+      noted: {
+        text: 'Bạn viết: "Đừng hỏi lương". Ghi ngày, ghi giờ, ghi tên người nói. Hai trợ lý nhìn cây bút của bạn và không biết phải làm gì với nó.',
         next: 'tin-moved',
       },
       'tin-moved': {
         speaker: 'manager',
-        text: 'Các em thấy chưa? Chủ tịch đích thân đến động viên mình. Chừng đó là đủ rồi.',
+        text: 'Các em thấy chưa? Chủ tịch đích thân đến trò chuyện với mình. Chừng đó là đủ rồi.',
         next: 'minh-looks',
       },
       'minh-looks': {

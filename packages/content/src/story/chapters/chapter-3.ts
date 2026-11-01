@@ -69,13 +69,13 @@ export const chapter3Scenes = {
     start: 'ting',
     nodes: {
       ting: {
-        text: 'Ting. Tim bạn đập một nhịp. 5.000.000 đ, đúng một phần ba tháng lương. Nội dung: "TAM UNG DOT 1 LUONG T2".',
-        effects: [{ type: 'companyPays', amount: 5_000_000 }],
+        text: 'Ting. Tim bạn đập một nhịp. 10.000.000 đ, hai phần ba tháng lương. Nội dung: "TAM UNG DOT 1 LUONG T2".',
+        effects: [{ type: 'companyPays', amount: 10_000_000 }],
         next: 'accountant',
       },
       accountant: {
         speaker: 'accountant',
-        text: 'Đợt 1 là một phần ba của tháng 2. Đợt 2 sẽ chuyển khi đợt 1 của tháng 3 hoàn tất, trừ phần đã ứng cho đợt 1 của đợt trước. Em hiểu chứ?',
+        text: 'Đợt 1 là hai phần ba của tháng 2. Đợt 2 sẽ chuyển khi đợt 1 của tháng 3 hoàn tất, trừ phần đã ứng cho đợt 1 của đợt trước. Em hiểu chứ?',
         next: 'hmm',
       },
       hmm: {
@@ -282,17 +282,17 @@ export const chapter3Scenes = {
     nodes: {
       mail: {
         speaker: 'hr',
-        text: 'Thông báo chung: công ty cam kết hoàn tất toàn bộ lương tồn đọng trước ngày 30 tháng sau. Cảm ơn sự kiên nhẫn phi thường của cả nhà!',
+        text: 'Thông báo chung: công ty đã ghi nhận các thắc mắc của cả nhà. Khi có thông tin, công ty sẽ thông báo. Cảm ơn sự kiên nhẫn phi thường của cả nhà!',
         next: 'reaction',
       },
       reaction: {
         speaker: 'khoa',
-        text: 'Thấy chưa! Có ngày cụ thể rồi nè! Ngày 30!',
+        text: 'Vậy là... sắp có thông tin rồi đúng không mọi người?',
         next: 'uyen',
       },
       uyen: {
         speaker: 'uyen',
-        text: 'Lần đầu tiên có ngày. Mình lưu email này lại, bạn cũng nên làm thế.',
+        text: 'Bốn tháng rồi, không một dòng nào về kế hoạch trả lương hay tình hình công ty. Mình lưu email này lại, bạn cũng nên làm thế.',
         next: 'check',
       },
       check: {
@@ -305,7 +305,7 @@ export const chapter3Scenes = {
         next: 'end',
       },
       end: {
-        text: 'Bạn đánh dấu ngày 30 lên lịch, ngay cạnh trái tim nhỏ của tháng đầu tiên. Lần này bạn không vẽ gì thêm.',
+        text: 'Bạn mở lịch ra, cạnh trái tim nhỏ của tháng đầu tiên. Không có ngày nào để đánh dấu cả.',
       },
     },
   },
@@ -494,6 +494,64 @@ export const chapter3Scenes = {
       minh: {
         speaker: 'deputy',
         text: 'Từ giờ thứ Sáu nào em cũng sẽ nghe câu đó. Anh Roger không nói dối đâu, anh ấy tin thật. Em cứ báo cáo cho đủ, việc mình làm thì mình làm đàng hoàng.',
+      },
+    },
+  },
+
+  'ch3-no-news': {
+    id: 'ch3-no-news',
+    place: 'hallway',
+    start: 'corner',
+    nodes: {
+      corner: {
+        text: 'Góc pantry dạo này đông hơn phòng họp. Không ai còn nói chuyện dự án. Nhóm chat công ty thì im, hỏi gì cũng chỉ nhận về một trái tim của chị HR.',
+        next: 'dan',
+      },
+      dan: {
+        speaker: 'dan',
+        text: 'Tôi không sợ chậm, tôi sợ không ai nói gì. Nhà đầu tư nào cũng có báo cáo. Bọn mình làm ở đây mà không biết công ty còn bao nhiêu tiền.',
+        next: 'khoa',
+      },
+      khoa: {
+        speaker: 'khoa',
+        text: 'Chủ nhà mình hỏi bao giờ có tiền, mình cũng không biết nói sao. Mình cười hoài cũng mệt.',
+        next: 'uyen',
+      },
+      uyen: {
+        speaker: 'uyen',
+        text: 'Tám mươi mốt ngày, không có một thông báo nào về kế hoạch trả. Có người còn đang tính nghỉ, mà nghỉ thì tiền ai trả.',
+        next: 'huni',
+      },
+      huni: {
+        speaker: 'deputy',
+        text: 'Anh hỏi lên trên ba lần rồi, đều chưa có câu trả lời. Anh xin lỗi, anh không có gì hơn để nói với các em.',
+        choices: [
+          {
+            id: 'grumble',
+            text: 'Than với nhóm một lúc rồi về làm tiếp',
+            effects: [
+              { type: 'addStress', amount: -3 },
+              { type: 'addRelation', npc: 'khoa', amount: 3 },
+            ],
+            next: 'grumbled',
+          },
+          {
+            id: 'ask-in-chat',
+            text: 'Hỏi thẳng trong nhóm chung: "Công ty có kế hoạch trả lương chưa ạ?"',
+            effects: [
+              { type: 'addStress', amount: 5 },
+              { type: 'addRelation', npc: 'hr', amount: -6 },
+              { type: 'addRelation', npc: 'deputy', amount: 4 },
+            ],
+            next: 'asked',
+          },
+        ],
+      },
+      grumbled: {
+        text: 'Than xong thấy nhẹ người được một lúc. Rồi ai về chỗ nấy, mở ticket lên, như chưa có chuyện gì.',
+      },
+      asked: {
+        text: 'Tin nhắn của bạn được 43 lượt thả tim trong năm phút, từ những người chưa bao giờ dám hỏi. Chị HR đã xem. Không ai trả lời.',
       },
     },
   },

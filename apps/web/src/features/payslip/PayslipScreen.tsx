@@ -1,6 +1,6 @@
 'use client';
 
-import { promiseFor, slipIsMissing } from '@cstar/content';
+import { KPI_SHARE, kpiWasPaid, promiseFor, slipIsMissing } from '@cstar/content';
 import type { Payslip } from '@cstar/game-core';
 import { Button } from '@/components/ui/Button';
 import { useGameStore } from '@/features/play/game-store';
@@ -50,7 +50,15 @@ export const PayslipScreen = ({ payslip, playerName = '' }: PayslipScreenProps) 
           {payslip.kpi && (
             <Row label="KPI tháng" amount={`${payslip.kpi.points} / ${payslip.kpi.target}`} />
           )}
-          {payslip.kpi && <Row label="Tiền KPI theo hợp đồng" amount="Đang giữ" />}
+          {kpiWasPaid(payslip.month) ? (
+            <Row
+              label="Tiền KPI (30% lương)"
+              amount={formatMoney(payslip.salaryDue * KPI_SHARE)}
+              strong
+            />
+          ) : (
+            <Row label="Tiền KPI theo hợp đồng" amount="Đang giữ" />
+          )}
         </dl>
         <hr className="border-dashed border-current opacity-40" />
         <dl className="flex flex-col gap-1">

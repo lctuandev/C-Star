@@ -29,6 +29,11 @@ export const syncLineFor = (month: number, week: number): string | null =>
     ? null
     : (syncLines[((month - FIRST_SYNC_MONTH) * 4 + week - 1) % syncLines.length] as string);
 
+export const KPI_SHARE = 0.3;
+
+/** Paid once, in the first month: what the contract promised, and never seen again. */
+export const kpiWasPaid = (month: number): boolean => month === 1;
+
 /** Some months no payslip comes at all, and the player keeps their own figures. */
 const MONTHS_WITHOUT_A_SLIP: readonly number[] = [5, 7];
 

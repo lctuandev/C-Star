@@ -75,7 +75,7 @@ riêng ở Chương 4, để việc họ rời đi có sức nặng.
 Các chi tiết xuyên suốt: lời hứa "this week", "next week" trên mỗi phiếu lương chưa trả; chiến dịch "Vượt thác hóa rồng" ở
 tháng 4, với "benefit" là được nhận một phần lương sớm; lời hứa IPO và cổ phiếu nội bộ kèm "1–2 triệu đô" ở tháng 6; mọi người
 phải vay người thân và vay tín dụng; rời đi trước tháng 6 thì Phó giám đốc nhắn "tiếc cho em"; công ty thỉnh thoảng trả một phần ba
-hoặc hai phần ba tháng lương để giữ niềm tin rồi nợ tiếp; tiền KPI bị giữ; có tháng không có bảng lương; weekly sync thứ Sáu nào anh
+hoặc hai phần ba tháng lương để giữ niềm tin rồi nợ tiếp, từ tháng 5 chỉ một phần ba và chỉ vài người có; tháng đầu trả đủ lương cộng KPI 30%; tiền KPI bị giữ; có tháng không có bảng lương; weekly sync thứ Sáu nào anh
 Roger cũng trả lời "next week, hopefully".
 
 ---

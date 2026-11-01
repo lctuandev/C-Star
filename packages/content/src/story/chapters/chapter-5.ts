@@ -43,11 +43,12 @@ export const chapter5Scenes = {
         choices: [
           {
             id: 'formal',
-            text: 'Gửi yêu cầu chính thức bằng văn bản',
+            text: 'Gửi email đòi quyền lợi, lưu làm bằng chứng nếu phải khởi kiện',
             requires: { type: 'stat', stat: 'evidenceCount', min: 3 },
             lockedReason: 'Cần ít nhất 3 giấy tờ trong Hồ sơ',
             effects: [
               { type: 'setFlag', flag: 'sentFormalRequest' },
+              { type: 'addEvidence', evidence: 'demand-mail' },
               { type: 'addRelation', npc: 'hr', amount: -10 },
               { type: 'addRelation', npc: 'boss', amount: -10 },
               { type: 'addStress', amount: 6 },
@@ -76,7 +77,7 @@ export const chapter5Scenes = {
         ],
       },
       'formal-sent': {
-        text: 'Bạn gửi email lúc 9 giờ đúng, kèm tệp đính kèm đặt tên rõ ràng, có yêu cầu xác nhận đã đọc. Tay bạn hơi run. Nhưng không phải vì sợ.',
+        text: 'Bạn gửi email lúc 9 giờ đúng, nêu rõ từng khoản bị nợ, kèm tệp đính kèm, có yêu cầu xác nhận đã đọc. Bạn lưu lại bản gửi đi: công ty trả lời hay không, đây cũng là bằng chứng bạn đã đòi. Tay bạn hơi run. Nhưng không phải vì sợ.',
       },
       'advice-given': {
         text: 'Người ta nghe bạn trình bày, xem qua giấy tờ, rồi hỏi: "Bạn có lưu lại không?". Đó là câu hỏi đúng nhất bạn được nghe trong bảy tháng.',
@@ -119,6 +120,17 @@ export const chapter5Scenes = {
       },
       three: {
         text: 'Trong một buổi sáng, bạn nhận được ba lời giải thích khác nhau: hệ thống, dòng tiền, và "vấn đề mang tính thời điểm".',
+        next: 'mail-check',
+      },
+      'mail-check': {
+        routes: [{ when: { type: 'flag', flag: 'sentFormalRequest' }, next: 'mail-reply' }],
+        otherwise: 'no-mail',
+      },
+      'mail-reply': {
+        text: 'Bức email hôm trước có hồi âm, đúng một dòng: "Công ty đã tiếp nhận". Bạn lưu nó cùng thư mục. Một dòng thôi, nhưng có ngày, có người gửi.',
+      },
+      'no-mail': {
+        text: 'Bạn về chỗ, nhìn ba lời giải thích, và nghĩ tới những thứ mà mình chưa có trên giấy.',
       },
     },
   },
@@ -200,11 +212,30 @@ export const chapter5Scenes = {
     nodes: {
       quiet: {
         text: 'Ngày lương thứ bảy. Bạn không còn đặt điện thoại ngửa mặt lên bàn nữa.',
-        next: 'crumb',
+        next: 'crumb-check',
+      },
+      'crumb-check': {
+        routes: [
+          {
+            when: {
+              type: 'any',
+              conditions: [
+                { type: 'flag', flag: 'joinedDragons' },
+                { type: 'flag', flag: 'tookPromotion' },
+              ],
+            },
+            next: 'crumb',
+          },
+        ],
+        otherwise: 'no-crumb',
       },
       crumb: {
         text: 'Ting. 5.000.000 đ, lại một phần ba tháng lương, đúng tuần mọi người bắt đầu đòi giấy tờ. Phần còn lại được nợ tiếp.',
         effects: [{ type: 'companyPays', amount: 5_000_000 }],
+        next: 'mom',
+      },
+      'no-crumb': {
+        text: 'Trong nhóm chat có người nói vừa được một phần ba tháng lương. Bạn thì không. Bạn không còn ngạc nhiên nữa.',
         next: 'mom',
       },
       mom: {

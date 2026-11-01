@@ -131,6 +131,12 @@ describe('PayslipScreen (SCENARIO-026)', () => {
     expect(screen.getByText('Còn thiếu')).toBeInTheDocument();
   });
 
+  it('pays the KPI money in the first month, and only then (SCENARIO-089)', () => {
+    render(<PayslipScreen payslip={{ ...slip, month: 1, salaryPaid: 15_000_000 }} />);
+    expect(screen.getByText('4.500.000 đ')).toBeInTheDocument();
+    expect(screen.queryByText('Đang giữ')).not.toBeInTheDocument();
+  });
+
   it('holds the KPI money back, whatever the points say (SCENARIO-082)', () => {
     render(<PayslipScreen payslip={{ ...slip, kpi: { points: 8, target: 8 } }} />);
     expect(screen.getByText('Đang giữ')).toBeInTheDocument();

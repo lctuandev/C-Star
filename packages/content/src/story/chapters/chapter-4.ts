@@ -3,26 +3,51 @@ export const chapter4Scenes = {
   'ch4-second-tranche': {
     id: 'ch4-second-tranche',
     place: 'desk',
-    start: 'ting',
+    start: 'check',
     nodes: {
+      check: {
+        routes: [
+          {
+            when: {
+              type: 'any',
+              conditions: [
+                { type: 'flag', flag: 'joinedDragons' },
+                { type: 'relation', npc: 'boss', min: 8 },
+              ],
+            },
+            next: 'ting',
+          },
+        ],
+        otherwise: 'nothing',
+      },
       ting: {
-        text: 'Ting. 10.000.000 đ, hai phần ba của một tháng lương. Nội dung: "UNG DOT 1 CUA DOT 2 LUONG T2 BU T3". Bạn đọc ba lần và hiểu ít hơn sau mỗi lần.',
-        effects: [{ type: 'companyPays', amount: 10_000_000 }],
+        text: 'Ting. 5.000.000 đ, giảm còn một phần ba tháng lương. Nội dung: "UNG DOT 1 CUA DOT 2 LUONG T2 BU T3". Bạn đọc ba lần và hiểu ít hơn sau mỗi lần.',
+        effects: [{ type: 'companyPays', amount: 5_000_000 }],
+        next: 'who',
+      },
+      nothing: {
+        text: 'Sáng nay trong phòng có vài tiếng ting rải rác. Ai có thì cúi mặt nhìn điện thoại. Điện thoại của bạn nằm im.',
+        effects: [{ type: 'addStress', amount: 5 }],
+        next: 'who',
+      },
+      who: {
+        speaker: 'uyen',
+        text: 'Mình hỏi rồi. Đợt này chỉ vài người có, mỗi người một phần ba tháng lương. Nhiều người ba bốn tháng liền chưa nhận được đồng nào, và không ai biết vì sao.',
         next: 'accountant',
       },
       accountant: {
         speaker: 'accountant',
-        text: 'Đừng hỏi chị. Chị đã xin nghỉ phép một tuần chỉ để không phải giải thích câu đó.',
+        text: 'Đừng hỏi chị. Danh sách từ trên đưa xuống. Chị đã xin nghỉ phép một tuần chỉ để không phải giải thích.',
         next: 'dan',
       },
       dan: {
         speaker: 'dan',
-        text: 'Thấy chưa, dòng tiền bắt đầu chảy lại. Đây là chữ V, ông nhìn đáy rồi đấy.',
+        text: 'Thấy chưa, dòng tiền bắt đầu chảy lại. Đây là chữ V, ông nhìn đáy rồi đấy. Chỉ là tôi chưa có tên trong đợt này thôi.',
         next: 'minh',
       },
       minh: {
         speaker: 'deputy',
-        text: 'Cứ lúc mọi người định nghỉ là lại có một ít. Đủ để mình ở lại, không đủ để mình sống. Tháng sau chắc lại nợ tiếp thôi, em nhớ ghi lại nhé.',
+        text: 'Cứ lúc mọi người định nghỉ là lại có một ít, mà chỉ cho vài người. Thế là người có thì im, người không có thì ngại hỏi. Em nhớ ghi lại nhé.',
       },
     },
   },
@@ -82,7 +107,7 @@ export const chapter4Scenes = {
     start: 'date',
     nodes: {
       date: {
-        text: 'Ngày 30 đến. Ngày 30 đi. Nó trôi qua êm đềm như một ngày bình thường, vì với công ty thì đúng là vậy.',
+        text: 'Hết tháng 5. Vẫn không có một dòng nào về kế hoạch trả lương. Tháng trôi qua êm đềm như một tháng bình thường, vì với công ty thì đúng là vậy.',
         next: 'mail',
       },
       mail: {
@@ -409,7 +434,7 @@ export const chapter4Scenes = {
     start: 'slips',
     nodes: {
       slips: {
-        text: 'Hợp đồng ghi rõ có tiền KPI. Bạn mở lại các phiếu lương cũ: không tháng nào có dòng đó. Tháng trước thì đến cả phiếu lương cũng không có.',
+        text: 'Hợp đồng ghi tiền KPI bằng 30% lương. Tháng đầu tiên bạn nhận đủ. Từ đó tới nay chưa thấy lại, dù bạn vẫn chạy chỉ tiêu. Tháng trước thì đến cả phiếu lương cũng không có.',
         next: 'ask',
       },
       ask: {

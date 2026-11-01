@@ -10,7 +10,7 @@ export const chapter1Scenes = {
         next: 'offer',
       },
       offer: {
-        text: 'Công ty C*. Vị trí: Chuyên viên. Lương: 15 triệu, cộng tiền KPI hằng tháng. Phúc lợi: "văn hóa gia đình, cơ hội không giới hạn, trái cây thứ Sáu".',
+        text: 'Công ty C*. Vị trí: Chuyên viên. Lương: 15 triệu, cộng tiền KPI bằng 30% lương mỗi tháng. Phúc lợi: "văn hóa gia đình, cơ hội không giới hạn, trái cây thứ Sáu".',
         next: 'reaction',
       },
       reaction: {
@@ -290,6 +290,11 @@ export const chapter1Scenes = {
       },
       bank: {
         text: '+15.000.000 đ. Nội dung: "CT C STAR TRA LUONG T1". Bạn đọc lại ba lần. Con số đẹp hơn mọi biểu đồ của sếp.',
+        next: 'kpi',
+      },
+      kpi: {
+        text: 'Ting. +4.500.000 đ. Nội dung: "CT C STAR KPI T1". Đủ 30% lương, đúng như hợp đồng. Công ty này giữ lời thật.',
+        effects: [{ type: 'addCash', amount: 4_500_000 }],
         next: 'what-now',
       },
       'what-now': {
@@ -341,6 +346,64 @@ export const chapter1Scenes = {
       },
       end: {
         text: 'Bạn mở lịch, đánh dấu ngày mùng 5 tháng sau, rồi vẽ thêm một trái tim nhỏ.',
+      },
+    },
+  },
+
+  'ch1-team-lunch': {
+    id: 'ch1-team-lunch',
+    place: 'hallway',
+    start: 'table',
+    nodes: {
+      table: {
+        text: 'Trưa thứ Sáu cuối tháng, cả nhóm kéo nhau xuống quán cơm dưới tòa nhà. Anh Huni gọi món cho cả bàn, anh Roger trả tiền nước và kể về lần đầu gặp Chủ tịch.',
+        next: 'roger',
+      },
+      roger: {
+        speaker: 'manager',
+        text: 'Ông ấy nhìn anh và nói: "Công ty cần những người tin". Từ hôm đó tới giờ anh chưa nghỉ một ngày phép nào.',
+        next: 'huni',
+      },
+      huni: {
+        speaker: 'deputy',
+        text: 'Anh ấy không đùa đâu. Thôi ăn đi các em, nguội hết bây giờ. Mà {name} ở lâu rồi sẽ thấy, ở đây vui nhất là đồng nghiệp.',
+        next: 'who',
+      },
+      who: {
+        speaker: 'player',
+        text: 'Nhân lúc mọi người đang vui, mình hỏi thêm về ai nhỉ?',
+        choices: [
+          {
+            id: 'lunch-dan',
+            text: 'Hỏi Dân về mấy cửa sổ tin tức tài chính',
+            effects: [{ type: 'addRelation', npc: 'dan', amount: 6 }],
+            next: 'dan',
+          },
+          {
+            id: 'lunch-uyen',
+            text: 'Hỏi Uyên vì sao cái gì cũng dán nhãn',
+            effects: [{ type: 'addRelation', npc: 'uyen', amount: 6 }],
+            next: 'uyen',
+          },
+          {
+            id: 'lunch-khoa',
+            text: 'Hỏi Khoa sao lúc nào cũng cười',
+            effects: [{ type: 'addRelation', npc: 'khoa', amount: 6 }],
+            next: 'khoa',
+          },
+        ],
+      },
+      dan: {
+        speaker: 'dan',
+        text: 'Tôi để dành được ít vốn, ông ạ. Đi làm là để có tin, có tin mới có tiền. Công ty này mà lên sàn thì ông nhớ tôi đã nói trước.',
+      },
+      uyen: {
+        speaker: 'uyen',
+        text: 'Công ty cũ của mình đóng cửa sau một đêm. Từ đó mình dán nhãn mọi thứ. Không có gì đâu, quen tay thôi.',
+      },
+      khoa: {
+        speaker: 'khoa',
+        text: 'Tại mình mới ra trường mà có việc ở công ty lớn! Ba mẹ mình khoe khắp xóm luôn!',
       },
     },
   },

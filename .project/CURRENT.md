@@ -10,7 +10,7 @@ tháng. Web, PWA chơi được offline, điện thoại dọc là chính. Khôn
 
 ## State (2026-11-01)
 
-- **Game hoàn chỉnh**: 44 cảnh, 6 kết thúc, văn phòng 3D bake ánh sáng, 10 nhân vật có tên, âm thanh từng hành động và nhạc đổi theo tháng (ADR-006), cài đặt, save v4, PWA offline, màn cảnh báo, điền tên người chơi, bố cục riêng cho điện thoại, tablet và PC.
+- **Game hoàn chỉnh**: 47 cảnh, 6 kết thúc, văn phòng 3D bake ánh sáng, 10 nhân vật có tên, âm thanh từng hành động và nhạc đổi theo tháng (ADR-006), cài đặt, save v4, PWA offline, màn cảnh báo, điền tên người chơi, bố cục riêng cho điện thoại, tablet và PC.
 - Art dựng bằng Blender từ code: `tools/art-pipeline`, ADR-005.
 - Đang chạy công khai: <https://c-star.lctuan.space> (Docker `127.0.0.1:6000`, Cloudflare Tunnel, cách phát hành ở `.tasks/completed/TECH-004-production-deploy/result.md`). Site đang ở commit `ecd9f1e`.
 - Repo: <https://github.com/lctuandev/C-Star>, nhánh `main`, **public**.

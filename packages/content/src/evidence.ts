@@ -45,6 +45,14 @@ export const evidence: readonly EvidenceItem[] = [
     toMonth: 7,
   },
   {
+    id: 'demand-mail',
+    title: 'Email đòi quyền lợi',
+    description:
+      'Bản bạn gửi công ty, nêu rõ từng khoản bị nợ, cùng mọi hồi âm. Ghi rõ ngày bạn đã đòi.',
+    fromMonth: 7,
+    requires: { type: 'flag', flag: 'sentFormalRequest' },
+  },
+  {
     id: 'debt-table',
     title: 'Bảng đối chiếu của nhóm',
     description: 'Ai, tháng nào, được hứa gì, đã nhận bao nhiêu, còn thiếu bao nhiêu.',

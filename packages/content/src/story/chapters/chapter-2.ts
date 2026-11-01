@@ -110,7 +110,7 @@ export const chapter2Scenes = {
       },
       'hr-post': {
         speaker: 'hr',
-        text: 'Thông báo chung: Do hệ thống thanh toán đang được nâng cấp, lương tháng này sẽ được xử lý trong thời gian sớm nhất. Cảm ơn sự đồng hành của cả nhà!',
+        text: 'Thông báo chung: Như đã chia sẻ, do tình hình khó khăn chung, lương tháng này sẽ được xử lý trong thời gian sớm nhất. Mong cả nhà đợi thêm một chút. Cảm ơn sự đồng hành của cả nhà!',
         next: 'react',
       },
       react: {
@@ -185,6 +185,52 @@ export const chapter2Scenes = {
       },
       end: {
         text: 'Tối đó bạn mở lịch. Trái tim nhỏ bạn vẽ vẫn còn đó. Bạn vẫn còn tiền tháng trước. Chắc là không sao. Chắc là tuần sau.',
+      },
+    },
+  },
+
+  'ch2-hard-times': {
+    id: 'ch2-hard-times',
+    place: 'meeting',
+    start: 'called',
+    nodes: {
+      called: {
+        text: 'Cuối tháng, Phó giám đốc gọi cả phòng vào họp nhanh. Không có slide. Lần đầu tiên bạn thấy anh không cười trước khi nói.',
+        next: 'boss',
+      },
+      boss: {
+        speaker: 'boss',
+        text: 'Thị trường đang rất khó khăn, các bạn đọc báo cũng thấy. Không riêng gì mình. Lương tháng này có thể chậm vài ngày. Anh em đợi thêm một chút nhé.',
+        next: 'roger',
+      },
+      roger: {
+        speaker: 'manager',
+        text: 'Công ty lớn nào chẳng có lúc khó. Đây là lúc biết ai là người nhà. Chủ tịch đã vượt qua nhiều hơn thế này.',
+        next: 'huni',
+      },
+      huni: {
+        speaker: 'deputy',
+        text: 'Anh chưa thấy con số nào nên anh không dám nói gì thêm. Tháng này ai có khoản nào gấp thì cứ nói với anh trước nhé.',
+        choices: [
+          {
+            id: 'wait-a-bit',
+            text: 'Vài ngày thôi mà, đợi được',
+            effects: [{ type: 'addRelation', npc: 'manager', amount: 3 }],
+            next: 'waited',
+          },
+          {
+            id: 'tighten-belt',
+            text: 'Về xem lại các khoản phải trả tháng này',
+            effects: [{ type: 'addStress', amount: 3 }],
+            next: 'tightened',
+          },
+        ],
+      },
+      waited: {
+        text: 'Ai cũng gật đầu. Vài ngày thì có gì đâu. Bạn cũng nghĩ thế.',
+      },
+      tightened: {
+        text: 'Bạn mở sổ ra, cộng tiền nhà, tiền điện, tiền ăn. Lần đầu tiên trong tháng bạn để ý xem ngày mùng 5 rơi vào thứ mấy.',
       },
     },
   },
