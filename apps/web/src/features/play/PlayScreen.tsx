@@ -9,6 +9,7 @@ import { HistorySheet } from '@/features/dialogue/HistorySheet';
 import { EndingScreen } from '@/features/endings/EndingScreen';
 import { DossierSheet } from '@/features/dossier/DossierSheet';
 import { Hud } from '@/features/hud/Hud';
+import { Stage } from '@/features/office/Stage';
 import { PayslipScreen } from '@/features/payslip/PayslipScreen';
 import { useSaveStore } from '@/features/save/save-store';
 import { TicketScreen } from '@/features/tickets/TicketScreen';
@@ -59,17 +60,33 @@ export const PlayScreen = () => {
 
   const view = viewOf(state, world.story);
   const sceneId = state.story.sceneId;
-  const place = sceneId ? world.story.scenes[sceneId]?.place : undefined;
+  const place = (sceneId && world.story.scenes[sceneId]?.place) || 'office';
+
+  const inOffice = state.phase === 'scene' || state.phase === 'week' || state.phase === 'kpi';
 
   return (
     <main
-      className={`flex min-h-dvh flex-col bg-gradient-to-b pt-[env(safe-area-inset-top)] ${BACKDROPS[place ?? 'office']}`}
+      className={`flex min-h-dvh flex-col bg-gradient-to-b pt-[env(safe-area-inset-top)] ${BACKDROPS[place]}`}
     >
       <Hud state={state} kpiTarget={kpiTargetOf(world, state.calendar.month)} />
       {writeFailed && (
         <p role="alert" className="bg-surface-800 text-alarm px-4 py-2 text-sm">
           Tiến độ chưa được lưu: trình duyệt đang chặn bộ nhớ.
         </p>
+      )}
+      {inOffice && (
+        <div className="relative min-h-28 flex-1">
+          <Stage state={state} place={place} />
+          {view && (
+            <button
+              type="button"
+              onClick={() => setShowHistory(true)}
+              className="bg-surface-800 absolute top-3 right-3 min-h-11 rounded-xl px-4 text-sm font-bold"
+            >
+              Vừa rồi
+            </button>
+          )}
+        </div>
       )}
       {state.phase === 'week' && (
         <WeekScreen state={state} onOpenDossier={() => setShowDossier(true)} />
@@ -78,23 +95,12 @@ export const PlayScreen = () => {
       {state.phase === 'payslip' && state.payslip && <PayslipScreen payslip={state.payslip} />}
       {state.phase === 'ended' && <EndingScreen state={state} />}
       {view && (
-        <>
-          <div className="flex flex-1 items-start justify-end p-4">
-            <button
-              type="button"
-              onClick={() => setShowHistory(true)}
-              className="bg-surface-800 min-h-11 rounded-xl px-4 text-sm font-bold"
-            >
-              Vừa rồi
-            </button>
-          </div>
-          <DialogueBox
-            key={`${view.sceneId}/${view.nodeId}`}
-            view={view}
-            onAdvance={() => dispatch({ type: 'advance' })}
-            onChoose={(choiceId) => dispatch({ type: 'choose', choiceId })}
-          />
-        </>
+        <DialogueBox
+          key={`${view.sceneId}/${view.nodeId}`}
+          view={view}
+          onAdvance={() => dispatch({ type: 'advance' })}
+          onChoose={(choiceId) => dispatch({ type: 'choose', choiceId })}
+        />
       )}
       {showHistory && <HistorySheet lines={history} onClose={() => setShowHistory(false)} />}
       {showDossier && <DossierSheet state={state} onClose={() => setShowDossier(false)} />}

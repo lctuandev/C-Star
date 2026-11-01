@@ -3,10 +3,17 @@ import { expect } from '@playwright/test';
 import type { Locator, Page } from '@playwright/test';
 import { asReturningPlayer } from './accepted-disclaimer.js';
 
-/** From the menu into a new run, with text shown at once. */
-export const startGame = async (page: Page) => {
+/**
+ * From the menu into a new run, with text shown at once. In 2D unless a spec is about the office:
+ * software WebGL would slow everything else down by minutes.
+ */
+export const startGame = async (page: Page, graphics: '2d' | '3d' = '2d') => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await asReturningPlayer(page);
+  await page.addInitScript((value) => {
+    const settings = { textSize: 'normal', textSpeed: 'normal', volume: 0, ambience: false };
+    localStorage.setItem('cstar.settings', JSON.stringify({ ...settings, graphics: value }));
+  }, graphics);
   await page.goto('/');
   await page.getByRole('button', { name: 'Game mới' }).click();
   await page.getByRole('button', { name: disclaimer.confirmLabel }).click();

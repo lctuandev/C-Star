@@ -10,17 +10,14 @@ tháng. Web, PWA chơi được offline, điện thoại dọc là chính. Khôn
 
 ## State (2026-11-01)
 
-- TECH-001 xong: monorepo chạy được, chưa có gameplay. `pnpm dev` ở cổng 5200.
-- Repo: <https://github.com/lctuandev/C-Star>, nhánh `main`.
-- FEAT-002 xong: cổng cảnh báo bọc toàn bộ app. Câu chữ chờ owner duyệt.
-- GDD v0.1 viết từ kịch bản ChatGPT của owner. Các phần `[Đề xuất]` và con số chưa được owner duyệt.
-- FEAT-001 xong: PWA chơi offline, cập nhật có chờ, gợi ý cài. Chưa cài thật, cần HTTPS (TECH-004).
-- Logo ở `docs/brand/`.
-- Roadmap M0–M5 xong. Plan chi tiết viết khi bắt đầu từng task.
+- **Game hoàn chỉnh**: 37 cảnh, 6 kết thúc, văn phòng 3D có lùi về 2D, âm thanh, cài đặt, save, PWA offline, màn cảnh báo.
+- Repo: <https://github.com/lctuandev/C-Star>, nhánh `main`, **public**. Chưa deploy.
+- Toàn bộ roadmap xong trừ phần cần owner, ghi ở `backlog.md`.
+- Số liệu, điều kiện ending, giọng văn, câu chữ cảnh báo đều chưa được owner duyệt.
 
 ## Active Task
 
-**TECH-002-3d-office-spike** — đang làm. M0, M1, M2, M4, M5 xong trừ deploy thật. Game chơi trọn ở bản 2D.
+Không có. Đang chờ owner.
 
 ## Blockers
 
@@ -28,10 +25,10 @@ Deploy thật (TECH-004) chờ owner chọn tên miền và xác nhận `docs/co
 
 ## Open Decisions (owner)
 
-- Góc nhìn: chốt sau khi chơi thử M1 (ADR-004). Đề xuất Third Person 3D, làm sau slice 2D.
-- Tên phát hành: "C\*" chỉ là tên làm việc, phải chốt trước khi công khai (ADR-003, TECH-003).
-- Duyệt số liệu và điều kiện ending trong GDD khi có slice chơi được.
+- Xác nhận sáu mục ở `docs/content-review.md`, nhất là tên "C\*".
+- Chọn tên miền để deploy (`deploy/` đã sẵn sàng).
+- Chơi thử trên điện thoại thật: giọng văn, số liệu, 3D có mượt không.
 
 ## Next Step
 
-Làm hết roadmap theo thứ tự, không dừng hỏi (owner, 2026-11-01). Mỗi task xong thì commit và push.
+Chờ phản hồi của owner sau khi chơi thử.

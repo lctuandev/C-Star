@@ -15,7 +15,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 export const Button = ({ variant = 'primary', className = '', ...props }: ButtonProps) => (
   <button
     type="button"
-    className={`min-h-11 rounded-xl px-4 font-bold transition active:scale-95 ${VARIANTS[variant]} ${className}`}
+    className={`min-h-11 rounded-xl px-4 py-2 font-bold transition active:scale-95 ${VARIANTS[variant]} ${className}`}
     {...props}
   />
 );

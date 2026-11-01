@@ -2,25 +2,25 @@
 
 ## Status
 
-PROPOSED (2026-11-01). Chờ owner chốt ở điểm dừng cuối M1.
+ACCEPTED (2026-11-01). Claude chốt theo đề xuất, vì owner yêu cầu làm liên tục không dừng hỏi. Owner có thể đổi: chỉ cần tắt 3D, game không mất gì.
 
 ## Context
 
 Kịch bản gốc nghiêng về Third Person 3D low-poly nhưng chưa chốt. Các lựa chọn: First Person, Third Person,
-Visual Novel, Management. Đây là quyết định tốn kém nhất của dự án: 3D là cả cột mốc M3, thêm yêu cầu asset,
-hiệu năng điện thoại và dung lượng tải offline (ADR-002).
+Visual Novel, Management. 3D thêm yêu cầu hiệu năng điện thoại và dung lượng tải offline (ADR-002).
 
-## Decision đề xuất
+## Decision
 
-- **M1 và M2 làm giao diện 2D**: cảnh tĩnh, chân dung nhân vật, hộp thoại. Không phụ thuộc lớp hiển thị vì
-  luật nằm trong `game-core`.
-- **Hướng đề xuất: Third Person 3D**, làm ở M3 sau khi slice đã vui, bằng React Three Fiber như Alo.
-- Trước M3 chạy TECH-002 để đo trên điện thoại tầm trung và chốt ngân sách asset.
+- **Third Person 3D low-poly**, bằng React Three Fiber, dựng hoàn toàn từ khối hình trong code: không có file asset.
+- **Chạm để đi thay cho joystick**: chạm nhãn một địa điểm, nhân vật đi tới và làm hành động đó. Một ngón tay trên điện thoại dọc.
+- **3D chỉ là lớp hiển thị.** Luật ở `game-core` không đổi. Danh sách hành động dạng nút luôn còn đó.
+- **3D chỉ chiếm vùng giữa HUD và bảng điều khiển**, không nằm dưới UI.
+- **Ba chế độ:** Tự động (mặc định), Luôn 3D, 2D. Tự động sẽ lùi về 2D nếu không có WebGL hoặc dưới 18 FPS.
 
 ## Why
 
 - Trụ cột của game là cốt truyện và lựa chọn. Slice 2D trả lời được câu "có vui không" với chi phí nhỏ nhất.
-- Nếu Visual Novel đã đủ hay, bỏ M3 tiết kiệm được phần việc lớn nhất mà không mất gì đã làm.
+- Lớp 2D vẫn đầy đủ, nên 3D là phần thêm: máy yếu vẫn chơi trọn game.
 - Owner đã có kinh nghiệm R3F và pipeline low-poly từ Alo, nên 3D vẫn khả thi khi cần.
 
 ## Alternatives Considered
@@ -43,8 +43,9 @@ hiệu năng điện thoại và dung lượng tải offline (ADR-002).
 
 ## Consequences
 
-Chốt sau M1. Chọn Visual Novel thì M3 chuyển thành một task đồ họa 2D. Chọn Third Person thì thêm một file rule
-3D vào `.claude/rules/`.
+- Precache từ 1,1 MB lên 2 MB. Chunk 3D 904 KB, gzip 238 KB, chỉ tải khi cần ở lần chạy đầu, nhưng service worker vẫn precache nó.
+- Chưa đo trên điện thoại thật: lý do phải có chế độ Tự động. Xem TECH-002.
+- Nhân vật không có khuôn mặt: vừa rẻ, vừa đúng tinh thần "biểu tượng, không phải người thật".
 
 ## Affected Systems
 
@@ -53,7 +54,7 @@ Chốt sau M1. Chọn Visual Novel thì M3 chuyển thành một task đồ họ
 ## Related Tasks
 
 - TECH-002-3d-office-spike
-- FEAT-016 đến FEAT-019
+- FEAT-016, 017, 018, 019
 
 ## Date
 

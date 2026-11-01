@@ -47,8 +47,14 @@ const SPEEDS: readonly { value: Settings['textSpeed']; label: string }[] = [
   { value: 'instant', label: 'Hiện ngay' },
 ];
 
+const GRAPHICS: readonly { value: Settings['graphics']; label: string }[] = [
+  { value: 'auto', label: 'Tự động' },
+  { value: '3d', label: 'Luôn 3D' },
+  { value: '2d', label: '2D' },
+];
+
 export const SettingsScreen = () => {
-  const { textSize, textSpeed, volume, ambience, change } = useSettingsStore();
+  const { textSize, textSpeed, volume, ambience, graphics, change } = useSettingsStore();
 
   return (
     <main className="mx-auto flex min-h-dvh max-w-md flex-col justify-center gap-6 px-6 pt-[env(safe-area-inset-top)] pb-[calc(env(safe-area-inset-bottom)+1rem)]">
@@ -64,6 +70,12 @@ export const SettingsScreen = () => {
         value={textSpeed}
         options={SPEEDS}
         onChange={(value) => change({ textSpeed: value })}
+      />
+      <Options
+        label="Đồ họa"
+        value={graphics}
+        options={GRAPHICS}
+        onChange={(value) => change({ graphics: value })}
       />
       <label className="flex flex-col gap-2">
         <span className="font-bold">Âm lượng</span>

@@ -46,7 +46,7 @@ export const DialogueBox = ({ view, onAdvance, onChoose }: DialogueBoxProps) => 
   });
 
   return (
-    <section className="flex flex-col gap-3 p-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]">
+    <section className="bg-surface-950 flex flex-col gap-3 p-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]">
       {/* The box below only says what a tap does: this is what screen readers read out. */}
       <p role="status" className="sr-only">
         {character ? `${character.name}: ${view.text}` : view.text}

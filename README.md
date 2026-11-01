@@ -8,7 +8,7 @@ không nhắm vào cá nhân hay tổ chức nào.
 
 ## Trạng thái
 
-Mới có khung dự án, chưa có gameplay. Xem [.project/CURRENT.md](.project/CURRENT.md).
+Chơi trọn được: 37 cảnh, 6 kết thúc, PWA offline, văn phòng 3D có lùi về 2D. Chưa deploy. Xem [.project/CURRENT.md](.project/CURRENT.md).
 
 ## Chạy dự án
 

@@ -7,6 +7,11 @@ const settingsSchema = z.strictObject({
   /** 0 to 1. */
   volume: z.number().min(0).max(1),
   ambience: z.boolean(),
+  /**
+   * `auto`: the 3D office, until the device turns out too slow for it. `3d` keeps it regardless.
+   * Older settings have no value here.
+   */
+  graphics: z.enum(['auto', '3d', '2d']).default('auto'),
 });
 
 export type Settings = z.infer<typeof settingsSchema>;
@@ -16,6 +21,7 @@ export const DEFAULT_SETTINGS: Settings = {
   textSpeed: 'normal',
   volume: 0.7,
   ambience: true,
+  graphics: 'auto',
 };
 
 const KEY = 'cstar.settings';
@@ -49,8 +55,8 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
   load: () => set(readSettings()),
 
   change: (change) => {
-    const { textSize, textSpeed, volume, ambience } = get();
-    const next = { textSize, textSpeed, volume, ambience, ...change };
+    const { textSize, textSpeed, volume, ambience, graphics } = get();
+    const next = { textSize, textSpeed, volume, ambience, graphics, ...change };
     writeSettings(next);
     set(next);
   },

@@ -3,7 +3,7 @@
 Nguồn: `docs/Cong_Ty_C_GDD_v0.1.md`. File này chia GDD thành các cột mốc và Task ID. Chi tiết từng task nằm
 trong `.tasks/`, trạng thái hiện tại ở `.project/CURRENT.md`.
 
-Cập nhật: 2026-11-01.
+Cập nhật: 2026-11-01. **Toàn bộ đã xong trừ deploy thật (TECH-004) và các việc cần owner, xem `.project/backlog.md`.**
 
 ---
 
@@ -72,7 +72,7 @@ Xong khi: lựa chọn ở Chương 1–2 thật sự đổi cách Chương 3 di
 
 ---
 
-## 5. M3 — Văn phòng 3D (chỉ khi ADR-004 chốt Third Person)
+## 5. M3 — Văn phòng 3D (ADR-004 đã chốt: Third Person, chạm để đi)
 
 Xong khi: trên điện thoại tầm trung đi lại trong văn phòng mượt và nói chuyện được với NPC.
 

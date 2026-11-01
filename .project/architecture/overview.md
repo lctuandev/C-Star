@@ -70,7 +70,14 @@ reload. Save không đi qua cache. Phát triển không dùng service worker.
 
 ---
 
-## 7. Tài liệu liên quan
+## 7. Văn phòng 3D
+
+`features/office` (ADR-004). Chỉ là lớp hiển thị: đọc `GameState`, gửi đúng các `GameAction` như nút bấm. `officeMood` suy ra
+văn phòng từ state, không lưu gì. Chunk 3D chỉ tải khi cần. Không có WebGL hoặc quá chậm thì `Stage` không vẽ gì.
+
+---
+
+## 8. Tài liệu liên quan
 
 - Luật và trạng thái: `architecture/gameplay.md`
 - Hợp đồng: `contracts/gameplay.md`, `contracts/save.md`, `contracts/content.md`

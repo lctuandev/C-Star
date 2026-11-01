@@ -15,7 +15,7 @@ export const TicketScreen = ({ state }: { state: GameState }) => {
   const { ticket, last, number, total } = view;
 
   return (
-    <section className="flex flex-1 flex-col justify-end gap-3 p-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]">
+    <section className="bg-surface-950 flex flex-col gap-3 p-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]">
       {last && (
         <p role="status" className="text-ink-secondary text-base leading-7">
           <span className={`font-bold ${last.correct ? 'text-fluorescent' : 'text-alarm'}`}>
