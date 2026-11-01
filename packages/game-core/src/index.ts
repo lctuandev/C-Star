@@ -21,6 +21,8 @@ export type { DisclaimerCheck } from './disclaimer/disclaimer-rule.js';
 export { cleanPlayerName, MAX_PLAYER_NAME, withPlayerName } from './player/player-name.js';
 export { drawRandom, seedRng } from './rng/seeded-rng.js';
 export type { RngDraw, RngState } from './rng/seeded-rng.js';
+export { heldKpiOf, ledgerOf, summaryOf } from './state/ledger.js';
+export type { LedgerRow, RunSummary } from './state/ledger.js';
 export { createGameState } from './state/game-state.js';
 export type {
   Calendar,

@@ -58,6 +58,8 @@ có nền trống. Máy owner có Blender 5.2, và Alo Khách Ơi đã có pipel
 - Đổi layout văn phòng phải chạy lại bake vài phút.
 - Lightmap cố định: ánh sáng không đổi theo giờ, tâm trạng từng tháng làm bằng tông màu.
 
+Ảnh nền 2D của văn phòng, bàn làm việc và hành lang có bốn giai đoạn `early`, `signs`, `mid`, `late` (FEAT-039, FEAT-041): cùng cảnh, khác đồ đạc và số người, để bản 2D cũng già đi theo cốt truyện.
+
 ## Affected Systems
 
 `apps/web/src/features/office`, `apps/web/public/art`, `tools/art-pipeline`, ngân sách offline của ADR-002.

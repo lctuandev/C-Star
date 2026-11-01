@@ -27,6 +27,7 @@ export const OfficeRoom = ({ mood, atHome }: { mood: OfficeMood; atHome: boolean
       }
     };
     show('DYN_coffee', mood.coffeeMachine);
+    show('DYN_banner', mood.banner);
     FRUIT.forEach((stage) => show(`DYN_fruit_${stage}`, mood.fruit === stage));
     for (let index = 0; index < PLANTS; index += 1) {
       const alive = index / PLANTS < mood.plants;

@@ -11,7 +11,7 @@ import { asReturningPlayer } from '../tools/accepted-disclaimer.js';
  */
 const SHOTS_DIR = process.env.SHOTS_DIR ?? 'test-results/shots';
 const LABEL = process.env.SHOTS_LABEL ?? 'shot';
-const SAVE_VERSION = 4;
+const SAVE_VERSION = 5;
 
 const firstScene = (place: string) => {
   const scene = Object.values(world.story.scenes).find((candidate) => candidate.place === place);
@@ -79,8 +79,36 @@ const payslipAt = (month: number): GameState => {
   };
 };
 
+/** A run seven months in, with a payroll worth reading. */
+const settledAt = (month: number): GameState => ({
+  ...weekAt(month),
+  money: { cash: 1_200_000, arrears: 0, loans: 8_000_000, companyDebt: 62_500_000 },
+  paidByMonth: { '1': 15_000_000, '3': 10_000_000, '5': 5_000_000, '7': 5_000_000 },
+  outlook: { trust: 34, awareness: 58 },
+  evidence: ['contract', 'demand-mail'],
+  relations: { uyen: 30, dan: 15, khoa: 12, boss: -20 },
+});
+
+/** On the last line of an ending: the next tap lands on the summary, as it does when playing. */
+const lastLineOf = (scene: string, nodeId: string): GameState => {
+  const run = settledAt(8);
+  return {
+    ...run,
+    phase: 'scene',
+    story: {
+      ...run.story,
+      sceneId: scene,
+      nodeId,
+      seenScenes: [scene],
+      flags: { choseLeave: true, runOver: true },
+    },
+  };
+};
+
 const SHOTS: readonly { name: string; state: GameState }[] = [
   { name: 'week-m1', state: weekAt(1) },
+  { name: 'week-m3', state: weekAt(3) },
+  { name: 'week-m4', state: weekAt(4) },
   { name: 'payslip', state: payslipAt(2) },
   { name: 'week-m8', state: weekAt(8) },
   { name: 'speech-office', state: speechAt('office', 1) },
@@ -139,6 +167,38 @@ for (const graphics of ['3d', '2d'] as const) {
     });
   }
 }
+
+test('dossier', async ({ page }, info) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await asReturningPlayer(page);
+  await page.addInitScript(() => {
+    const settings = { textSize: 'normal', textSpeed: 'normal', volume: 0, ambience: false };
+    localStorage.setItem('cstar.settings', JSON.stringify({ ...settings, graphics: '2d' }));
+  });
+  await page.goto('/');
+  await loadSave(page, settledAt(8));
+  await page.goto('/play');
+  await page.getByRole('button', { name: /Hồ sơ/ }).click();
+  await page.waitForTimeout(600);
+  await page.screenshot({ path: `${SHOTS_DIR}/${LABEL}-${info.project.name}-dossier.png` });
+});
+
+test('ending summary', async ({ page }, info) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await asReturningPlayer(page);
+  await page.addInitScript(() => {
+    const settings = { textSize: 'normal', textSpeed: 'normal', volume: 0, ambience: false };
+    localStorage.setItem('cstar.settings', JSON.stringify({ ...settings, graphics: '2d' }));
+  });
+  await page.goto('/');
+  await loadSave(page, lastLineOf('ending-survivor', 'year-uyen'));
+  await page.goto('/play');
+  await page.waitForTimeout(800);
+  await page.getByText('Chạm để đọc tiếp').click();
+  await page.getByText('Tổng đã nhận').waitFor();
+  await page.waitForTimeout(600);
+  await page.screenshot({ path: `${SHOTS_DIR}/${LABEL}-${info.project.name}-ending.png` });
+});
 
 test('menu', async ({ page }, info) => {
   await asReturningPlayer(page);

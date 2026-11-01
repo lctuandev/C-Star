@@ -120,6 +120,12 @@ Quản lý tiền sinh hoạt khi thu nhập bị trì hoãn.
 - **Thiếu tiền** không làm game over mà mở khủng hoảng: vay bạn bè, bán đồ, nhận việc gấp. Khoản vay được
   ghi riêng, nên tiền vẫn không âm.
 
+- **Sổ lương** trong Hồ sơ ghi từng tháng: hợp đồng, đã nhận, thiếu, và KPI đang bị giữ. Màn kết thúc cộng
+  lại, kèm số lần nghe hứa và số người còn liên lạc.
+- **Niềm tin vào công ty** và **Hiểu quyền lợi** là hai chỉ số 0–100 trong Hồ sơ. Tháng không có lương mất
+  8 niềm tin, mỗi khoản được trả cộng lại 4. Chúng mở khóa lựa chọn "ra điều kiện" ở chương 5 và "nghỉ luôn"
+  ở chương 4.
+
 ### 5.2 Năng lượng tinh thần `[Nguồn]`
 
 Năng lượng làm việc và căng thẳng thay đổi theo sự kiện. Nghỉ ngơi, trò chuyện hay tìm hướng giải quyết
@@ -161,6 +167,10 @@ Tên và ý nghĩa `[Nguồn]`, điều kiện `[Đề xuất]`. Xét từ trên
 | 2   | The Survivor      | Rời công ty và bắt đầu lại                          | Chọn rời đi ở Chương 6, hoặc buộc phải rời vì khủng hoảng lặp lại   |
 | 1   | The Believer      | Tiếp tục tin lời hứa                                | Ở lại, lòng tin vào sếp cao                                         |
 | 5   | The Empty Promise | Công ty tiếp tục hứa, không có gì thay đổi          | Các trường hợp còn lại                                              |
+
+Ngày cuối xoay quanh Bản cam kết đồng hành: ở lại nghĩa là ký, khoản lương cũ được chuyển sang "kỳ phát triển mới".
+Cả sáu kết thúc đều có đoạn "Một năm sau" kể tiếp đời nhân vật, một phần tùy lựa chọn trước đó (anh Roger,
+Khoa). Kịch bản từng dòng, timeline, tuyến nhân vật và bảng lựa chọn, hậu quả: `docs/kich-ban-day-du.md`, sinh từ dữ liệu game.
 
 **Vòng lặp của Ending 5 `[Nguồn]`:** người chơi tưởng đã xong, màn hình chúc mừng hiện lên rồi báo lương
 lại trễ, kỳ lương sau là "Coming Soon™". Game quay lại đầu với cảm giác không thoát được.

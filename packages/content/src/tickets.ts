@@ -1,4 +1,5 @@
 import type { Ticket } from '@cstar/game-core';
+import { KHOA_IS_HERE } from './economy.js';
 
 /**
  * The desk mini-game: do what is actual work, push what is not. The joke is that the pool gets the
@@ -95,6 +96,7 @@ export const tickets: readonly Ticket[] = [
     text: 'Ổ đĩa máy chủ còn 2%, chiều nay là hết.',
     answer: 'do',
     reply: 'Dọn xong. Khoa gửi sticker trái tim, và bảo tuần sau chắc có lương.',
+    requires: KHOA_IS_HERE,
   },
   {
     id: 'birthday-video',

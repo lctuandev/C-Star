@@ -80,7 +80,7 @@ export const PlayScreen = () => {
 
   return (
     <main className="bg-surface-950 relative h-dvh overflow-hidden">
-      <Backdrop place={place} />
+      <Backdrop place={place} state={state} />
       <Stage state={state} place={place} />
       <div className="pointer-events-none absolute inset-0 flex flex-col pt-[env(safe-area-inset-top)]">
         <Hud state={state} kpiTarget={kpiTargetOf(world, state.calendar.month)} />

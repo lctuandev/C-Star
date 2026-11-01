@@ -36,6 +36,12 @@ export interface Mood {
   stress: number;
 }
 
+/** How the player sees the company: what they still believe, and what they now understand. */
+export interface Outlook {
+  trust: number;
+  awareness: number;
+}
+
 export interface PayslipLine {
   label: string;
   amount: number;
@@ -83,6 +89,9 @@ export interface GameState {
   calendar: Calendar;
   money: Money;
   mood: Mood;
+  outlook: Outlook;
+  /** What the company actually paid, by the month the money came. */
+  paidByMonth: Readonly<Record<string, number>>;
   story: StoryProgress;
   /** By NPC, -100 to 100. A missing NPC is at 0. */
   relations: Readonly<Record<string, number>>;
@@ -106,6 +115,8 @@ export interface RunStart {
   startingCash: number;
   startingEnergy: number;
   startingStress: number;
+  startingTrust: number;
+  startingAwareness: number;
 }
 
 export const createGameState = (seed: number, start: RunStart, playerName = ''): GameState => ({
@@ -116,6 +127,8 @@ export const createGameState = (seed: number, start: RunStart, playerName = ''):
   calendar: { month: 1, week: 1, actionsLeft: start.actionsPerWeek, payday: false },
   money: { cash: start.startingCash, arrears: 0, loans: 0, companyDebt: 0 },
   mood: { energy: start.startingEnergy, stress: start.startingStress },
+  outlook: { trust: start.startingTrust, awareness: start.startingAwareness },
+  paidByMonth: {},
   story: { sceneId: null, nodeId: null, flags: {}, seenScenes: [] },
   relations: {},
   kpi: 0,

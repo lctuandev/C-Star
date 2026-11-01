@@ -17,7 +17,8 @@
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint .",
-    "test": "vitest run"
+    "test": "vitest run",
+    "story:doc": "node scripts/write-story-doc.mjs"
   },
   "dependencies": {
     "@cstar/game-core": "workspace:*",

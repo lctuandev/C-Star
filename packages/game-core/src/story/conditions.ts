@@ -11,6 +11,9 @@ export const readStat = (state: GameState, stat: Stat): number => {
     case 'energy':
     case 'stress':
       return state.mood[stat];
+    case 'trust':
+    case 'awareness':
+      return state.outlook[stat];
     case 'month':
       return state.calendar.month;
     case 'kpi':

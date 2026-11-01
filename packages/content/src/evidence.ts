@@ -19,7 +19,7 @@ export const evidence: readonly EvidenceItem[] = [
   {
     id: 'timesheet',
     title: 'Bảng chấm công',
-    description: 'Bản xuất từ hệ thống cho riêng bạn. Chứng minh bạn vẫn đi làm đều.',
+    description: 'Bảng công ghi rõ những tháng bạn vẫn đi làm đều.',
     fromMonth: 3,
     toMonth: 5,
   },

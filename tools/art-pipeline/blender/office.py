@@ -198,6 +198,11 @@ def build_office(static, glow, glass, ceiling, near_wall, dynamic, plan):
     plan.line(5.95, -5, 6.1, 5)
     plan.line(-6, -5.1, 6, -4.95)
 
+    # Over the meeting room's glass, from the month the dragon campaign starts.
+    campaign = Geo()
+    campaign.picture_z(4.4, 2.02, -0.55, 2.7, 0.44, rect("banner"))
+    dynamic["DYN_banner"] = campaign
+
     # Twelve desks. The chair and the tower stay when someone leaves; their things do not.
     desk_rng = random.Random(14)
     for index, (x, z) in enumerate(desks()):
@@ -563,6 +568,7 @@ def build_all():
     bpy.data.objects["GLOW"].visible_shadow = False
     # It goes in month 2, and a machine this big would leave a black hole of its own shadow behind.
     bpy.data.objects["DYN_coffee"].visible_shadow = False
+    bpy.data.objects["DYN_banner"].visible_shadow = False
     add_lights(scene)
     return baked, unlit, plan
 

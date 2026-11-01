@@ -41,6 +41,38 @@ describe('DossierSheet (SCENARIO-037, 039)', () => {
     expect(screen.getByText(`Giấy tờ (0/${world.evidence.length})`)).toBeInTheDocument();
   });
 
+  it('keeps the payroll: late money goes to the oldest unpaid month', () => {
+    const state: GameState = {
+      ...run(),
+      calendar: { ...run().calendar, month: 4 },
+      paidByMonth: { '1': 15_000_000, '3': 5_000_000 },
+    };
+    render(<DossierSheet state={state} onClose={() => {}} />);
+    const rows = screen.getAllByRole('row').map((row) => row.textContent);
+    expect(rows).toContain('115 tr15 tr0 đ');
+    expect(rows).toContain('215 tr5 tr10 tr');
+    expect(rows).toContain('315 tr0 đ15 tr');
+    expect(rows).toContain(`KPI đang bị giữ9 tr`);
+  });
+
+  it('has nothing in the payroll before the first payday', () => {
+    render(<DossierSheet state={run()} onClose={() => {}} />);
+    expect(screen.getByText('Chưa tới kỳ lương đầu tiên.')).toBeInTheDocument();
+  });
+
+  it('shows how much the player still believes, and how much they know', () => {
+    const state: GameState = { ...run(), outlook: { trust: 41, awareness: 67 } };
+    render(<DossierSheet state={state} onClose={() => {}} />);
+    expect(screen.getByRole('meter', { name: 'Niềm tin vào công ty' })).toHaveAttribute(
+      'aria-valuenow',
+      '41',
+    );
+    expect(screen.getByRole('meter', { name: 'Hiểu quyền lợi' })).toHaveAttribute(
+      'aria-valuenow',
+      '67',
+    );
+  });
+
   it('shows the papers kept and where people stand', () => {
     const state: GameState = { ...run(), evidence: ['contract'], relations: { uyen: 20 } };
     render(<DossierSheet state={state} onClose={() => {}} />);

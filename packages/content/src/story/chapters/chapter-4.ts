@@ -32,17 +32,63 @@ export const chapter4Scenes = {
       },
       who: {
         speaker: 'uyen',
-        text: 'Mình hỏi rồi. Đợt này chỉ vài người có, mỗi người một phần ba tháng lương. Nhiều người ba bốn tháng liền chưa nhận được đồng nào, và không ai biết vì sao.',
+        text: 'Mình hỏi bảy người: ba người có, bốn người không. Cùng phòng, cùng chức danh, cùng số tháng làm. Đợt này chỉ vài người có, nhiều người ba bốn tháng liền chưa nhận được đồng nào.',
+        next: 'phones',
+      },
+      phones: {
+        text: 'Bàn đối diện, một đồng nghiệp vừa liếc màn hình rồi úp vội điện thoại xuống khi thấy mọi người nhìn sang. Cả phòng bỗng rất chăm chú vào việc của mình.',
+        next: 'criteria',
+      },
+      criteria: {
+        speaker: 'player',
+        text: 'Có tiêu chí gì không? Ai có, ai không, là do đâu?',
+        choices: [
+          {
+            id: 'look-away',
+            text: 'Không hỏi nữa, cúi xuống làm việc',
+            effects: [{ type: 'addStress', amount: 3 }],
+            next: 'accountant',
+          },
+          {
+            id: 'ask-paid',
+            text: 'Hỏi nhỏ những người vừa nhận được tiền',
+            effects: [{ type: 'addRelation', npc: 'dan', amount: 3 }],
+            next: 'paid-answer',
+          },
+          {
+            id: 'ask-criteria',
+            text: 'Hỏi thẳng chị HR về tiêu chí thanh toán',
+            effects: [
+              { type: 'setFlag', flag: 'askedCriteria' },
+              { type: 'addRelation', npc: 'hr', amount: -5 },
+              { type: 'addAwareness', amount: 6 },
+            ],
+            next: 'hr-answer',
+          },
+        ],
+      },
+      'paid-answer': {
+        text: 'Người ta lắc đầu, bảo cũng không biết vì sao mình có tên. "Đừng nói với ai nhé." Bạn nhìn họ, và thấy họ cũng sợ.',
+        next: 'accountant',
+      },
+      'hr-answer': {
+        speaker: 'hr',
+        text: 'Công ty có quy trình ưu tiên riêng em nhé, chị chưa thể chia sẻ chi tiết. Em đừng hiểu theo hướng có danh sách.',
         next: 'accountant',
       },
       accountant: {
         speaker: 'accountant',
-        text: 'Đừng hỏi chị. Danh sách từ trên đưa xuống. Chị đã xin nghỉ phép một tuần chỉ để không phải giải thích.',
+        text: 'Đừng hỏi cô. Danh sách từ trên đưa xuống. Cô đã xin nghỉ phép một tuần chỉ để không phải giải thích.',
         next: 'dan',
       },
       dan: {
         speaker: 'dan',
         text: 'Thấy chưa, dòng tiền bắt đầu chảy lại. Đây là chữ V, ông nhìn đáy rồi đấy. Chỉ là tôi chưa có tên trong đợt này thôi.',
+        next: 'uyen-after',
+      },
+      'uyen-after': {
+        speaker: 'uyen',
+        text: 'Không có tiêu chí thì người ta sẽ tự nghĩ ra tiêu chí. Từ hôm nay trong phòng bắt đầu có người không nhìn mặt nhau.',
         next: 'minh',
       },
       minh: {
@@ -64,7 +110,7 @@ export const chapter4Scenes = {
               type: 'any',
               conditions: [
                 { type: 'flag', flag: 'helpedKhoa' },
-                { type: 'relation', npc: 'khoa', min: 20 },
+                { type: 'flag', flag: 'khoaConfided' },
               ],
             },
             next: 'khoa-tells',
@@ -83,12 +129,14 @@ export const chapter4Scenes = {
       },
       'khoa-gift': {
         speaker: 'khoa',
-        text: 'Mình từng tin tuần sau có lương. Ba mươi mấy tuần rồi đó. Mình gửi bạn file chấm công của nhóm mình, ai cần thì có. Bạn đừng tin như mình.',
+        text: 'Mình từng tin tuần sau có lương. Mười mấy tuần rồi đó. Mình gửi bạn file chấm công của nhóm mình, ai cần thì có. Bạn đừng tin như mình.',
         effects: [
           { type: 'addEvidence', evidence: 'timesheet' },
           { type: 'setFlag', flag: 'khoaSaidGoodbye' },
+          { type: 'setFlag', flag: 'khoaLeft' },
           { type: 'addStress', amount: 6 },
         ],
+        next: 'seat-check',
       },
       'khoa-gone': {
         text: 'Sáng thứ Hai, bàn Khoa trống trơn. Tên Khoa đã biến khỏi nhóm chat. Không ai biết từ lúc nào.',
@@ -96,7 +144,21 @@ export const chapter4Scenes = {
       },
       'khoa-mug': {
         text: 'Trên bàn còn lại đúng một cái phích. Bạn định nhắn hỏi thăm, rồi thấy mình chẳng có gì để nói.',
-        effects: [{ type: 'addStress', amount: 6 }],
+        effects: [
+          { type: 'setFlag', flag: 'khoaLeft' },
+          { type: 'addStress', amount: 6 },
+        ],
+        next: 'seat-check',
+      },
+      'seat-check': {
+        routes: [{ when: { type: 'flag', flag: 'satWithKhoa' }, next: 'empty-seat' }],
+        otherwise: 'quieter',
+      },
+      'empty-seat': {
+        text: 'Ghế bên cạnh bạn từ ngày đầu giờ trống. Chiều đó bạn quay sang định nói gì đó, rồi nhớ ra.',
+      },
+      quieter: {
+        text: 'Chiều đó cả phòng yên hơn thường ngày một chút. Không ai nói vì sao.',
       },
     },
   },
@@ -138,6 +200,15 @@ export const chapter4Scenes = {
     nodes: {
       coffee: {
         text: 'Bạn và Uyên ngồi ở quán cóc đầu ngõ, cà phê 15 nghìn, thứ duy nhất ở quanh đây vẫn trả tiền đúng giá.',
+        next: 'criteria-check',
+      },
+      'criteria-check': {
+        routes: [{ when: { type: 'flag', flag: 'askedCriteria' }, next: 'criteria-echo' }],
+        otherwise: 'uyen-list',
+      },
+      'criteria-echo': {
+        speaker: 'uyen',
+        text: 'Chuyện bạn hỏi HR về tiêu chí, cả tầng biết rồi. Ba người nhắn hỏi mình bạn là ai, giọng rất nhỏ.',
         next: 'uyen-list',
       },
       'uyen-list': {
@@ -160,8 +231,17 @@ export const chapter4Scenes = {
   'ch4-group': {
     id: 'ch4-group',
     place: 'hallway',
-    start: 'invite',
+    start: 'backed-check',
     nodes: {
+      'backed-check': {
+        routes: [{ when: { type: 'flag', flag: 'backedUyen' }, next: 'remembers' }],
+        otherwise: 'invite',
+      },
+      remembers: {
+        speaker: 'uyen',
+        text: 'Hôm họp dự án Bứt Phá, bạn là người duy nhất hỏi cùng mình. Nên mình hỏi bạn trước.',
+        next: 'invite',
+      },
       invite: {
         speaker: 'uyen',
         text: 'Tối thứ Năm, quán cũ, sáu người đã nhận lời. Không phải để làm căng. Chỉ là mang giấy tờ tới, xem mình đang ở đâu. Bạn đi không?',
@@ -196,10 +276,18 @@ export const chapter4Scenes = {
   'ch4-dan-doubts': {
     id: 'ch4-dan-doubts',
     place: 'desk',
-    start: 'dan',
+    start: 'seat-check',
     nodes: {
+      'seat-check': {
+        routes: [{ when: { type: 'flag', flag: 'satWithDan' }, next: 'neighbour' }],
+        otherwise: 'dan',
+      },
+      neighbour: {
+        text: 'Sáu tháng ngồi cạnh Dân, bạn thuộc ba cửa sổ tin tức đó như thuộc đường về nhà. Sáng nay lần đầu Dân không đọc to tin nào.',
+        next: 'dan',
+      },
       dan: {
-        text: 'Dân ngồi lì trước ba cửa sổ tin tức. Cả ba đều không có tin gì về công ty. Hôm nay ông không nói gì về chữ V.',
+        text: 'Dân ngồi lì trước ba cửa sổ tin tức. Cả ba đều không có tin gì về công ty. Hôm nay Dân không nói gì về chữ V.',
         next: 'dan-says',
       },
       'dan-says': {
@@ -208,7 +296,7 @@ export const chapter4Scenes = {
         next: 'react',
       },
       react: {
-        text: 'Lần đầu tiên bạn thấy ông không có câu trả lời cho điều gì đó.',
+        text: 'Lần đầu tiên bạn thấy Dân không có câu trả lời cho điều gì đó.',
         choices: [
           {
             id: 'invite-dan',
@@ -229,7 +317,7 @@ export const chapter4Scenes = {
           },
           {
             id: 'comfort',
-            text: 'Vỗ vai ông: "Chắc chỉ là nhầm thôi"',
+            text: 'Vỗ vai Dân: "Chắc chỉ là nhầm thôi"',
             effects: [{ type: 'addRelation', npc: 'dan', amount: 3 }],
             next: 'dan-alone',
           },
@@ -253,10 +341,19 @@ export const chapter4Scenes = {
     nodes: {
       date: {
         text: 'Hơn sáu tháng rồi. Bạn mở lại email "Hành trình phi thường của bạn bắt đầu từ đây". Bạn đã từng thấy nó vui đến thế.',
+        effects: [{ type: 'addTrust', amount: -6 }],
         next: 'debt',
       },
       debt: {
         text: 'Bạn cộng lại mọi tháng bị nợ. Hóa ra bạn không còn là nhân viên nữa. Bạn là nhà đầu tư thiên thần bất đắc dĩ của công ty này.',
+        next: 'signed-check',
+      },
+      'signed-check': {
+        routes: [{ when: { type: 'flag', flag: 'eagerHire' }, next: 'eleven-seconds' }],
+        otherwise: 'decide',
+      },
+      'eleven-seconds': {
+        text: 'Bạn đã ký hợp đồng này trong 11 giây. Đêm nay bạn mở lại, đọc tới trang 14, cỡ chữ 6: "Thời điểm thanh toán có thể được điều chỉnh". Bạn mất sáu tháng để đọc tới đó.',
         next: 'decide',
       },
       decide: {
@@ -267,6 +364,7 @@ export const chapter4Scenes = {
             id: 'act',
             text: 'Thôi đợi. Từ giờ mình sẽ hành động',
             effects: [
+              { type: 'addAwareness', amount: 10 },
               { type: 'setFlag', flag: 'decidedToAct' },
               { type: 'addStress', amount: -6 },
             ],
@@ -278,7 +376,27 @@ export const chapter4Scenes = {
             effects: [{ type: 'addRelation', npc: 'boss', amount: 4 }],
             next: 'waiting',
           },
+          {
+            id: 'walk-away',
+            text: 'Hết tin rồi, cũng chẳng biết đòi ở đâu. Thôi nghỉ luôn',
+            requires: {
+              type: 'all',
+              conditions: [
+                { type: 'stat', stat: 'trust', max: 30 },
+                { type: 'stat', stat: 'awareness', max: 40 },
+              ],
+            },
+            lockedReason: 'Bạn vẫn còn chút tin, hoặc còn muốn đòi cho ra lẽ',
+            effects: [
+              { type: 'setFlag', flag: 'quitEarly' },
+              { type: 'setFlag', flag: 'runOver' },
+            ],
+            next: 'walked-away',
+          },
         ],
+      },
+      'walked-away': {
+        text: 'Bạn viết đơn nghỉ việc lúc nửa đêm, ba dòng. Không có gì để đòi, không có gì để tin. Bạn chỉ thấy mệt, và muốn ngủ.',
       },
       acting: {
         text: 'Bạn tạo một thư mục mới, đặt tên là "Của mình". Chỉ vậy thôi. Nhưng đêm đó bạn ngủ được.',
@@ -305,7 +423,7 @@ export const chapter4Scenes = {
       },
       minh: {
         speaker: 'deputy',
-        text: 'Hôm qua một bạn trong phòng mượn anh tiền đóng học cho con. Bạn ấy đứng khóc ở thang máy. Anh đưa được một ít, mà anh cũng đang vay bên nhà vợ.',
+        text: 'Hôm qua một bạn trong phòng mượn anh tiền đóng học cho con. Bạn ấy đứng khóc ở thang máy. Anh đưa được một ít, mà anh cũng đang vay bên nhà vợ. Tháng sau chắc anh không làm vậy được nữa.',
         next: 'uyen',
       },
       uyen: {
@@ -350,7 +468,7 @@ export const chapter4Scenes = {
     start: 'summon',
     nodes: {
       summon: {
-        text: 'Cả công ty được gọi lên phòng họp, lần đầu sau nhiều tháng. Trái cây quay lại, đúng một đĩa. Trên slide chỉ có một dòng: "$1–2 TRIỆU".',
+        text: 'Tuần này có thêm bốn lá đơn nghỉ việc. Cả công ty được gọi lên phòng họp, lần đầu sau nhiều tháng. Trái cây quay lại, đúng một đĩa. Trên slide chỉ có một dòng: "$1–2 TRIỆU".',
         effects: [{ type: 'setFlag', flag: 'heardDollars' }],
         next: 'boss',
       },
@@ -377,7 +495,15 @@ export const chapter4Scenes = {
       tin: {
         speaker: 'manager',
         text: 'Phòng mình không ai đi cả! Cổ đông tương lai cả đấy! Đây là lúc chứng minh lòng trung thành, Chủ tịch đang nhìn chúng ta.',
-        next: 'clap',
+        next: 'clap-check',
+      },
+      'clap-check': {
+        routes: [{ when: { type: 'flag', flag: 'rogerDoubts' }, next: 'clap-thin' }],
+        otherwise: 'clap',
+      },
+      'clap-thin': {
+        text: 'Anh Roger nói đúng những chữ đó, nhưng tuần trước bạn đã thấy anh ngồi một mình. Giọng anh to, mắt anh không nhìn ai. Tiếng vỗ tay thưa thớt.',
+        next: 'minh',
       },
       clap: {
         text: 'Có tiếng vỗ tay, phần lớn là của anh Roger. Anh chưa bao giờ đọc kỹ hợp đồng của mình, nhưng anh biết chắc Chủ tịch sẽ không bỏ anh.',
@@ -391,6 +517,8 @@ export const chapter4Scenes = {
             id: 'do-the-math',
             text: 'Im lặng, và nhẩm xem con số đó trả được mấy tháng lương',
             effects: [
+              { type: 'addTrust', amount: -5 },
+              { type: 'addAwareness', amount: 4 },
               { type: 'addRelation', npc: 'deputy', amount: 4 },
               { type: 'addStress', amount: 2 },
             ],
@@ -408,6 +536,7 @@ export const chapter4Scenes = {
             id: 'cheer',
             text: 'Vỗ tay. Lần này biết đâu là thật',
             effects: [
+              { type: 'addTrust', amount: 6 },
               { type: 'addRelation', npc: 'boss', amount: 6 },
               { type: 'addRelation', npc: 'manager', amount: 8 },
               { type: 'addStress', amount: -3 },
@@ -454,7 +583,16 @@ export const chapter4Scenes = {
       },
       'accountant-2': {
         speaker: 'accountant',
-        text: 'Ở chỗ giữ. Còn bảng lương tháng đó đang được chuẩn hóa. Chị nói thật, chị nhập số mà chị cũng chưa thấy nó.',
+        text: 'Ở chỗ giữ. Còn bảng lương tháng đó đang được chuẩn hóa. Cô nói thật, cô nhập số mà cô cũng chưa thấy nó.',
+        next: 'asked-check',
+      },
+      'asked-check': {
+        routes: [{ when: { type: 'flag', flag: 'askedAccountant' }, next: 'accountant-recall' }],
+        otherwise: 'dan',
+      },
+      'accountant-recall': {
+        speaker: 'accountant',
+        text: 'Em là người đầu tiên hỏi cô chuyện lương, từ hồi tháng 2, lúc cô bảo bên trên ở bên trên. Tới giờ bên trên vẫn ở bên trên.',
         next: 'dan',
       },
       dan: {
@@ -469,6 +607,224 @@ export const chapter4Scenes = {
           { type: 'addStress', amount: 4 },
           { type: 'addRelation', npc: 'deputy', amount: 3 },
         ],
+      },
+    },
+  },
+
+  'ch4-khoa-stairs': {
+    id: 'ch4-khoa-stairs',
+    place: 'hallway',
+    start: 'stairs',
+    nodes: {
+      stairs: {
+        text: 'Giờ nghỉ trưa, bạn tìm thấy Khoa ngồi ở bậc cầu thang thoát hiểm, tay cầm điện thoại đã tắt màn hình. Hôm nay Khoa không xuống pantry.',
+        next: 'hungry',
+      },
+      hungry: {
+        speaker: 'player',
+        text: 'Khoa mà không đói á?',
+        next: 'memory',
+      },
+      memory: {
+        routes: [
+          { when: { type: 'flag', flag: 'helpedKhoa' }, next: 'the-loan' },
+          { when: { type: 'flag', flag: 'treatedTeam' }, next: 'the-lunch' },
+        ],
+        otherwise: 'parents',
+      },
+      'the-loan': {
+        speaker: 'khoa',
+        text: 'Một triệu hồi tháng 3 mình vẫn chưa trả bạn. Mình có ghi. Mình không quên đâu.',
+        next: 'parents',
+      },
+      'the-lunch': {
+        speaker: 'khoa',
+        text: 'Mình đang nhớ bữa cơm tấm tháng đầu bạn mời. Mình gọi thêm trứng đó. Giờ nghĩ lại thấy như chuyện của người khác.',
+        next: 'parents',
+      },
+      parents: {
+        speaker: 'khoa',
+        text: 'Mình vừa gọi về nhà. Ba mẹ hỏi bao giờ về thăm. Mình từng nói công ty này tốt lắm, ba mẹ khoe khắp xóm. Giờ mình không biết về rồi giải thích sao.',
+        next: 'failed',
+      },
+      failed: {
+        speaker: 'khoa',
+        text: 'Bạn có nghĩ mình thất bại không?',
+        choices: [
+          {
+            id: 'one-more-month',
+            text: '"Cố thêm một tháng nữa đi"',
+            effects: [
+              { type: 'addRelation', npc: 'khoa', amount: 3 },
+              { type: 'addStress', amount: 2 },
+            ],
+            next: 'one-more',
+          },
+          {
+            id: 'then-go',
+            text: '"Mệt quá thì nghỉ đi, đừng nghĩ nhiều"',
+            effects: [
+              { type: 'addRelation', npc: 'khoa', amount: 5 },
+              { type: 'setFlag', flag: 'khoaConfided' },
+            ],
+            next: 'go',
+          },
+          {
+            id: 'not-your-fault',
+            text: '"Không. Bị nợ lương không phải lỗi của bạn"',
+            effects: [
+              { type: 'addRelation', npc: 'khoa', amount: 10 },
+              { type: 'addStress', amount: -4 },
+              { type: 'setFlag', flag: 'khoaConfided' },
+            ],
+            next: 'not-fault',
+          },
+        ],
+      },
+      'one-more': {
+        speaker: 'khoa',
+        text: 'Ừ. Chắc tuần sau có. Mình cũng nói vậy với chủ nhà.',
+      },
+      go: {
+        speaker: 'khoa',
+        text: 'Ừ ha. Nghe dễ quá trời.',
+      },
+      'not-fault': {
+        text: 'Khoa không trả lời. Khoa quay mặt đi một lúc lâu, rồi cười. Lần này mắt cũng cười, mà đỏ hoe.',
+      },
+    },
+  },
+
+  'ch4-roger-crack': {
+    id: 'ch4-roger-crack',
+    place: 'desk',
+    start: 'late',
+    nodes: {
+      late: {
+        text: 'Bạn ở lại muộn. Cả tầng đã tắt đèn, chỉ còn bàn anh Roger sáng. Trên bàn là tấm ảnh tập thể cũ và một email in ra: "Welcome to the C* Family".',
+        next: 'photo',
+      },
+      photo: {
+        speaker: 'manager',
+        text: 'Tám năm trước anh đến đây với đúng một cái vali. Không biết tiếng, không biết đường. Chủ tịch là người đầu tiên cho anh cơ hội.',
+        next: 'phone',
+      },
+      phone: {
+        text: 'Điện thoại anh rung, một tin nhắn từ ngân hàng. Anh nhìn một lúc, rồi úp xuống bàn.',
+        next: 'ask',
+      },
+      ask: {
+        speaker: 'player',
+        text: 'Anh cũng chưa có lương ạ?',
+        next: 'waiting',
+      },
+      waiting: {
+        speaker: 'manager',
+        text: 'Anh... cũng đang đợi.',
+        next: 'no-next-week',
+      },
+      'no-next-week': {
+        text: 'Lần đầu tiên anh không nói "next week".',
+        choices: [
+          {
+            id: 'leave-him-be',
+            text: 'Không hỏi thêm, chúc anh ngủ ngon',
+            effects: [{ type: 'addStress', amount: -2 }],
+            next: 'left-alone',
+          },
+          {
+            id: 'should-you-leave',
+            text: '"Anh có nghĩ mình nên rời đi không?"',
+            effects: [{ type: 'addRelation', npc: 'manager', amount: -3 }],
+            next: 'leave-answer',
+          },
+          {
+            id: 'no-need-to-defend',
+            text: '"Anh không cần bảo vệ công ty nữa đâu"',
+            effects: [
+              { type: 'addRelation', npc: 'manager', amount: 8 },
+              { type: 'setFlag', flag: 'rogerDoubts' },
+            ],
+            next: 'admits',
+          },
+        ],
+      },
+      'left-alone': {
+        text: 'Anh gật đầu. Lúc ra thang máy bạn nhìn lại, anh vẫn ngồi đó, tấm ảnh trong tay.',
+      },
+      'leave-answer': {
+        speaker: 'manager',
+        text: 'Đi đâu hả em? Anh đã nói với cả nhà là anh làm ở một công ty sẽ thay đổi tất cả. Em về đi, muộn rồi.',
+      },
+      admits: {
+        speaker: 'manager',
+        text: 'Anh đã giới thiệu công ty này cho rất nhiều người. Có người chuyển cả gia đình tới đây. Nếu những gì anh nói với họ không đúng... anh không biết phải nhìn mặt họ thế nào.',
+      },
+    },
+  },
+
+  'ch4-performance-review': {
+    id: 'ch4-performance-review',
+    place: 'meeting',
+    start: 'mail',
+    nodes: {
+      mail: {
+        text: 'Email gửi toàn công ty: "Đánh giá hiệu suất giữa năm. Nhân viên chuẩn bị báo cáo KPI cá nhân". Bạn nhìn email, rồi nhìn sổ lương.',
+        next: 'proud',
+      },
+      proud: {
+        speaker: 'boss',
+        text: 'Sáu tháng vừa qua chúng ta có những bước tiến rất đáng tự hào. Từng người sẽ được đánh giá công bằng, chi tiết tới từng ticket.',
+        next: 'ask',
+      },
+      ask: {
+        speaker: 'player',
+        text: 'Dạ, KPI của nhân viên có được thanh toán theo kết quả đánh giá không ạ? Tiền KPI các tháng trước vẫn đang được giữ.',
+        next: 'silence',
+      },
+      silence: {
+        text: 'Căn phòng im lặng. Công ty đo được từng ticket của bạn, nhưng chưa ai đo được bạn đã nhận bao nhiêu.',
+        next: 'boss-2',
+      },
+      'boss-2': {
+        speaker: 'boss',
+        text: 'Chúng ta không nên để những vấn đề ngắn hạn ảnh hưởng tới mục tiêu dài hạn.',
+        choices: [
+          {
+            id: 'sit-it-out',
+            text: 'Im lặng, chờ cuộc họp kết thúc',
+            effects: [{ type: 'addStress', amount: 3 }],
+            next: 'sat',
+          },
+          {
+            id: 'ask-accountant',
+            text: 'Quay sang hỏi cô Kế toán về bảng tính KPI',
+            effects: [{ type: 'addRelation', npc: 'accountant', amount: 5 }],
+            next: 'accountant',
+          },
+          {
+            id: 'show-contract',
+            text: 'Đặt hợp đồng lên bàn, đọc đúng dòng ghi KPI 30%',
+            requires: { type: 'evidence', evidence: 'contract' },
+            lockedReason: 'Bạn không có hợp đồng trong tay',
+            effects: [
+              { type: 'addRelation', npc: 'boss', amount: -8 },
+              { type: 'addAwareness', amount: 6 },
+              { type: 'addStress', amount: 3 },
+            ],
+            next: 'contract',
+          },
+        ],
+      },
+      sat: {
+        text: 'Cuộc họp kết thúc đúng giờ, lần đầu tiên trong năm. Trên bảng vẫn còn dòng chữ "Tự hào".',
+      },
+      accountant: {
+        speaker: 'accountant',
+        text: 'Cô chỉ nhập số. Số thì cô có. Tiền thì cô không có.',
+      },
+      contract: {
+        text: 'Không ai nói gì trong đúng tám giây. Phó giám đốc cảm ơn bạn đã "rất sát sao", rồi chuyển sang slide tiếp theo. Dưới gầm bàn, Uyên khẽ giơ ngón cái.',
       },
     },
   },

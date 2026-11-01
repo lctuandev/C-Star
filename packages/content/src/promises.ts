@@ -13,7 +13,7 @@ export const promises: readonly string[] = [
 export const promiseFor = (month: number): string =>
   promises[Math.max(0, month - 2) % promises.length] as string;
 
-/** Friday's weekly sync with the head of department: the same answer, from month 3 on. */
+/** Friday's weekly sync with the head of department: from the month after `ch3-weekly-sync`. */
 export const syncLines: readonly string[] = [
   'Next week, hopefully.',
   'Hopefully next week nhé em.',
@@ -22,7 +22,7 @@ export const syncLines: readonly string[] = [
   'Hopefully. Tuần sau sync tiếp.',
 ];
 
-const FIRST_SYNC_MONTH = 3;
+const FIRST_SYNC_MONTH = 4;
 
 export const syncLineFor = (month: number, week: number): string | null =>
   month < FIRST_SYNC_MONTH

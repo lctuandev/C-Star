@@ -1,7 +1,13 @@
 import { drawRandom } from '../rng/seeded-rng.js';
 import type { GameState, PayslipLine } from '../state/game-state.js';
 import { meets } from '../story/conditions.js';
-import { applyEffects, withMood, withRelation } from '../story/effects.js';
+import {
+  applyEffects,
+  withMood,
+  withOutlook,
+  withPayment,
+  withRelation,
+} from '../story/effects.js';
 import { startScene } from '../story/story-engine.js';
 import { roundIsOver, startKpiRound } from './tickets.js';
 import type { EndingRule, GameWorld, WeeklyAction } from './world-types.js';
@@ -118,6 +124,8 @@ const settleKpi = (state: GameState, world: GameWorld, target: number): GameStat
     : withRelation(withMood(state, { stress: kpiMissStress }), 'boss', -kpiTrust);
 };
 
+const TRUST_LOST_PER_MISSED_SALARY = 8;
+
 /** Pays what can be paid and writes the slip. Arrears come back on the next one. */
 const settlePayday = (state: GameState, world: GameWorld): GameState => {
   const { month } = state.calendar;
@@ -149,7 +157,13 @@ const settlePayday = (state: GameState, world: GameWorld): GameState => {
   };
 
   const target = kpiTargetOf(world, month);
-  const unpaid = salaryPaid < salary ? withMood(state, { stress: unpaidStress }) : state;
+  const recorded = salaryPaid > 0 ? withPayment(state, salaryPaid) : state;
+  const unpaid =
+    salaryPaid < salary
+      ? withOutlook(withMood(recorded, { stress: unpaidStress }), {
+          trust: -TRUST_LOST_PER_MISSED_SALARY,
+        })
+      : recorded;
   return {
     ...settleKpi(unpaid, world, target),
     rng: pick.next,
@@ -185,7 +199,10 @@ const finishAction = (
   evidenceBefore: number,
 ): GameState => {
   const owed = state.money.companyDebt > 0 ? (action.outcomesOnceOwed ?? []) : [];
-  const told = pickOutcome(state, [...action.outcomes, ...owed]);
+  const situational = (action.outcomesWhen ?? [])
+    .filter(({ when }) => meets(state, when))
+    .flatMap(({ lines }) => lines);
+  const told = pickOutcome(state, [...action.outcomes, ...owed, ...situational]);
   const found = world.evidence.find(({ id }) => id === told.evidence[evidenceBefore]);
   return continueCalendar(
     {

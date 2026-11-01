@@ -7,7 +7,7 @@ import { findPath } from './nav';
 import { DESKS, HOTSPOTS, NPC_SEATS, PLAYER_HOME, PLAYER_STAGE, STAGE } from './office-layout';
 import type { Vec3 } from './office-layout';
 import plan from './office-plan.json';
-import { officeMood } from './office-mood';
+import { officeMood, officeStageOf } from './office-mood';
 import { useOfficeStore } from './office-store';
 import { poseOf } from './pose';
 import { fitView } from './view-fit';
@@ -65,6 +65,25 @@ describe('officeMood (SCENARIO-052)', () => {
     expect(officeMood(inMonth(1)).drain).toBe(0);
     expect(officeMood(inMonth(4)).drain).toBeGreaterThan(officeMood(inMonth(2)).drain);
     expect(officeMood(inMonth(40)).drain).toBeLessThan(1);
+  });
+
+  const launched = (month: number) =>
+    inMonth(month, { story: { ...run.story, seenScenes: ['ch3-dragon'] } });
+
+  it('puts the banner up with the scene that launches the campaign, not a week before', () => {
+    expect(officeMood(inMonth(4)).banner).toBe(false);
+    expect(officeMood(launched(4)).banner).toBe(true);
+    expect(officeMood(launched(8)).banner).toBe(true);
+  });
+
+  it('picks the rendering of the room that fits the story, for the 2D screens', () => {
+    expect(officeStageOf(inMonth(1))).toBe('early');
+    expect(officeStageOf(inMonth(2))).toBe('signs');
+    expect(officeStageOf(inMonth(4))).toBe('signs');
+    expect(officeStageOf(launched(4))).toBe('mid');
+    expect(officeStageOf(launched(5))).toBe('mid');
+    expect(officeStageOf(launched(6))).toBe('late');
+    expect(officeStageOf(launched(40))).toBe('late');
   });
 
   it('flickers when the player is near the edge', () => {

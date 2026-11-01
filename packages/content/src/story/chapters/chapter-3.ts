@@ -26,6 +26,8 @@ export const chapter3Scenes = {
             id: 'ask-salary',
             text: '"Dạ thế lương tháng trước thì sao anh?"',
             effects: [
+              { type: 'addAwareness', amount: 6 },
+              { type: 'addTrust', amount: -4 },
               { type: 'addRelation', npc: 'boss', amount: -8 },
               { type: 'addRelation', npc: 'uyen', amount: 6 },
               { type: 'addRelation', npc: 'dan', amount: 3 },
@@ -37,6 +39,7 @@ export const chapter3Scenes = {
             id: 'volunteer',
             text: '"Dạ em đăng ký chỉ tiêu cao nhất ạ"',
             effects: [
+              { type: 'addTrust', amount: 5 },
               { type: 'addRelation', npc: 'boss', amount: 10 },
               { type: 'addRelation', npc: 'uyen', amount: -4 },
               { type: 'setFlag', flag: 'volunteeredKpi' },
@@ -85,7 +88,15 @@ export const chapter3Scenes = {
       },
       'accountant-2': {
         speaker: 'accountant',
-        text: 'Không sao. Chị cũng không. Chị chỉ nhập số thôi.',
+        text: 'Không sao. Cô cũng không. Cô chỉ nhập số thôi.',
+        next: 'seat-check',
+      },
+      'seat-check': {
+        routes: [{ when: { type: 'flag', flag: 'satWithUyen' }, next: 'neighbour' }],
+        otherwise: 'uyen-idea',
+      },
+      neighbour: {
+        text: 'Ngồi cạnh Uyên từ ngày đầu, bạn thấy tập hồ sơ của cô dày lên từng tháng. Hôm nay cô quay ghế sang phía bạn.',
         next: 'uyen-idea',
       },
       'uyen-idea': {
@@ -96,6 +107,7 @@ export const chapter3Scenes = {
             id: 'start-notes',
             text: 'Được, mình bắt đầu từ hôm nay',
             effects: [
+              { type: 'addAwareness', amount: 15 },
               { type: 'setFlag', flag: 'startedNotes' },
               { type: 'addRelation', npc: 'uyen', amount: 12 },
             ],
@@ -181,6 +193,22 @@ export const chapter3Scenes = {
       },
       badge: {
         text: 'Đính kèm là một huy hiệu PNG 512 × 512. Bạn thử đưa nó cho chủ nhà trong tưởng tượng.',
+        next: 'star-check',
+      },
+      'star-check': {
+        routes: [{ when: { type: 'flag', flag: 'volunteeredKpi' }, next: 'star' }],
+        otherwise: 'saved-check',
+      },
+      star: {
+        text: 'Bạn đăng ký chỉ tiêu cao nhất, nên huy hiệu của bạn có thêm một ngôi sao. Ngôi sao cũng là PNG.',
+        next: 'saved-check',
+      },
+      'saved-check': {
+        routes: [{ when: { type: 'flag', flag: 'savedFirstPay' }, next: 'savings' }],
+        otherwise: 'hr',
+      },
+      savings: {
+        text: 'Tối đó bạn mở khoản tiết kiệm từ tháng đầu, lần đầu rút ra để đóng tiền nhà. Bạn thầm cảm ơn chính mình của tháng 1.',
         next: 'hr',
       },
       hr: {
@@ -292,7 +320,7 @@ export const chapter3Scenes = {
       },
       uyen: {
         speaker: 'uyen',
-        text: 'Bốn tháng rồi, không một dòng nào về kế hoạch trả lương hay tình hình công ty. Mình lưu email này lại, bạn cũng nên làm thế.',
+        text: 'Hai tháng rồi, không một dòng nào về kế hoạch trả lương hay tình hình công ty. Mình lưu email này lại, bạn cũng nên làm thế.',
         next: 'check',
       },
       check: {
@@ -321,7 +349,7 @@ export const chapter3Scenes = {
       },
       ask: {
         speaker: 'player',
-        text: 'Dạ anh ơi, lương tháng trước bao giờ có ạ?',
+        text: 'Dạ anh ơi, phần lương còn lại của tháng trước bao giờ có ạ?',
         next: 'promise',
       },
       promise: {
@@ -341,7 +369,10 @@ export const chapter3Scenes = {
           {
             id: 'thank-minh',
             text: 'Cảm ơn anh Huni, và về xem lại thư mục giấy tờ',
-            effects: [{ type: 'addRelation', npc: 'deputy', amount: 8 }],
+            effects: [
+              { type: 'addRelation', npc: 'deputy', amount: 8 },
+              { type: 'addAwareness', amount: 8 },
+            ],
             next: 'after-minh',
           },
           {
@@ -448,6 +479,7 @@ export const chapter3Scenes = {
             text: 'Đăng ký. Tiền nhà thì không chờ được',
             effects: [
               { type: 'setFlag', flag: 'joinedDragons' },
+              { type: 'addTrust', amount: 6 },
               { type: 'companyPays', amount: 5_000_000 },
               { type: 'addEnergy', amount: -12 },
               { type: 'addStress', amount: 5 },
@@ -519,7 +551,7 @@ export const chapter3Scenes = {
       },
       uyen: {
         speaker: 'uyen',
-        text: 'Tám mươi mốt ngày, không có một thông báo nào về kế hoạch trả. Có người còn đang tính nghỉ, mà nghỉ thì tiền ai trả.',
+        text: 'Năm tuần rồi, không có một thông báo nào về kế hoạch trả. Có người còn đang tính nghỉ, mà nghỉ thì tiền ai trả.',
         next: 'huni',
       },
       huni: {

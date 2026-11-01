@@ -69,10 +69,26 @@ describe("the owner's additions to the story", () => {
     ['the KPI money is held', 'ch4-kpi-held', /Giam KPI/],
     ["and last month's payslip never came", 'ch4-kpi-held', /chuẩn hóa/],
     ['leaving early brings a "what a pity"', 'ending-survivor', /Tiếc quá.*Tiếc cho em/],
+    ['payment splits the room', 'ch4-second-tranche', /ba người có, bốn người không/],
+    ['Roger cracks', 'ch4-roger-crack', /không nói "next week"/],
+    ['the review of unpaid work', 'ch4-performance-review', /đo được từng ticket/],
+    ['Khoa stops smiling', 'ch4-khoa-stairs', /thất bại/],
+    [
+      'the data has an error, and it is the player who can catch it',
+      'ch5-wrong-number',
+      /Mình sai/,
+    ],
+    ['the company starts to worry', 'ch5-closed-door', /thêm một người gửi email/],
+    ['the empty office before the end', 'ch6-empty-office', /tường ảnh tập thể/],
   ];
 
   it.each(cases)('%s', (_, sceneId, pattern) => {
     expect(textOf(sceneId)).toMatch(pattern);
+  });
+
+  it('gives every ending a year after', () => {
+    const endings = world.endings.map(({ scene }) => textOf(scene));
+    expect(endings.filter((text) => !text.includes('Một năm sau'))).toEqual([]);
   });
 
   it('schedules every one of those scenes', () => {

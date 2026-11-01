@@ -40,6 +40,26 @@ describe('EndingScreen (SCENARIO-047)', () => {
     expect(screen.getByText(`1/${world.evidence.length}`)).toBeInTheDocument();
   });
 
+  it('adds up what the months cost', () => {
+    const state = ended('survivor');
+    render(
+      <EndingScreen
+        state={{
+          ...state,
+          calendar: { ...state.calendar, month: 4 },
+          paidByMonth: { '1': 15_000_000, '3': 5_000_000 },
+          relations: { uyen: 20, khoa: 15, dan: 14 },
+        }}
+      />,
+    );
+    const row = (label: string) => screen.getByText(label).parentElement;
+    expect(row('Số tháng đã làm')).toHaveTextContent('3');
+    expect(row('Tổng đã nhận')).toHaveTextContent('24.500.000 đ');
+    expect(row('KPI bị giữ')).toHaveTextContent('9.000.000 đ');
+    expect(row('Số lần nghe hứa')).toHaveTextContent('2');
+    expect(row('Người còn liên lạc')).toHaveTextContent('2');
+  });
+
   it('repeats that this is fiction (contracts/content.md §5)', () => {
     render(<EndingScreen state={ended('good')} />);
     expect(screen.getByText(disclaimer.reminder)).toBeInTheDocument();
@@ -101,7 +121,7 @@ describe('the collection (SCENARIO-049)', () => {
       story: {
         ...over.story,
         sceneId: 'ending-good',
-        nodeId: 'end',
+        nodeId: 'year-end',
         flags: { runOver: true },
         seenScenes: ['ending-good'],
       },

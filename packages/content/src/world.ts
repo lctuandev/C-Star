@@ -17,6 +17,9 @@ const worldSchema = z.strictObject({
   openingScene: text,
   rules: z.strictObject({
     actionsPerWeek: z.number().int().positive(),
+    startingTrust: z.number().int(),
+    startingAwareness: z.number().int(),
+    kpiShare: z.number(),
     weeksPerMonth: z.number().int().positive(),
     lastMonth: z.number().int().positive(),
     startingCash: money,
@@ -43,6 +46,9 @@ const worldSchema = z.strictObject({
       effects: z.array(effectSchema),
       outcomes: z.array(text),
       outcomesOnceOwed: z.array(text).optional(),
+      outcomesWhen: z
+        .array(z.strictObject({ when: conditionSchema, lines: z.array(text) }))
+        .optional(),
       tickets: z.boolean().optional(),
     }),
   ),
@@ -64,6 +70,7 @@ const worldSchema = z.strictObject({
       text,
       answer: z.enum(['do', 'defer']),
       reply: text,
+      requires: conditionSchema.optional(),
     }),
   ),
   evidence: z.array(

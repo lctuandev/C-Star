@@ -25,6 +25,7 @@ args = argparse.ArgumentParser()
 args.add_argument("--out", default="out/rendered")
 args.add_argument("--only", default="places,portraits,cover")
 args.add_argument("--samples", type=int, default=96)
+args.add_argument("--stages", default="", help="only these stages of the staged places")
 options = args.parse_args(kit.script_arguments())
 out = Path(options.out).resolve()
 stages = options.only.split(",")
@@ -93,33 +94,44 @@ def seat(name, desk_index):
     stand(name, x, z, math.pi, TYPING, SEATED_DROP)
 
 
-def staff():
-    """The first month: every desk taken."""
+# The company at four moments, the same as `officeStageOf` in apps/web.
+STAGES = {
+    "early": {"lit": range(10), "alive": 5, "fruit": "full", "coffee": True, "banner": False, "gone": ()},
+    "signs": {"lit": range(9), "alive": 4, "fruit": "bananas", "coffee": False, "banner": False, "gone": ()},
+    "mid": {"lit": range(7), "alive": 2, "fruit": "bananas", "coffee": False, "banner": True, "gone": ()},
+    "late": {"lit": (0, 1, 2, 4, 5, 6), "alive": 0, "fruit": None, "coffee": False, "banner": True, "gone": ("khoa",)},
+}
+STAGED_PLACES = ("office", "desk", "hallway")
+NAMED_DESKS = {"dan": 1, "uyen": 2, "khoa": 3, "accountant": 4, "manager": 5, "deputy": 6}
+WORKER_DESKS = {7: "worker_a", 8: "worker_b", 9: "worker_c"}
+
+
+def dress(stage):
+    """What the month has taken from the room: hidden here as the game hides it."""
+    plan = STAGES[stage]
+    show = lambda name, visible: setattr(bpy.data.objects[name], "hide_render", not visible)
+    for index in range(12):
+        show(f"DYN_desk_{index}", index in plan["lit"])
+        show(f"SCREEN_{index}", index in plan["lit"])
+    for index in range(5):
+        show(f"DYN_plant_{index}", index < plan["alive"])
+        show(f"DYN_plant_dry_{index}", index >= plan["alive"])
+    for fruit in ("full", "half", "bananas"):
+        show(f"DYN_fruit_{fruit}", plan["fruit"] == fruit)
+    show("DYN_coffee", plan["coffee"])
+    show("DYN_banner", plan["banner"])
+
+
+def staff(stage="early"):
+    """Everyone still at their desk at this stage of the story."""
+    plan = STAGES[stage]
     hide_people()
-    seat("dan", 1)
-    seat("uyen", 2)
-    seat("khoa", 3)
-    seat("accountant", 4)
-    seat("manager", 5)
-    seat("deputy", 6)
-    for index, name in zip(range(7, 11), ("worker_a", "worker_b", "worker_c", "worker_b")):
-        # One model, several desks: a copy for each seat past the first.
-        rig = bpy.data.objects[f"CHR_{name}_rig"]
-        mesh = bpy.data.objects[f"CHR_{name}"]
-        if rig.hide_render:
-            seat(name, index)
-        else:
-            copy_rig = rig.copy()
-            copy_rig.data = rig.data
-            copy_mesh = mesh.copy()
-            copy_mesh.parent = copy_rig
-            copy_mesh.modifiers["skin"].object = copy_rig
-            people_collection.objects.link(copy_rig)
-            people_collection.objects.link(copy_mesh)
-            x, _, z = PLAN["desks"][index]["seat"]
-            copy_rig.location = kit.to_blender(x, 0, z)
-            copy_rig.rotation_euler = (0, 0, math.pi)
-            pose(copy_rig, TYPING, SEATED_DROP)
+    for name, desk in NAMED_DESKS.items():
+        if name not in plan["gone"]:
+            seat(name, desk)
+    for desk, name in WORKER_DESKS.items():
+        if desk in plan["lit"]:
+            seat(name, desk)
     stand("hr", 3.75, -0.3, 0)
     stand("boss", 3.9, -4.4, 0, TALKING)
 
@@ -147,12 +159,21 @@ def characters_height(name):
 bpy.data.objects["NEAR_WALL"].visible_camera = False
 
 if "places" in stages:
-    staff()
-    for place in ("office", "desk", "meeting", "hallway", "home"):
+    wanted = options.stages.split(",") if options.stages else list(STAGES)
+    for stage in wanted:
+        dress(stage)
+        staff(stage)
+        for place in STAGED_PLACES:
+            pose_data = CAMERAS[place]
+            shoot(pose_data["position"], pose_data["target"], pose_data["fov"], out / "places" / f"{place}-{stage}.png", 1280, 800, options.samples)
+    dress("early")
+    staff("early")
+    for place in () if options.stages else ("meeting", "home"):
         pose_data = CAMERAS[place]
         shoot(pose_data["position"], pose_data["target"], pose_data["fov"], out / "places" / f"{place}.png", 1280, 800, options.samples)
 
 if "cover" in stages:
+    dress("early")
     staff()
     stand("player", -0.6, 3.05, math.pi - 0.15)
     # From above the walls, like the game's own overview: the ceiling goes, the page's ink shows.

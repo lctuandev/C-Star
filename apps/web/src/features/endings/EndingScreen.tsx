@@ -1,6 +1,7 @@
 'use client';
 
 import { disclaimer } from '@cstar/content';
+import { summaryOf } from '@cstar/game-core';
 import type { GameState } from '@cstar/game-core';
 import Link from 'next/link';
 import { Button, buttonClass } from '@/components/ui/Button';
@@ -18,6 +19,7 @@ const Row = ({ label, value }: { label: string; value: string }) => (
 export const EndingScreen = ({ state }: { state: GameState }) => {
   const dispatch = useGameStore((store) => store.dispatch);
   const ending = world.endings.find(({ id }) => id === state.ending);
+  const summary = summaryOf(state, world.rules);
 
   return (
     <section className="bg-surface-950/90 animate-fade absolute inset-0 z-20 overflow-y-auto">
@@ -42,12 +44,14 @@ export const EndingScreen = ({ state }: { state: GameState }) => {
         </div>
 
         <dl className="paper-card flex flex-col gap-2 rounded-xl p-4">
-          <Row label="Công ty còn nợ bạn" value={formatMoney(state.money.companyDebt)} />
+          <Row label="Số tháng đã làm" value={String(summary.months)} />
+          <Row label="Tổng đã nhận" value={formatMoney(summary.received)} />
+          <Row label="Công ty còn nợ bạn" value={formatMoney(summary.stillOwed)} />
+          <Row label="KPI bị giữ" value={formatMoney(summary.heldKpi)} />
           <Row label="Bạn đang vay" value={formatMoney(state.money.loans)} />
-          <Row
-            label="Giấy tờ giữ được"
-            value={`${state.evidence.length}/${world.evidence.length}`}
-          />
+          <Row label="Số lần nghe hứa" value={String(summary.promisesHeard)} />
+          <Row label="Giấy tờ giữ được" value={`${summary.papers}/${world.evidence.length}`} />
+          <Row label="Người còn liên lạc" value={String(summary.stillInTouch)} />
         </dl>
 
         {ending?.loops && (

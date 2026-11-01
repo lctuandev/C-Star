@@ -18,10 +18,31 @@ export interface OfficeMood {
   flicker: boolean;
   /** 0 to 1: how much colour the months have taken out of the room. */
   drain: number;
+  /** The dragon campaign's banner, up from the scene that launches it. */
+  banner: boolean;
 }
 
 const DRAIN_PER_MONTH = 0.11;
 const MAX_DRAIN = 0.72;
+
+/** 0 to 1: how much colour the months have taken out of the room. */
+export const drainOf = (month: number) => Math.min(MAX_DRAIN, (month - 1) * DRAIN_PER_MONTH);
+
+const campaignHasStarted = (state: GameState) => state.story.seenScenes.includes('ch3-dragon');
+
+/** Which rendering of the office fits the story so far: the 2D screens have four. */
+export type OfficeStage = 'early' | 'signs' | 'mid' | 'late';
+
+export const officeStageOf = (state: GameState): OfficeStage => {
+  const { month } = state.calendar;
+  if (month <= 1) {
+    return 'early';
+  }
+  if (month > 5) {
+    return 'late';
+  }
+  return campaignHasStarted(state) ? 'mid' : 'signs';
+};
 
 const fruitOf = (month: number): FruitTray => {
   if (month <= 1) {
@@ -59,6 +80,7 @@ export const officeMood = (state: GameState): OfficeMood => {
       (index) => index < occupiedDesks || named.includes(index),
     ),
     flicker: state.mood.stress >= 70,
-    drain: Math.min(MAX_DRAIN, (month - 1) * DRAIN_PER_MONTH),
+    drain: drainOf(month),
+    banner: campaignHasStarted(state),
   };
 };

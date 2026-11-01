@@ -5,6 +5,8 @@ export type Stat =
   | 'companyDebt'
   | 'energy'
   | 'stress'
+  | 'trust'
+  | 'awareness'
   | 'month'
   | 'kpi'
   | 'evidenceCount';
@@ -28,6 +30,8 @@ export type Effect =
   | { type: 'companyPays'; amount: number }
   | { type: 'addEnergy'; amount: number }
   | { type: 'addStress'; amount: number }
+  | { type: 'addTrust'; amount: number }
+  | { type: 'addAwareness'; amount: number }
   | { type: 'addRelation'; npc: string; amount: number }
   | { type: 'addEvidence'; evidence: string }
   /** The next piece the month allows, if any (`GameWorld.evidence`). */

@@ -1,6 +1,6 @@
 import type { EvidenceItem } from '../calendar/world-types.js';
 import { drawRandom } from '../rng/seeded-rng.js';
-import type { GameState, Money, Mood } from '../state/game-state.js';
+import type { GameState, Money, Mood, Outlook } from '../state/game-state.js';
 import { meets } from './conditions.js';
 import type { Effect } from './story-types.js';
 
@@ -16,6 +16,26 @@ export const withMood = (state: GameState, change: Partial<Mood>): GameState => 
     stress: clampMood(state.mood.stress + (change.stress ?? 0)),
   },
 });
+
+/** A company that pays something still buys a little faith with it. */
+const TRUST_PER_PAYMENT = 4;
+
+export const withOutlook = (state: GameState, change: Partial<Outlook>): GameState => ({
+  ...state,
+  outlook: {
+    trust: clampMood(state.outlook.trust + (change.trust ?? 0)),
+    awareness: clampMood(state.outlook.awareness + (change.awareness ?? 0)),
+  },
+});
+
+/** Writes a payment into the record the Dossier shows, under the month it came. */
+export const withPayment = (state: GameState, amount: number): GameState => {
+  const month = String(state.calendar.month);
+  return {
+    ...state,
+    paidByMonth: { ...state.paidByMonth, [month]: (state.paidByMonth[month] ?? 0) + amount },
+  };
+};
 
 const changeCash = (money: Money, amount: number): Money => {
   const cash = money.cash + amount;
@@ -65,8 +85,17 @@ const applyEffect = (
       };
     case 'addCash':
       return { ...state, money: changeCash(state.money, effect.amount) };
-    case 'companyPays':
-      return { ...state, money: companyPays(state.money, effect.amount) };
+    case 'companyPays': {
+      const paid = Math.min(effect.amount, state.money.companyDebt);
+      return withOutlook(
+        { ...withPayment(state, paid), money: companyPays(state.money, effect.amount) },
+        { trust: TRUST_PER_PAYMENT },
+      );
+    }
+    case 'addTrust':
+      return withOutlook(state, { trust: effect.amount });
+    case 'addAwareness':
+      return withOutlook(state, { awareness: effect.amount });
     case 'addEnergy':
       return withMood(state, { energy: effect.amount });
     case 'addStress':

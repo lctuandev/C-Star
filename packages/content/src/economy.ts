@@ -1,4 +1,10 @@
-import type { Bill, GameRules, WeeklyAction } from '@cstar/game-core';
+import type { Bill, Condition, GameRules, WeeklyAction } from '@cstar/game-core';
+
+/** Khoa leaves in month 5 (`ch4-khoa-leaves`): from then on nobody hears from him at the desk. */
+export const KHOA_IS_HERE: Condition = {
+  type: 'not',
+  condition: { type: 'flag', flag: 'khoaLeft' },
+};
 
 /** First guesses, for the owner to tune by playing (GDD §4, §5). */
 export const rules: GameRules = {
@@ -8,6 +14,9 @@ export const rules: GameRules = {
   startingCash: 9_000_000,
   startingEnergy: 80,
   startingStress: 10,
+  startingTrust: 75,
+  startingAwareness: 20,
+  kpiShare: 0.3,
   salary: 15_000_000,
   weeklyEnergyRecovery: 15,
   unpaidStress: 12,
@@ -100,14 +109,29 @@ export const weeklyActions: readonly WeeklyAction[] = [
     ],
     outcomes: [
       'Dân bảo công ty sắp có đợt gọi vốn mới. Dân bảo thế từ năm ngoái.',
-      'Khoa rủ cả nhóm đi team building năm nay. Uyên hỏi ai trả tiền.',
       'Cả nhóm bàn nên gọi trà sữa vị gì. Cuộc họp này có kết luận rõ hơn mọi cuộc họp khác.',
     ],
     outcomesOnceOwed: [
       'Uyên đã ghi lại ngày giờ mọi lời hứa vào một file riêng.',
-      'Khoa tin tuần sau có lương. Tuần trước Khoa cũng tin vậy.',
       'Cả nhóm cười về trái cây thứ Sáu. Thứ Sáu này chỉ còn một quả chuối.',
       'Anh Huni hỏi thăm từng người tháng này xoay xở thế nào. Không ai trả lời thật.',
+    ],
+    outcomesWhen: [
+      {
+        when: KHOA_IS_HERE,
+        lines: ['Khoa rủ cả nhóm đi team building năm nay. Uyên hỏi ai trả tiền.'],
+      },
+      {
+        when: {
+          type: 'all',
+          conditions: [KHOA_IS_HERE, { type: 'stat', stat: 'companyDebt', min: 1 }],
+        },
+        lines: ['Khoa tin tuần sau có lương. Tuần trước Khoa cũng tin vậy.'],
+      },
+      {
+        when: { type: 'flag', flag: 'khoaLeft' },
+        lines: ['Bàn của Khoa vẫn trống. Không ai nhắc tới, mà cũng không ai đặt gì lên đó.'],
+      },
     ],
   },
   {
@@ -117,6 +141,7 @@ export const weeklyActions: readonly WeeklyAction[] = [
     appearsWhen: { type: 'flag', flag: 'startedNotes' },
     effects: [
       { type: 'findEvidence' },
+      { type: 'addAwareness', amount: 5 },
       { type: 'addEnergy', amount: -5 },
       { type: 'addStress', amount: 2 },
       {

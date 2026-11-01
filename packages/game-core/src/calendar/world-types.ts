@@ -2,6 +2,8 @@ import type { RunStart } from '../state/game-state.js';
 import type { Condition, Effect, StoryGraph } from '../story/story-types.js';
 
 export interface GameRules extends RunStart {
+  /** The contract's KPI money, as a share of the salary. */
+  kpiShare: number;
   weeksPerMonth: number;
   /** The month the content ends on. */
   lastMonth: number;
@@ -38,6 +40,8 @@ export interface WeeklyAction {
   outcomes: string[];
   /** Join `outcomes` once the company owes the player: said earlier, they spoil the story. */
   outcomesOnceOwed?: string[];
+  /** Join `outcomes` while their condition holds: nobody talks about a colleague who has left. */
+  outcomesWhen?: { when: Condition; lines: string[] }[];
   /** Plays a round of tickets before the action counts. */
   tickets?: boolean;
 }
@@ -52,6 +56,8 @@ export interface Ticket {
   answer: TicketAnswer;
   /** Shown after the player's answer, right or wrong. */
   reply: string;
+  /** Left out of the deck unless this holds: a colleague who has left sends no tickets. */
+  requires?: Condition;
 }
 
 /** A paper the player can keep (GDD §5.3). */

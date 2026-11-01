@@ -44,7 +44,7 @@ export const playUntil = async (page: Page, target: Locator, pick: 'first' | 'la
         if ((await choices.count()) > 0) {
           const open = choices
             .and(page.locator(':enabled'))
-            .filter({ hasNotText: /Nghỉ việc|Rời đi ngay/ });
+            .filter({ hasNotText: /Nghỉ việc|Rời đi ngay|nghỉ luôn/ });
           await (pick === 'first' ? open.first() : open.last()).click();
         } else if (await box.isVisible()) {
           await box.click();

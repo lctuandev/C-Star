@@ -1,6 +1,7 @@
 import { drawRandom } from '../rng/seeded-rng.js';
 import type { RngState } from '../rng/seeded-rng.js';
 import type { GameState, KpiRound } from '../state/game-state.js';
+import { meets } from '../story/conditions.js';
 import type { GameWorld, Ticket, TicketAnswer } from './world-types.js';
 
 /** Picks `count` different tickets, from the run's RNG. */
@@ -21,7 +22,8 @@ const dealTickets = (
 };
 
 export const startKpiRound = (state: GameState, world: GameWorld, actionId: string): GameState => {
-  const { tickets, rng } = dealTickets(state.rng, world.tickets, world.rules.ticketsPerRound);
+  const pool = world.tickets.filter(({ requires }) => !requires || meets(state, requires));
+  const { tickets, rng } = dealTickets(state.rng, pool, world.rules.ticketsPerRound);
   const kpiRound: KpiRound = { actionId, tickets, index: 0, score: 0, last: null };
   return { ...state, rng, phase: 'kpi', kpiRound };
 };

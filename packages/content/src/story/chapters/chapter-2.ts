@@ -66,7 +66,7 @@ export const chapter2Scenes = {
       },
       straight: {
         speaker: 'accountant',
-        text: 'Lương là bên chị xử lý theo quy trình. Quy trình thì bên trên xử lý. Bên trên thì, em biết đấy, ở bên trên.',
+        text: 'Lương là bên cô xử lý theo quy trình. Quy trình thì bên trên xử lý. Bên trên thì, em biết đấy, ở bên trên.',
         next: 'end',
       },
       pen: {
@@ -173,6 +173,15 @@ export const chapter2Scenes = {
       'uyen-note': {
         speaker: 'uyen',
         text: 'Hôm nay ngày mùng 5. Mình ghi lại nhé: công ty thông báo lúc 15 giờ 20, không có ngày cụ thể. Bạn cũng nên ghi.',
+        next: 'asked-check',
+      },
+      'asked-check': {
+        routes: [{ when: { type: 'flag', flag: 'askedAboutPay' }, next: 'uyen-recall' }],
+        otherwise: 'contract-echo',
+      },
+      'uyen-recall': {
+        speaker: 'uyen',
+        text: 'Hôm họp đầu năm, bạn là người duy nhất hỏi lương trả ngày mấy. Cả phòng cười. Mình có ghi lại câu đó.',
         next: 'contract-echo',
       },
       'contract-echo': {

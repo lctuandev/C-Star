@@ -27,6 +27,7 @@ export const chapter1Scenes = {
             id: 'read-contract',
             text: 'Đọc hết hợp đồng trước đã',
             effects: [
+              { type: 'addAwareness', amount: 15 },
               { type: 'setFlag', flag: 'readContract' },
               { type: 'addEvidence', evidence: 'contract' },
             ],
@@ -205,6 +206,7 @@ export const chapter1Scenes = {
             id: 'clap',
             text: 'Vỗ tay thật to',
             effects: [
+              { type: 'addTrust', amount: 5 },
               { type: 'setFlag', flag: 'clappedForBoss' },
               { type: 'addRelation', npc: 'boss', amount: 8 },
             ],

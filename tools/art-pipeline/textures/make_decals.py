@@ -336,13 +336,30 @@ def night_city():
     atlas.paste(image, (x, y))
 
 
+def banner():
+    """The dragon campaign's banner: a carp going up, and red enough to be seen from the desks."""
+    canvas = panel("banner", 0, 1860, 1024, 170, "#c8352b")
+    image, draw, s, _ = canvas
+    W, H = image.size
+    draw.rectangle([8 * s, 8 * s, W - 8 * s, H - 8 * s], outline="#ffc83d", width=5 * s)
+    for x in (112, W // s - 112):
+        draw.ellipse([(x - 62) * s, 56 * s, (x + 38) * s, 114 * s], fill="#ffc83d")
+        draw.polygon([((x + 30) * s, 85 * s), ((x + 76) * s, 52 * s), ((x + 76) * s, 118 * s)], fill="#ffc83d")
+        draw.ellipse([(x - 44) * s, 72 * s, (x - 34) * s, 82 * s], fill="#1b1f3a")
+    size = 74 * s
+    while font(size).getlength(TEXT["banner"]) > W - 400 * s:
+        size -= 2
+    centered(draw, (W / 2, H / 2), TEXT["banner"], size, "#ffc83d")
+    paste(canvas)
+
+
 def white():
     """For anything that glows in plain white, like a bare bulb."""
     canvas = panel("white", 1900, 1860, 32, 32, "#fff2d6", 1)
     paste(canvas)
 
 
-for draw_decal in (white, slide, logo_plate, slogan, family, values, kpi, whiteboard, notice_board, calendar, clock, skyline, screens, vending, exit_sign, bills, night_city):
+for draw_decal in (white, banner, slide, logo_plate, slogan, family, values, kpi, whiteboard, notice_board, calendar, clock, skyline, screens, vending, exit_sign, bills, night_city):
     draw_decal()
 
 atlas.save(HERE / "decals.png", optimize=True)

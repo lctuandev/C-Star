@@ -15,13 +15,13 @@ describe('promiseFor', () => {
 
 describe('syncLineFor', () => {
   it('starts once the salary is late', () => {
-    expect(syncLineFor(2, 4)).toBeNull();
-    expect(syncLineFor(3, 1)).not.toBeNull();
+    expect(syncLineFor(3, 4)).toBeNull();
+    expect(syncLineFor(4, 1)).not.toBeNull();
   });
 
   it('always has an answer, and it is never quite the same one twice running', () => {
-    expect(syncLineFor(3, 1)).not.toBe(syncLineFor(3, 2));
-    expect(syncLineFor(3, 4)).not.toBe(syncLineFor(4, 1));
+    expect(syncLineFor(4, 1)).not.toBe(syncLineFor(4, 2));
+    expect(syncLineFor(4, 4)).not.toBe(syncLineFor(5, 1));
     expect(syncLineFor(40, 2)).not.toBeNull();
   });
 });

@@ -7,7 +7,11 @@
   "slogan": "CHÚNG TA KHÔNG ĐI LÀM. CHÚNG TA ĐI XÂY TƯƠNG LAI",
   "family": ["CHÚNG TA", "LÀ MỘT", "GIA ĐÌNH"],
   "familyNote": "Gia đình không tính lương tháng 13",
-  "kpi": { "title": "KPI THÁNG NÀY", "up": "KPI", "flat": "Lương" },
+  "kpi": {
+    "title": "KPI THÁNG NÀY",
+    "up": "KPI",
+    "flat": "Lương"
+  },
   "whiteboard": [
     "Q4: x3 doanh thu",
     "Sắp gọi vốn!!!",
@@ -24,9 +28,13 @@
     "Nhớ tắt đèn"
   ],
   "values": ["TẬN TÂM", "TẬN TỤY", "ĐANG CẬP NHẬT"],
-  "calendar": { "month": "THÁNG NÀY", "payday": "NGÀY LƯƠNG?" },
+  "calendar": {
+    "month": "THÁNG NÀY",
+    "payday": "NGÀY LƯƠNG?"
+  },
   "tickets": ["CẦN LÀM", "ĐANG LÀM", "XONG"],
   "bills": ["TIỀN NHÀ", "TIỀN ĐIỆN", "QUÁ HẠN"],
   "vending": ["Nước", "Mì", "Hy vọng", "Hết hàng"],
-  "exit": "LỐI THOÁT"
+  "exit": "LỐI THOÁT",
+  "banner": "VƯỢT THÁC HÓA RỒNG"
 }

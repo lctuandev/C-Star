@@ -3,7 +3,7 @@ import type { GameState } from '@cstar/game-core';
 import { z } from 'zod';
 
 /** Raise it with every change to the shape below, and add the step in `MIGRATIONS` (contracts/save.md §3). */
-export const SAVE_VERSION = 4;
+export const SAVE_VERSION = 5;
 
 const money = z.number().int().nonnegative();
 const mood = z.number().int().min(0).max(100);
@@ -35,6 +35,8 @@ const gameStateSchema: z.ZodType<GameState> = z.strictObject({
   }),
   money: z.strictObject({ cash: money, arrears: money, loans: money, companyDebt: money }),
   mood: z.strictObject({ energy: mood, stress: mood }),
+  outlook: z.strictObject({ trust: mood, awareness: mood }),
+  paidByMonth: z.record(z.string(), money),
   story: z.strictObject({
     sceneId: z.string().nullable(),
     nodeId: z.string().nullable(),
@@ -103,6 +105,20 @@ const MIGRATIONS: Record<number, Migration> = {
     ...file,
     state: { ...(file.state as object), playerName: '' },
   }),
+  /** M6: trust, awareness and the ledger. What was paid before this version is not on record. */
+  4: (file) => {
+    const state = file.state as GameState;
+    const khoaLeft = state.story.seenScenes.includes('ch4-khoa-leaves');
+    return {
+      ...file,
+      state: {
+        ...state,
+        story: { ...state.story, flags: { ...state.story.flags, ...(khoaLeft && { khoaLeft }) } },
+        outlook: { trust: 50, awareness: 30 },
+        paidByMonth: {},
+      },
+    };
+  },
 };
 
 export const createSaveFile = (state: GameState, savedAt: string): SaveFile => ({

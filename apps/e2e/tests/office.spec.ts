@@ -116,6 +116,7 @@ test('the 2D screens show the place, not a blank (SCENARIO-071)', async ({ page 
   await startGame(page);
   const place = page.locator('main img[src*="/art/places/"]');
   await expect(place).toBeAttached();
+  await expect(place).toHaveAttribute('src', /home|office-early|desk-early/);
   await expect
     .poll(() => place.evaluate((image: HTMLImageElement) => image.naturalWidth))
     .toBeGreaterThan(0);
