@@ -8,4 +8,4 @@ Các lựa chọn đều có giá: đứng cùng Uyên mất tiền, chụp tờ
 
 Điều kiện sáu kết thúc và save format không đổi. Tỉ lệ rời sớm ở người chơi ngẫu nhiên giảm từ 54% xuống 29%.
 
-Còn lại: chưa chơi tay, chưa thử trên điện thoại thật. Bản này chưa phát hành.
+Đã phát hành ở `93aa4c8`. Còn lại: chưa chơi tay, chưa thử trên điện thoại thật.

@@ -17,7 +17,7 @@ tháng. Web, PWA chơi được offline, điện thoại dọc là chính. Khôn
 - Repo: <https://github.com/lctuandev/C-Star>, nhánh `main`, **public**.
 - Toàn bộ roadmap xong trừ phần cần owner, ghi ở `backlog.md`.
 - Số liệu, điều kiện ending, giọng văn, câu chữ cảnh báo đều chưa được owner duyệt.
-- Bản đang chạy công khai: `3088b75` (tới BUG-001). `main` có thêm FEAT-045, chưa phát hành. Sau mỗi lần phát hành, chạy `E2E_EXTERNAL_URL=https://c-star.lctuan.space pnpm exec playwright test tests/home.spec.ts tests/disclaimer.spec.ts` trong `apps/e2e`.
+- Bản đang chạy công khai: `93aa4c8` (tới FEAT-045). Sau mỗi lần phát hành, so version trong `sw.js` trên site với log build, chạy `E2E_EXTERNAL_URL=https://c-star.lctuan.space pnpm exec playwright test tests/home.spec.ts tests/disclaimer.spec.ts tests/ending.spec.ts` trong `apps/e2e`.
 
 ## Active Task
 

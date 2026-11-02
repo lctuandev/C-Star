@@ -14,9 +14,10 @@ Rà soát lần cuối: 2026-11-01 (sau M6).
 
 ## Vận hành
 
-| Mục                                                                    | Từ      | Xử lý ở  |
-| ---------------------------------------------------------------------- | ------- | -------- |
-| Địa chỉ có dấu `/` cuối (`/policy/`, `/about/`) trả 403 trần của nginx | BUG-001 | Khi rảnh |
+| Mục                                                                                        | Từ       | Xử lý ở  |
+| ------------------------------------------------------------------------------------------ | -------- | -------- |
+| Địa chỉ có dấu `/` cuối (`/policy/`, `/about/`) trả 403 trần của nginx                     | BUG-001  | Khi rảnh |
+| Trang chủ chỉ là nền tối tới khi JS chạy xong (`DisclaimerGate` trả null), chưa có màn chờ | FEAT-045 | Khi rảnh |
 
 ## 3D
 
