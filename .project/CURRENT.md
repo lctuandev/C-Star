@@ -17,11 +17,11 @@ tháng. Web, PWA chơi được offline, điện thoại dọc là chính. Khôn
 - Repo: <https://github.com/lctuandev/C-Star>, nhánh `main`, **public**.
 - Toàn bộ roadmap xong trừ phần cần owner, ghi ở `backlog.md`.
 - Số liệu, điều kiện ending, giọng văn, câu chữ cảnh báo đều chưa được owner duyệt.
-- Bản đang chạy công khai: `cefc40d` (tới FEAT-044). `main` có thêm bản vá BUG-001, chưa phát hành.
+- Bản đang chạy công khai: `3088b75` (tới BUG-001). Sau mỗi lần phát hành, chạy `E2E_EXTERNAL_URL=https://c-star.lctuan.space pnpm exec playwright test tests/home.spec.ts tests/disclaimer.spec.ts` trong `apps/e2e`.
 
 ## Active Task
 
-`BUG-001-cloudflare-beacon`: Cloudflare chèn script thống kê vào site thật, trái với câu "không dùng công cụ theo dõi" ở `/policy`. Bản vá đã ở `main`, chờ owner đồng ý phát hành rồi kiểm lại bằng E2E trên site thật.
+Không có. M6 xong.
 
 ## Blockers
 
@@ -34,4 +34,4 @@ Không có.
 
 ## Next Step
 
-Phát hành BUG-001 khi owner đồng ý, chạy `E2E_EXTERNAL_URL=https://c-star.lctuan.space pnpm exec playwright test tests/home.spec.ts` trong `apps/e2e`. Owner đọc `docs/kich-ban-day-du.md`, chơi thử bản đang chạy, rồi phản hồi về nội dung mới.
+Owner đọc `docs/kich-ban-day-du.md`, chơi thử bản đang chạy, rồi phản hồi về nội dung mới.

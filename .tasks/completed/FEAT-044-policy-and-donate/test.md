@@ -13,5 +13,5 @@
 | Hộp thoại QR vừa màn hình 320 px | PASS |
 | Xem trang chủ, QR, chính sách ở 4 cỡ màn hình | PASS |
 | Quét QR thật bằng app ngân hàng | NOT TESTED |
-| Cookie Cloudflare trên site thật | NOT TESTED |
-| Không tải từ máy chủ ngoài trên site thật | FAIL sau khi phát hành, Cloudflare chèn script: xem BUG-001-cloudflare-beacon |
+| Cookie Cloudflare trên site thật | PASS, kiểm ở BUG-001-cloudflare-beacon |
+| Không tải từ máy chủ ngoài trên site thật | FAIL ở bản `cefc40d`, Cloudflare chèn script; PASS từ `3088b75`: xem BUG-001-cloudflare-beacon |
