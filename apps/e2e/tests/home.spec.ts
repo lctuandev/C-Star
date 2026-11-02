@@ -47,7 +47,8 @@ test('the coffee fits a small phone, and the QR can be scanned', async ({ page }
   const qr = page.getByRole('img', { name: /VietQR/ });
   await qr.scrollIntoViewIfNeeded();
   await expect(qr).toBeVisible();
-  const size = await qr.evaluate((image: HTMLImageElement) => image.naturalWidth);
-  expect(size).toBeGreaterThan(0);
+  await expect
+    .poll(() => qr.evaluate((image: HTMLImageElement) => image.naturalWidth))
+    .toBeGreaterThan(0);
   await expect(page.getByRole('button', { name: 'Đóng' })).toBeInViewport();
 });

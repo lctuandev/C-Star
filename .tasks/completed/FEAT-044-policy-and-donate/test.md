@@ -14,3 +14,4 @@
 | Xem trang chủ, QR, chính sách ở 4 cỡ màn hình | PASS |
 | Quét QR thật bằng app ngân hàng | NOT TESTED |
 | Cookie Cloudflare trên site thật | NOT TESTED |
+| Không tải từ máy chủ ngoài trên site thật | FAIL sau khi phát hành, Cloudflare chèn script: xem BUG-001-cloudflare-beacon |

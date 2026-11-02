@@ -12,6 +12,12 @@ Rà soát lần cuối: 2026-11-01 (sau M6).
 | Cài thật trên Android và iPhone                                             | FEAT-001 | Owner                      |
 | Chưa rõ vì sao CDP làm Chromium giữ worker mới (không ảnh hưởng người chơi) | FEAT-001 | Khi có dấu hiệu ở máy thật |
 
+## Vận hành
+
+| Mục                                                                    | Từ      | Xử lý ở  |
+| ---------------------------------------------------------------------- | ------- | -------- |
+| Địa chỉ có dấu `/` cuối (`/policy/`, `/about/`) trả 403 trần của nginx | BUG-001 | Khi rảnh |
+
 ## 3D
 
 | Mục                                                 | Từ       | Xử lý ở                 |
