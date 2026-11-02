@@ -144,12 +144,143 @@ export const chapter6Scenes = {
       },
       'fine-print': {
         text: 'Bạn đọc tờ cam kết một lượt. Không có ngày thanh toán. Không có số tiền. Chỉ có chỗ ký tên.',
+        next: 'deal-check',
+      },
+      'deal-check': {
+        // Only someone who could still make trouble is worth paying off.
+        routes: [
+          {
+            when: {
+              type: 'any',
+              conditions: [
+                { type: 'stat', stat: 'evidenceCount', min: 3 },
+                { type: 'flag', flag: 'joinedGroup' },
+              ],
+            },
+            next: 'side-deal',
+          },
+        ],
+        otherwise: 'mom-text-check',
+      },
+      'side-deal': {
+        speaker: 'boss',
+        text: 'Khoan ký đã, em vào đây anh nói riêng. Anh biết em đang giữ những gì, anh không trách. Chiều nay anh chuyển riêng cho em 15 triệu, tiền tươi, không phải next week.',
+        next: 'side-paper',
+      },
+      'side-paper': {
+        text: 'Anh đẩy sang một tờ khác, ngắn hơn: "Người lao động xác nhận đã nhận đủ các khoản lương còn nợ và không khiếu nại về sau". Mười lăm triệu. Đổi lại, bạn ký rằng mình đã nhận đủ.',
+        choices: [
+          {
+            id: 'take-deal',
+            text: 'Ký. Tiền trong tay chắc hơn một tập giấy',
+            effects: [
+              { type: 'setFlag', flag: 'signedWaiver' },
+              { type: 'companyPays', amount: 15_000_000 },
+              { type: 'addRelation', npc: 'boss', amount: 10 },
+            ],
+            next: 'took-deal',
+          },
+          {
+            id: 'refuse-deal',
+            text: 'Đẩy lại: "Em chưa nhận đủ, nên em không ký được ạ"',
+            effects: [
+              { type: 'addRelation', npc: 'boss', amount: -8 },
+              { type: 'addStress', amount: 3 },
+            ],
+            next: 'refused-deal',
+          },
+          {
+            id: 'copy-deal',
+            text: 'Chụp lại tờ giấy trước, rồi mới trả lời',
+            requires: {
+              type: 'any',
+              conditions: [
+                { type: 'stat', stat: 'awareness', min: 50 },
+                { type: 'flag', flag: 'soughtAdvice' },
+              ],
+            },
+            lockedReason: 'Cần hiểu rõ quyền lợi của mình hơn (từ 50)',
+            effects: [
+              { type: 'setFlag', flag: 'copiedWaiver' },
+              { type: 'addEvidence', evidence: 'waiver-offer' },
+              { type: 'addRelation', npc: 'boss', amount: -12 },
+              { type: 'addStress', amount: 8 },
+            ],
+            next: 'copied-deal',
+          },
+        ],
+      },
+      'took-deal': {
+        text: 'Ting. 15.000.000 đ, nội dung "HO TRO CA NHAN". Lần đầu tiên công ty trả đúng giờ đã hẹn. Trên sổ vẫn còn một con số. Giờ thì có thêm một tờ giấy ghi là bạn đã nhận đủ, với chữ ký của bạn.',
+        next: 'deal-group-check',
+      },
+      'deal-group-check': {
+        routes: [{ when: { type: 'flag', flag: 'joinedGroup' }, next: 'left-group' }],
+        otherwise: 'mom-text-check',
+      },
+      'left-group': {
+        text: 'Bạn nhắn vào nhóm xin rút tên. Uyên trả lời đúng một chữ: "Ok". Một lát sau, dòng có tên bạn biến mất khỏi bảng đối chiếu.',
+        effects: [
+          { type: 'setFlag', flag: 'joinedGroup', value: false },
+          { type: 'addRelation', npc: 'uyen', amount: -25 },
+        ],
+        next: 'mom-text-check',
+      },
+      'refused-deal': {
+        speaker: 'boss',
+        text: 'Anh cho em cơ hội rồi đấy nhé. Cơ hội này không có next week đâu.',
+        next: 'mom-text-check',
+      },
+      'copied-deal': {
+        text: 'Bạn giơ điện thoại lên, chụp một tấm. Anh khựng lại nửa giây. Tờ giấy ghi rõ "các khoản lương còn nợ": muốn bạn im lặng thì trước hết công ty phải viết ra là có nợ. Đó là lần đầu tiên bạn thấy câu đó trên giấy của công ty.',
+        next: 'copied-boss',
+      },
+      'copied-boss': {
+        speaker: 'boss',
+        text: 'Chụp xong rồi thì em khỏi cần ký tờ nào nữa. Cam kết đồng hành là dành cho người nhà.',
+        next: 'mom-text-check',
+      },
+      'mom-text-check': {
+        routes: [{ when: { type: 'flag', flag: 'toldMom' }, next: 'mom-text' }],
+        otherwise: 'boss-asks',
+      },
+      'mom-text': {
+        text: 'Điện thoại rung trong túi. Mẹ nhắn: "Làm gì thì làm, nhớ ăn sáng nha con". Mẹ không biết hôm nay là ngày gì. Nhưng bạn thấy nhẹ đi một chút.',
+        effects: [{ type: 'addStress', amount: -4 }],
         next: 'boss-asks',
       },
       'boss-asks': {
         speaker: 'boss',
         text: 'Em nghĩ kỹ chưa?',
-        next: 'choice',
+        next: 'choice-check',
+      },
+      'choice-check': {
+        routes: [{ when: { type: 'flag', flag: 'signedWaiver' }, next: 'choice-signed' }],
+        otherwise: 'choice',
+      },
+      'choice-signed': {
+        speaker: 'player',
+        text: 'Tờ giấy kia đã ký rồi. Giờ chỉ còn chuyện ở lại hay đi.',
+        choices: [
+          {
+            id: 'leave-signed',
+            text: 'Cầm tiền, rời công ty và bắt đầu lại',
+            effects: [
+              { type: 'setFlag', flag: 'choseLeave' },
+              { type: 'setFlag', flag: 'runOver' },
+            ],
+            next: 'leave-line',
+          },
+          {
+            id: 'stay-signed',
+            text: 'Ký nốt bản cam kết, ở lại',
+            effects: [
+              { type: 'setFlag', flag: 'choseStay' },
+              { type: 'setFlag', flag: 'runOver' },
+            ],
+            next: 'stay-check',
+          },
+        ],
       },
       choice: {
         speaker: 'player',
@@ -184,6 +315,8 @@ export const chapter6Scenes = {
           {
             id: 'stay',
             text: 'Ký bản cam kết, cho công ty thêm một cơ hội',
+            requires: { type: 'not', condition: { type: 'flag', flag: 'copiedWaiver' } },
+            lockedReason: 'Sếp đã nói rồi: cam kết là dành cho người nhà',
             effects: [
               { type: 'setFlag', flag: 'choseStay' },
               { type: 'setFlag', flag: 'runOver' },
@@ -222,6 +355,14 @@ export const chapter6Scenes = {
     nodes: {
       month: {
         text: 'Ba tháng sau. Hồ sơ của nhóm rõ ràng tới mức công ty không còn câu "đang cố gắng" nào để nói. Từng khoản được chốt, có ngày, có chữ ký.',
+        next: 'offer-check',
+      },
+      'offer-check': {
+        routes: [{ when: { type: 'evidence', evidence: 'waiver-offer' }, next: 'offer-top' }],
+        otherwise: 'ting',
+      },
+      'offer-top': {
+        text: 'Trên cùng tập hồ sơ là tờ "không khiếu nại" công ty từng đưa bạn. Muốn mua im lặng thì phải viết ra là có nợ, và công ty đã viết.',
         next: 'ting',
       },
       ting: {
@@ -230,8 +371,15 @@ export const chapter6Scenes = {
         next: 'loan-check',
       },
       'loan-check': {
-        routes: [{ when: { type: 'stat', stat: 'loans', min: 1 }, next: 'repay' }],
+        routes: [
+          { when: { type: 'stat', stat: 'loans', min: 1 }, next: 'repay' },
+          { when: { type: 'flag', flag: 'toldMom' }, next: 'call-told' },
+        ],
         otherwise: 'call-home',
+      },
+      'call-told': {
+        text: 'Rồi bạn gọi về nhà. Mẹ đã biết đầu đuôi từ tháng 7, nên mẹ chỉ hỏi: "Thế tháng này có về ăn cơm không?". Lần này bạn trả lời được.',
+        next: 'uyen',
       },
       repay: {
         text: 'Rồi bạn trả nốt tiền cho những người đã cho bạn mượn.',
@@ -244,6 +392,14 @@ export const chapter6Scenes = {
       uyen: {
         speaker: 'uyen',
         text: 'Xong rồi. Mình xóa file được chưa? Thôi, để lại. Mình quen tay rồi.',
+        next: 'named-check',
+      },
+      'named-check': {
+        routes: [{ when: { type: 'flag', flag: 'namedUyen' }, next: 'still-remembers' }],
+        otherwise: 'end',
+      },
+      'still-remembers': {
+        text: 'Uyên không nhắc lại chuyện phòng họp nhỏ. Một năm sau cũng không. Bạn vẫn nhớ, và bạn biết là cô cũng nhớ.',
         next: 'end',
       },
       end: {
@@ -297,6 +453,14 @@ export const chapter6Scenes = {
       dan: {
         speaker: 'uyen',
         text: 'Không ai trong chúng ta là trường hợp đặc biệt. Đó là điều mình mừng nhất.',
+        next: 'named-check',
+      },
+      'named-check': {
+        routes: [{ when: { type: 'flag', flag: 'namedUyen' }, next: 'last-line' }],
+        otherwise: 'roger-check',
+      },
+      'last-line': {
+        text: 'Tên bạn vẫn nằm ở dòng cuối danh sách. Uyên không nhắc lại chuyện đó, và cũng chưa bao giờ nói là đã bỏ qua.',
         next: 'roger-check',
       },
       'roger-check': {
@@ -328,6 +492,14 @@ export const chapter6Scenes = {
     nodes: {
       alone: {
         text: 'Bạn đi một mình. Mỗi lần công ty đưa ra một lời giải thích, bạn đặt lên bàn một tờ giấy có ngày tháng.',
+        next: 'offer-check',
+      },
+      'offer-check': {
+        routes: [{ when: { type: 'evidence', evidence: 'waiver-offer' }, next: 'offer-top' }],
+        otherwise: 'long',
+      },
+      'offer-top': {
+        text: 'Tờ bạn đặt xuống cuối cùng là tờ "không khiếu nại" chính công ty từng đưa bạn. Người đối diện đọc xong thì không còn lời giải thích nào mới.',
         next: 'long',
       },
       long: {
@@ -356,11 +528,19 @@ export const chapter6Scenes = {
       },
       'friend-check': {
         routes: [{ when: { type: 'flag', flag: 'turnedDownFriend' }, next: 'friend' }],
-        otherwise: 'new',
+        otherwise: 'debt-check',
       },
       friend: {
         text: 'Bạn nhắn lại người bạn hôm tháng 4. Họ không hỏi gì, chỉ gửi địa chỉ văn phòng.',
-        next: 'new',
+        next: 'debt-check',
+      },
+      'debt-check': {
+        routes: [{ when: { type: 'flag', flag: 'signedWaiver' }, next: 'new-waived' }],
+        otherwise: 'new',
+      },
+      'new-waived': {
+        text: 'Con số trên sổ vẫn còn, nhưng tờ giấy có chữ ký của bạn ghi là đã nhận đủ, nên giờ muốn đòi cũng khó hơn nhiều. Bạn tìm được việc mới, lương không cao, nhưng trả đúng ngày mùng 5.',
+        next: 'ting',
       },
       new: {
         text: 'Khoản nợ vẫn nằm đó, một con số bạn học cách không nhìn mỗi sáng. Bạn tìm được việc mới, lương không cao, nhưng trả đúng ngày mùng 5.',
@@ -389,10 +569,46 @@ export const chapter6Scenes = {
       },
       'also-a-pity': {
         text: 'Bạn đọc tin nhắn trong giờ nghỉ trưa, bên phần cơm mua bằng lương tháng này. Vẫn một khoản tiền chưa có, một đợt gọi vốn chưa xảy ra. Bạn cũng thấy tiếc. Tiếc là đã không đi sớm hơn.',
-        next: 'year',
+        next: 'missed-check',
       },
       'on-time': {
         text: 'Hôm nay là mùng 5. Bạn mua thêm một hộp sữa, chỉ vì mua được.',
+        next: 'missed-check',
+      },
+      'missed-check': {
+        routes: [{ when: { type: 'flag', flag: 'quitEarly' }, next: 'the-form' }],
+        otherwise: 'year',
+      },
+      'the-form': {
+        text: 'Rồi một buổi sáng, anh Huấn nhắn, lần đầu từ hôm bạn nghỉ. Kèm một tấm ảnh: tờ "Bản cam kết đồng hành". Không có ngày thanh toán, không có số tiền, chỉ có chỗ ký tên.',
+        next: 'huni-asks',
+      },
+      'huni-asks': {
+        speaker: 'deputy',
+        text: 'Hôm nay Chủ tịch tới tận tầng mình. Trước 5 giờ chiều ai cũng phải chọn. Uyên có kế hoạch của Uyên, anh Roger có niềm tin của anh Roger. Em đi rồi nên anh mới hỏi thật: nếu còn ở đây, em chọn gì?',
+        next: 'huni-reply',
+      },
+      'huni-reply': {
+        text: 'Bạn gõ rồi xóa, gõ rồi xóa. Có những câu chỉ người ở lại mới trả lời được. Nhưng anh ấy vẫn đang đợi.',
+        choices: [
+          {
+            id: 'warn-huni',
+            text: 'Nhắn lại: "Anh đừng ký tờ nào không có ngày tháng"',
+            next: 'huni-warned',
+          },
+          {
+            id: 'leave-unread',
+            text: 'Để đó. Mình đi rồi, chuyện đó không còn là của mình',
+            next: 'huni-left',
+          },
+        ],
+      },
+      'huni-warned': {
+        text: 'Anh Huấn thả một dấu tim, không nói gì thêm. Tuần sau bạn nghe tin anh đã nộp đơn, bàn giao đủ từng việc. Bạn không biết đó là vì câu của mình, hay anh đã quyết từ trước.',
+        next: 'year',
+      },
+      'huni-left': {
+        text: 'Tin nhắn vẫn nằm đó, trạng thái đã xem. Tối đó bạn ăn cơm, trả tiền điện đúng hạn, và ngủ không ngon lắm.',
         next: 'year',
       },
       year: {
@@ -400,7 +616,19 @@ export const chapter6Scenes = {
         next: 'message-check',
       },
       'message-check': {
-        routes: [{ when: { type: 'flag', flag: 'tookPromotion' }, next: 'year-dan' }],
+        routes: [
+          {
+            when: {
+              type: 'any',
+              conditions: [
+                { type: 'flag', flag: 'tookPromotion' },
+                { type: 'flag', flag: 'namedUyen' },
+                { type: 'flag', flag: 'signedWaiver' },
+              ],
+            },
+            next: 'year-dan',
+          },
+        ],
         otherwise: 'year-uyen',
       },
       'year-dan': {
@@ -436,11 +664,19 @@ export const chapter6Scenes = {
       },
       'tin-silent': {
         text: 'Anh Roger đứng ở hàng cuối, vỗ tay rất khẽ, và không nhìn lên sân khấu.',
-        next: 'year',
+        next: 'mom-check',
       },
       tin: {
         speaker: 'manager',
         text: 'Anh đã bảo mà. Next week là có thôi, rồi còn cổ phiếu nữa. Anh em mình chỉ cần tin thêm một chút.',
+        next: 'mom-check',
+      },
+      'mom-check': {
+        routes: [{ when: { type: 'flag', flag: 'toldMom' }, next: 'mom-asks' }],
+        otherwise: 'year',
+      },
+      'mom-asks': {
+        text: 'Mẹ xem ảnh tấm bằng khen bạn gửi về, rồi gọi hỏi: "Thế họ trả con chưa?". Bạn nói: "Next week, mẹ ạ". Câu đó bạn học ở đâu, bạn biết rõ.',
         next: 'year',
       },
       year: {
@@ -578,10 +814,76 @@ export const chapter6Scenes = {
       },
       'milk-check': {
         routes: [{ when: { type: 'crisisCount', crisis: 'burnout', min: 1 }, next: 'milk' }],
-        otherwise: 'uyen',
+        otherwise: 'uyen-check',
       },
       milk: {
         text: 'Trên bàn bạn có một hộp sữa, không ghi tên. Từ hôm bạn nằm nhà cả tuần, thỉnh thoảng lại có một hộp như vậy.',
+        next: 'uyen-check',
+      },
+      'uyen-check': {
+        routes: [
+          { when: { type: 'flag', flag: 'namedUyen' }, next: 'uyen-knows' },
+          // Taking the title afterwards undoes it: she stopped writing the day the cards came.
+          {
+            when: {
+              type: 'all',
+              conditions: [
+                { type: 'flag', flag: 'stoodWithUyen' },
+                { type: 'flag', flag: 'joinedGroup' },
+              ],
+            },
+            next: 'uyen-stood',
+          },
+        ],
+        otherwise: 'uyen',
+      },
+      'uyen-knows': {
+        speaker: 'uyen',
+        text: 'Mấy hôm trước mình bị gọi lên phòng họp nhỏ, người ta gọi đúng tên mình. Mình biết ai đã nói rồi. Mình không hỏi đâu. Từ hôm nay hồ sơ của nhóm không để chỗ cũ nữa.',
+        next: 'knows-check',
+      },
+      'knows-check': {
+        routes: [{ when: { type: 'flag', flag: 'joinedGroup' }, next: 'own-up' }],
+        otherwise: 'huni',
+      },
+      'own-up': {
+        speaker: 'player',
+        text: 'Uyên không hỏi. Nhưng cô vẫn đứng đó, đợi xem bạn có nói gì không.',
+        choices: [
+          {
+            id: 'confess',
+            text: 'Nhận: "Là mình. Mình gửi hết giấy tờ mình có cho nhóm"',
+            requires: { type: 'stat', stat: 'evidenceCount', min: 3 },
+            lockedReason: 'Cần ít nhất 3 giấy tờ để nhóm còn tin bạn',
+            effects: [
+              { type: 'addRelation', npc: 'uyen', amount: -10 },
+              { type: 'addStress', amount: 6 },
+            ],
+            next: 'kept-on',
+          },
+          {
+            id: 'say-nothing',
+            text: 'Không nói gì',
+            effects: [
+              { type: 'setFlag', flag: 'joinedGroup', value: false },
+              { type: 'addRelation', npc: 'uyen', amount: -20 },
+            ],
+            next: 'dropped',
+          },
+        ],
+      },
+      'kept-on': {
+        speaker: 'uyen',
+        text: 'Giấy tờ thì mình nhận. Tên bạn vẫn ở trong danh sách, dòng cuối. Chuyện kia để sau.',
+        next: 'huni',
+      },
+      dropped: {
+        text: 'Uyên gật đầu, như thể đó cũng là một câu trả lời. Tối đó nhóm chat không còn trong danh sách của bạn nữa.',
+        next: 'huni',
+      },
+      'uyen-stood': {
+        speaker: 'uyen',
+        text: 'Mình nghe chuyện hôm đó với chị HR rồi. Mấy hôm nay mọi người bắt đầu gửi hồ sơ cho bạn giữ cùng, bạn thấy chưa? Không phải tự nhiên đâu.',
         next: 'uyen',
       },
       uyen: {

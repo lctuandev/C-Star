@@ -424,16 +424,45 @@ export const chapter3Scenes = {
           {
             id: 'walk-now',
             text: 'Nhận lời. Rời đi ngay, trước khi con số dài thêm',
+            next: 'draft',
+          },
+        ],
+      },
+      draft: {
+        text: 'Bạn gõ "ok mình nhận nha" rồi chưa bấm gửi. Đi tối nay thì những tháng đang bị nợ sẽ đi theo bạn dưới dạng một con số, mà trong tay chưa có tờ giấy nào ghi con số đó. Bạn nhắn hỏi Uyên, người duy nhất ở công ty bạn biết chắc sẽ nói thật.',
+        next: 'uyen-says',
+      },
+      'uyen-says': {
+        speaker: 'uyen',
+        text: 'Đi được thì đi, mình không cản. Nhưng đi cho tỉnh: bảng lương, bảng công, hợp đồng, xin đủ rồi hãy đi. Nghỉ rồi mới hỏi lại mấy thứ này khó lắm.',
+        next: 'send-or-not',
+      },
+      'send-or-not': {
+        speaker: 'player',
+        text: 'Tin nhắn vẫn nằm trong ô soạn thảo. Gửi hay không?',
+        choices: [
+          {
+            id: 'send-yes',
+            text: 'Gửi. Mình cần chỗ trả lương đúng ngày hơn là một lời giải thích',
             effects: [
               { type: 'setFlag', flag: 'quitEarly' },
               { type: 'setFlag', flag: 'runOver' },
             ],
             next: 'walked',
           },
+          {
+            id: 'send-no',
+            text: 'Xóa đi. Ở lại thêm, ít nhất tới khi đủ giấy tờ',
+            effects: [{ type: 'setFlag', flag: 'turnedDownFriend' }],
+            next: 'second-stay',
+          },
         ],
       },
       stayed: {
         text: 'Bạn nhắn lại "cảm ơn nha". Người bạn trả lời bằng một cái mặt cười hơi buồn.',
+      },
+      'second-stay': {
+        text: 'Bạn xóa từng chữ rồi nhắn lại "cảm ơn nha, để lần khác". Không phải vì bạn còn tin. Lần này bạn ở lại vì có việc phải làm.',
       },
       walked: {
         text: 'Anh Huấn là người ký giấy cho bạn. "Đi đi em, chuyện này không có gì phải ngại." Anh Roger thì không ra chào: anh nói bạn đã bỏ rơi tầm nhìn.',

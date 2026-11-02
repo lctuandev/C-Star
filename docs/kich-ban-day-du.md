@@ -32,8 +32,8 @@ Mỗi tháng có 4 tuần, mỗi tuần 3 lượt. "Ngày lương" là mùng 5 c
 | 3 | 4 | Công ty im lặng, chiến dịch Vượt thác hóa rồng, người đầu tiên nghỉ, lời mời việc nơi khác. | 5 triệu nếu vào Vượt thác |
 | 4 | 5 | Trả 1/3 chọn lọc chia rẽ cả phòng, Khoa rời đi, ai cũng vay mượn, Uyên bắt đầu gom người. | 5 triệu nếu vào Vượt thác (danh sách ưu tiên) hoặc được sếp để ý (khoản ứng riêng) |
 | 4 | 6 | Nhóm so số liệu họp, anh Roger lung lay, "1–2 triệu đô" và IPO, KPI bị giam mà vẫn đánh giá hiệu suất. | Không có gì |
-| 5 | 7 | Bảng đối chiếu, bảng cũng có thể sai, email đòi quyền lợi, công ty lần đầu lo lắng, lời mời làm Trưởng nhóm. | 5 triệu nếu vào Vượt thác, nhận chức hoặc ra điều kiện |
-| 6 | 8 | Văn phòng vắng, Khoa trả nợ, Chủ tịch tới, Bản cam kết đồng hành, quyết định cuối. | Tùy kết thúc |
+| 5 | 7 | Bảng đối chiếu, bảng cũng có thể sai, email đòi quyền lợi, chị HR dò ai lập bảng, công ty lần đầu lo lắng, lời mời làm Trưởng nhóm, cuộc gọi của mẹ. | 5 triệu nếu vào Vượt thác, nhận chức hoặc ra điều kiện |
+| 6 | 8 | Văn phòng vắng, Khoa trả nợ, Chủ tịch tới, Bản cam kết đồng hành, 15 triệu đổi lấy tờ "không khiếu nại", quyết định cuối. | 15 triệu nếu ký tờ "không khiếu nại"; phần còn lại tùy kết thúc |
 
 Tiền trả muộn được tính vào tháng lương cũ nhất còn thiếu, đúng như nội dung chuyển khoản. Cách tính mốc: người chơi nhận email trước tháng 1, nên cuối tháng 6 là "hơn sáu tháng" kể từ email đó. Kỳ lương đầu bị lỡ là lương tháng 2, nên tuần 3 tháng 7 công ty đã lỡ năm kỳ (T2 đến T6), và tới tháng 8 là sáu kỳ (T2 đến T7).
 
@@ -91,7 +91,7 @@ Tiền trả muộn được tính vào tháng lương cũ nhất còn thiếu, 
 | --- | --- | --- | --- |
 | Anh Roger | Tin Chủ tịch thật lòng (`ch1-team-lunch`) | Lần đầu không nói "next week" (`ch4-roger-crack`) | Tùy người chơi: im lặng trước Chủ tịch, ký cùng nhóm hay về nước; hoặc vẫn "hopefully" |
 | Khoa | Cười, tin tuần sau có lương (`ch1-first-day`) | Vay tiền, ngồi ở cầu thang (`ch3-side-rumor`, `ch4-khoa-stairs`) | Rời đi tháng 5. Trả 1 triệu ở tháng 8 nếu từng được cho mượn; quán cà phê nếu đã nói lời tạm biệt |
-| Uyên | Cẩn thận vì công ty cũ đóng cửa (`ch1-team-lunch`) | Gom người, gom giấy tờ (`ch4-different-debts`, `ch4-group`) | Sai một lần và học cách để người khác soát cùng (`ch5-wrong-number`) |
+| Uyên | Cẩn thận vì công ty cũ đóng cửa (`ch1-team-lunch`) | Gom người, gom giấy tờ (`ch4-different-debts`, `ch4-group`) | Sai một lần và học cách để người khác soát cùng (`ch5-wrong-number`). Bị người chơi nêu tên, hoặc được đứng cùng (`ch5-company-reply`, `ch6-empty-office`) |
 | Anh Huni | Người hướng dẫn tử tế (`ch1-first-day`) | Cho mượn tiền rồi không kham nổi (`ch4-borrowing`) | Tự quyết định: ký đầu danh sách hoặc nộp đơn (`ch6-empty-office`, các kết thúc) |
 | Dân | Nhiều tin đồn (`ch1-first-day`) | Người quen hỏi lại "Công ty nào?" (`ch4-dan-doubts`) | Tin sai vào bảng, rồi lần đầu hỏi mà không kèm tin đồn (`ch5-wrong-number`, The Investigator) |
 | Phó GĐ Jeon | Tầm nhìn, gia đình (`ch1-town-hall`) | "1–2 triệu đô" mỗi khi có người định đi (`ch4-the-dollars`) | Lần đầu lo lắng, chiêu mộ người hay hỏi lương (`ch5-closed-door`, `ch5-offer`) |
@@ -122,12 +122,12 @@ Sinh tự động từ dữ liệu. Test `story-links.test.ts` bắt lỗi nếu
 | đã cho Khoa mượn tiền | `ch3-side-rumor` | `ch4-khoa-leaves`, `ch4-khoa-stairs`, `ch6-empty-office` |
 | đứng về phía Uyên | `ch3-new-project` | `ch4-group` |
 | từ chối lời mời việc của người bạn | `ch3-other-offer` | `ending-survivor` |
-| nghỉ sớm | `ch3-other-offer`, `ch4-six-months`, `crisis-broke` | `kết thúc survivor` |
+| nghỉ sớm | `ch3-other-offer`, `ch4-six-months`, `crisis-broke` | `ending-survivor`, `kết thúc survivor` |
 | vào nhóm Vượt thác | `ch3-dragon` | `ch4-second-tranche`, `ch4-date-passes`, `ch5-payday`, `ch6-empty-office` |
 | đã hỏi tiêu chí trả lương | `ch4-second-tranche` | `ch4-different-debts` |
 | Khoa đã nói lời tạm biệt | `ch4-khoa-leaves` | `ending-good`, `ch6-empty-office` |
 | Khoa đã nghỉ | `ch4-khoa-leaves` | `ticket server-full`, `hành động chat` |
-| vào nhóm so số liệu | `ch4-group`, `ch5-offer` | `ch4-dan-doubts`, `ch5-compare`, `ch6-last-day`, `ch5-wrong-number`, `kết thúc good`, `kết thúc collective`, `kết thúc investigator` |
+| vào nhóm so số liệu | `ch4-group`, `ch5-offer`, `ch6-last-day`, `ch6-empty-office` | `ch4-dan-doubts`, `ch5-compare`, `ch5-company-reply`, `ch6-last-day`, `ch5-wrong-number`, `kết thúc good`, `kết thúc collective`, `kết thúc investigator` |
 | Dân vào nhóm | `ch4-dan-doubts` | `ch5-wrong-number`, `ending-collective` |
 | quyết định hành động | `ch4-six-months` | `ch5-choose-way` |
 | đã nghe màn 1–2 triệu đô | `ch4-the-dollars` | `ending-survivor` |
@@ -136,15 +136,20 @@ Sinh tự động từ dữ liệu. Test `story-links.test.ts` bắt lỗi nếu
 | đã gửi email đòi quyền lợi | `ch5-choose-way` | `ch5-company-reply`, `ch5-closed-door`, `kết thúc good` |
 | đã hỏi người có chuyên môn | `ch5-choose-way` | `ch6-last-day` |
 | chọn nói chuyện riêng với HR | `ch5-choose-way` | `ch5-offer` |
+| đã nêu tên Uyên với chị HR | `ch5-company-reply` | `ch5-offer`, `ch5-closed-door`, `ending-survivor`, `ch6-empty-office` |
+| đã nhận có phần trong bảng đối chiếu | `ch5-company-reply` | `ch5-closed-door`, `ch6-empty-office` |
 | được cô Kế toán đưa phiếu lương | `ch5-company-reply` |  |
 | nhận chức Trưởng nhóm | `ch5-offer` | `ch5-payday`, `ending-survivor` |
 | đã ra điều kiện đòi trả nợ | `ch5-offer` | `ch5-payday` |
+| đã kể thật với mẹ | `ch5-payday` | `ch6-last-day`, `ending-good`, `ending-believer` |
 | bảng của nhóm còn lỗi | `ch5-wrong-number` | `ch5-company-reply` |
 | đã đề nghị đối thoại chính thức | `ch5-closed-door` | `ch5-offer` |
 | hỏi Chủ tịch bao giờ trả lương | `ch6-last-day` | `ending-collective` |
-| chọn theo đuổi quyền lợi | `ch6-last-day` | `ending-empty-promise`, `kết thúc good`, `kết thúc collective`, `kết thúc investigator` |
+| đã ký tờ "không khiếu nại" | `ch6-last-day` | `ch6-last-day`, `ending-survivor` |
+| đã chụp lại tờ "không khiếu nại" | `ch6-last-day` |  |
 | chọn rời đi | `ch6-last-day` | `kết thúc survivor` |
 | ký cam kết ở lại | `ch6-last-day` | `kết thúc believer` |
+| chọn theo đuổi quyền lợi | `ch6-last-day` | `ending-empty-promise`, `kết thúc good`, `kết thúc collective`, `kết thúc investigator` |
 | đã bán máy ảnh | `crisis-broke` | `crisis-broke` |
 | vay tiền mẹ | `crisis-broke` | `ch5-payday` |
 | vay trên điện thoại | `crisis-broke` | `ch5-payday` |
@@ -715,13 +720,28 @@ Một người bạn cũ nhắn: bên họ đang thiếu người. Lương thấ
 **Bạn:** Bốn tháng rồi. Đi bây giờ thì khoản đang bị nợ tính sao? Mà ở lại thì nó chỉ dài thêm.
 
 - ▸ Từ chối. Nghỉ lúc này thì chưa biết phải đòi khoản còn thiếu thế nào *(từ chối lời mời việc của người bạn)*
-- ▸ Nhận lời. Rời đi ngay, trước khi con số dài thêm *(nghỉ sớm; kết thúc lượt chơi)*
+- ▸ Nhận lời. Rời đi ngay, trước khi con số dài thêm
+
+*Nếu chọn "Nhận lời. Rời đi ngay, trước khi con số dài thêm":*
+
+Bạn gõ "ok mình nhận nha" rồi chưa bấm gửi. Đi tối nay thì những tháng đang bị nợ sẽ đi theo bạn dưới dạng một con số, mà trong tay chưa có tờ giấy nào ghi con số đó. Bạn nhắn hỏi Uyên, người duy nhất ở công ty bạn biết chắc sẽ nói thật.
+
+**Uyên:** Đi được thì đi, mình không cản. Nhưng đi cho tỉnh: bảng lương, bảng công, hợp đồng, xin đủ rồi hãy đi. Ra khỏi cửa rồi là không ai trả lời bạn nữa đâu.
+
+**Bạn:** Tin nhắn vẫn nằm trong ô soạn thảo. Gửi hay không?
+
+- ▸ Gửi. Mình cần chỗ trả lương đúng ngày hơn là một lời giải thích *(nghỉ sớm; kết thúc lượt chơi)*
+- ▸ Xóa đi. Ở lại thêm, ít nhất tới khi đủ giấy tờ *(từ chối lời mời việc của người bạn; hiểu quyền lợi +5)*
 
 *Nếu chọn "Từ chối. Nghỉ lúc này thì chưa biết phải đòi khoản còn thiếu thế nào":*
 
 Bạn nhắn lại "cảm ơn nha". Người bạn trả lời bằng một cái mặt cười hơi buồn.
 
-*Nếu chọn "Nhận lời. Rời đi ngay, trước khi con số dài thêm":*
+*Nếu chọn "Xóa đi. Ở lại thêm, ít nhất tới khi đủ giấy tờ":*
+
+Bạn xóa từng chữ rồi nhắn lại "cảm ơn nha, để lần khác". Không phải vì bạn còn tin. Lần này bạn ở lại vì có việc phải làm.
+
+*Nếu chọn "Gửi. Mình cần chỗ trả lương đúng ngày hơn là một lời giải thích":*
 
 Anh Huấn là người ký giấy cho bạn. "Đi đi em, chuyện này không có gì phải ngại." Anh Roger thì không ra chào: anh nói bạn đã bỏ rơi tầm nhìn.
 
@@ -1260,6 +1280,26 @@ Hôm lương trễ lần đầu bạn gõ "dạ vâng ạ" rồi xóa đi. Hơn 
 
 **Chị HR:** Sự đồng hành đó công ty rất trân trọng ạ.
 
+**Chị HR:** À, chị hỏi riêng em câu này, không ghi biên bản gì đâu. Cái bảng đối chiếu mọi người đang chuyền tay nhau ấy, ai đứng ra lập vậy em?
+
+- ▸ Nêu tên: "Dạ... chắc là Uyên ạ" *(đã nêu tên Uyên với chị HR; quan hệ Chị HR +4; quan hệ Phó GĐ Jeon Gwang-hoe +6; căng thẳng +6)*
+- ▸ Lảng đi: "Dạ em không rõ ạ"
+- ▸ Nhận luôn: "Bọn em cùng làm, có phần của em trong đó" *(đã nhận có phần trong bảng đối chiếu; quan hệ Uyên +10; quan hệ Chị HR -6; quan hệ Phó GĐ Jeon Gwang-hoe -8; hiểu quyền lợi +4; căng thẳng +4)* — *cần: vào nhóm so số liệu*
+
+*Nếu chọn "Nêu tên: Dạ... chắc là Uyên ạ":*
+
+Cái tên ra khỏi miệng bạn nhẹ hơn bạn tưởng. Chị HR không ghi gì, đúng như đã nói. Chị chỉ gật đầu, rồi rót thêm nước cho bạn.
+
+*Nếu chọn "Lảng đi: Dạ em không rõ ạ":*
+
+**Chị HR:** Ừ, chị hỏi vậy thôi. Em uống nước đi.
+
+*Nếu chọn "Nhận luôn: Bọn em cùng làm, có phần của em trong đó":*
+
+**Bạn:** Mỗi dòng trong bảng đều có nguồn. Chị cần dòng nào em gửi dòng đó ạ.
+
+Chị HR nhìn bạn một lúc, rồi gập sổ lại. Lần đầu tiên trong buổi sáng, chị không có câu nào để nói.
+
 **Cô Kế toán:** Khoản của em bên cô ghi là "đang chờ đối soát". Hỏi đối soát với ai thì cô không biết, trên hệ thống chỉ có mỗi dòng đó.
 
 *Nếu quan hệ với Cô Kế toán từ 5:*
@@ -1291,6 +1331,18 @@ Bạn về chỗ, nhìn ba lời giải thích, và nghĩ tới những thứ m�
 Tối muộn, bạn quay lại lấy sạc điện thoại. Phòng họp nhỏ còn sáng đèn, cửa chưa đóng hẳn.
 
 **Phó GĐ Jeon Gwang-hoe:** Nhóm đó đang làm gì?
+
+*Nếu đã nêu tên Uyên với chị HR:*
+
+**Chị HR:** Bạn Uyên đứng ra lập bảng anh ạ. Họ chỉ đối chiếu số liệu thôi.
+
+Bạn đứng im ngoài cửa. Cái tên đó sáng nay đi từ miệng bạn lên tới đây, nhanh hơn mọi kỳ lương.
+
+*Nếu đã nhận có phần trong bảng đối chiếu:*
+
+**Chị HR:** Họ chỉ đối chiếu số liệu thôi anh. Em hỏi rồi, mỗi dòng đều có nguồn.
+
+*Nếu không:*
 
 **Chị HR:** Họ chỉ đối chiếu số liệu thôi anh.
 
@@ -1332,7 +1384,7 @@ Hai người nhìn bạn. Chị HR đóng laptop lại. Phó giám đốc cườ
 
 **Phó GĐ Jeon Gwang-hoe:** Em ngồi đi, em... Thôi không sao, anh nhớ mặt. Anh để ý em lâu rồi.
 
-*Nếu chọn nói chuyện riêng với HR:*
+*Nếu chọn nói chuyện riêng với HR HOẶC đã nêu tên Uyên với chị HR:*
 
 **Phó GĐ Jeon Gwang-hoe:** Chị HR bảo em là người biết điều, không làm căng. Công ty đang cần những người như vậy.
 
@@ -1412,7 +1464,24 @@ Trong nhóm chat có người nói vừa được một phần ba tháng lương
 
 *Các nhánh trên gặp lại ở đây:*
 
-Mẹ gọi hỏi tháng này có về không, rồi hỏi: "Công ty tốt không con?". Bạn nói công ty đang vào giai đoạn quan trọng. Câu đó bạn học ở đâu, bạn biết rõ.
+Mẹ gọi hỏi tháng này có về không, rồi hỏi: "Công ty tốt không con?".
+
+**Bạn:** Trả lời mẹ thế nào đây?
+
+- ▸ "Dạ, công ty đang vào giai đoạn quan trọng ạ" *(căng thẳng +2)*
+- ▸ Kể thật: công ty đã nợ lương con nhiều tháng rồi *(đã kể thật với mẹ; căng thẳng -8)*
+
+*Nếu chọn "Dạ, công ty đang vào giai đoạn quan trọng ạ":*
+
+Câu đó bạn học ở đâu, bạn biết rõ.
+
+*Nếu chọn "Kể thật: công ty đã nợ lương con nhiều tháng rồi":*
+
+Bạn kể hết. Đầu dây bên kia im một lúc lâu. Rồi mẹ hỏi: "Thế con có ăn uống đủ không?". Bạn đã chuẩn bị câu trả lời cho mọi câu hỏi, trừ câu đó.
+
+*Nếu gửi tiền về cho mẹ:*
+
+Sáng hôm sau, ting. 2.000.000 đ, nội dung "ME GUI LAI. AN UONG DAY DU NHA CON". Đúng hai triệu tháng đầu bạn gửi về. Mẹ chưa tiêu đồng nào. *(có thêm 2.000.000 đ)*
 
 *Nếu vay tiền mẹ:*
 
@@ -1422,7 +1491,7 @@ Ba triệu hôm đó mẹ không nhắc tới, một lần cũng không. Chính 
 
 Trước khi cúp máy, mẹ bảo hai triệu tháng đầu bạn gửi về vẫn để nguyên: "Khi nào con cần thì nói". Bạn chưa dám nói.
 
-*Nếu không:*
+*Các nhánh trên gặp lại ở đây:*
 
 Cúp máy rồi, bạn ngồi yên thêm một lúc.
 
@@ -1469,6 +1538,16 @@ Nhóm Vượt thác còn năm người. Họp 7 giờ sáng vẫn họp, chủ y
 *Nếu khủng hoảng "burnout" từ 1 lần:*
 
 Trên bàn bạn có một hộp sữa, không ghi tên. Từ hôm bạn nằm nhà cả tuần, thỉnh thoảng lại có một hộp như vậy.
+
+*Các nhánh trên gặp lại ở đây:*
+
+*Nếu đã nêu tên Uyên với chị HR:*
+
+**Uyên:** Mấy hôm trước mình bị gọi lên phòng họp nhỏ, người ta gọi đúng tên mình. Mình biết ai đã nói rồi. Mình không hỏi đâu. Từ hôm nay hồ sơ của nhóm không để chỗ cũ nữa. *(không còn: vào nhóm so số liệu; quan hệ Uyên -20)*
+
+*Nếu đã nhận có phần trong bảng đối chiếu:*
+
+**Uyên:** Câu bạn nói với chị HR tới tai nhóm mình rồi: "mỗi dòng đều có nguồn". Từ hôm đó không ai phải hỏi bạn đứng về phía nào nữa. Đây, mình gom hết thông báo của HR theo ngày, bạn giữ một bản. *(có giấy tờ "Các thông báo của HR")*
 
 *Các nhánh trên gặp lại ở đây:*
 
@@ -1550,7 +1629,50 @@ Bạn nhớ câu hỏi của người tư vấn: "Bạn có lưu lại không?".
 
 Bạn đọc tờ cam kết một lượt. Không có ngày thanh toán. Không có số tiền. Chỉ có chỗ ký tên.
 
+*Nếu số giấy tờ từ 3 HOẶC vào nhóm so số liệu:*
+
+**Phó GĐ Jeon Gwang-hoe:** Khoan ký đã, em vào đây anh nói riêng. Anh biết em đang giữ những gì, anh không trách. Chiều nay anh chuyển riêng cho em 15 triệu, tiền tươi, không phải next week.
+
+Anh đẩy sang một tờ khác, ngắn hơn: "Người lao động xác nhận đã nhận đủ các khoản lương còn nợ và không khiếu nại về sau". Mười lăm triệu, đổi lấy chữ "đủ".
+
+- ▸ Ký. Tiền trong tay chắc hơn một tập giấy *(đã ký tờ "không khiếu nại"; công ty trả 15.000.000 đ; quan hệ Phó GĐ Jeon Gwang-hoe +10)*
+- ▸ Đẩy lại: "Em chưa nhận đủ, nên em không ký được ạ" *(quan hệ Phó GĐ Jeon Gwang-hoe -8; căng thẳng +3)*
+- ▸ Chụp lại tờ giấy trước, rồi mới trả lời *(đã chụp lại tờ "không khiếu nại"; có giấy tờ "Tờ "không khiếu nại""; quan hệ Phó GĐ Jeon Gwang-hoe -12; hiểu quyền lợi +4)* — *cần: hiểu quyền lợi từ 50 HOẶC đã hỏi người có chuyên môn*
+
+*Nếu chọn "Ký. Tiền trong tay chắc hơn một tập giấy":*
+
+Ting. 15.000.000 đ, nội dung "HO TRO CA NHAN". Lần đầu tiên công ty trả đúng giờ đã hẹn. Trên sổ vẫn còn một con số, nhưng theo tờ giấy bạn vừa ký thì con số đó không còn là của bạn.
+
+*Nếu vào nhóm so số liệu:*
+
+Bạn nhắn vào nhóm xin rút tên. Uyên trả lời đúng một chữ: "Ok". Một lát sau, dòng có tên bạn biến mất khỏi bảng đối chiếu. *(không còn: vào nhóm so số liệu; quan hệ Uyên -25)*
+
+*Nếu chọn "Đẩy lại: Em chưa nhận đủ, nên em không ký được ạ":*
+
+**Phó GĐ Jeon Gwang-hoe:** Anh cho em cơ hội rồi đấy nhé. Cơ hội này không có next week đâu.
+
+*Nếu chọn "Chụp lại tờ giấy trước, rồi mới trả lời":*
+
+Bạn giơ điện thoại lên, chụp một tấm. Anh khựng lại nửa giây. Tờ giấy ghi rõ "các khoản lương còn nợ": muốn bạn im lặng thì trước hết công ty phải viết ra là có nợ. Đó là lần đầu tiên bạn thấy câu đó trên giấy của công ty.
+
+*Các nhánh trên gặp lại ở đây:*
+
+*Nếu đã kể thật với mẹ:*
+
+Điện thoại rung trong túi. Mẹ nhắn: "Làm gì thì làm, nhớ ăn sáng nha con". Mẹ không biết hôm nay là ngày gì. Nhưng bạn thấy nhẹ đi một chút. *(căng thẳng -4)*
+
+*Các nhánh trên gặp lại ở đây:*
+
 **Phó GĐ Jeon Gwang-hoe:** Em nghĩ kỹ chưa?
+
+*Nếu đã ký tờ "không khiếu nại":*
+
+**Bạn:** Tờ giấy kia đã ký rồi. Giờ chỉ còn chuyện ở lại hay đi.
+
+- ▸ Cầm tiền, rời công ty và bắt đầu lại *(chọn rời đi; kết thúc lượt chơi)*
+- ▸ Ký nốt bản cam kết, ở lại *(ký cam kết ở lại; kết thúc lượt chơi)*
+
+*Nếu không:*
 
 **Bạn:** Hôm nay là ngày phải có câu trả lời.
 
@@ -1562,11 +1684,11 @@ Bạn đọc tờ cam kết một lượt. Không có ngày thanh toán. Không 
 
 **Bạn:** Em cũng có nhiều hóa đơn lớn cần thanh toán, anh ạ.
 
-*Nếu chọn "Rời công ty và bắt đầu lại":*
+*Các nhánh trên gặp lại ở đây:*
 
 **Bạn:** Em xin phép dừng ở đây. Em đặt thẻ nhân viên lên bàn nhé.
 
-*Nếu chọn "Ký bản cam kết, cho công ty thêm một cơ hội":*
+*Các nhánh trên gặp lại ở đây:*
 
 *Nếu hiểu quyền lợi từ 50:*
 
@@ -1645,7 +1767,17 @@ Các khoản quyền lợi được giải quyết, và bạn bước sang chư�
 
 Ba tháng sau. Hồ sơ của nhóm rõ ràng tới mức công ty không còn câu "đang cố gắng" nào để nói. Từng khoản được chốt, có ngày, có chữ ký.
 
+*Nếu có "Tờ "không khiếu nại"":*
+
+Trên cùng tập hồ sơ là tờ "không khiếu nại" công ty từng đưa bạn. Muốn mua im lặng thì phải viết ra là có nợ, và công ty đã viết.
+
+*Các nhánh trên gặp lại ở đây:*
+
 Ting. Lần này bạn không reo lên, dù cả phần KPI bị giữ cũng đã về. Bạn chỉ ngồi yên một lúc. *(công ty trả hết phần còn nợ theo sổ lương)*
+
+*Nếu đã kể thật với mẹ:*
+
+Rồi bạn gọi về nhà. Mẹ đã biết đầu đuôi từ tháng 7, nên mẹ chỉ hỏi: "Thế tháng này có về ăn cơm không?". Lần này bạn trả lời được.
 
 *Nếu tiền đang vay từ 1:*
 
@@ -1721,6 +1853,12 @@ Một mình, với một tập giấy tờ có ngày tháng rõ ràng.
 
 Bạn đi một mình. Mỗi lần công ty đưa ra một lời giải thích, bạn đặt lên bàn một tờ giấy có ngày tháng.
 
+*Nếu có "Tờ "không khiếu nại"":*
+
+Tờ bạn đặt xuống cuối cùng là tờ "không khiếu nại" chính công ty từng đưa bạn. Người đối diện đọc xong thì không còn lời giải thích nào mới.
+
+*Các nhánh trên gặp lại ở đây:*
+
 Việc đó tốn nhiều tháng và nhiều giấc ngủ, nhưng khoản của bạn cuối cùng cũng được giải quyết. Chỉ khoản của bạn. *(công ty trả hết phần còn nợ theo sổ lương)*
 
 Dân nhắn hỏi bạn đã làm thế nào, lần đầu tiên không kèm tin đồn nào. Bạn gửi lại danh sách những thứ nên giữ. Danh sách đó bắt đầu được chuyền tay.
@@ -1746,6 +1884,12 @@ Bạn nhắn lại người bạn hôm tháng 4. Họ không hỏi gì, chỉ g�
 
 *Các nhánh trên gặp lại ở đây:*
 
+*Nếu đã ký tờ "không khiếu nại":*
+
+Trên giấy, công ty không còn nợ bạn đồng nào: chữ ký của bạn nằm ngay cạnh chữ "đủ". Bạn tìm được việc mới, lương không cao, nhưng trả đúng ngày mùng 5.
+
+*Nếu không:*
+
 Khoản nợ vẫn nằm đó, một con số bạn học cách không nhìn mỗi sáng. Bạn tìm được việc mới, lương không cao, nhưng trả đúng ngày mùng 5.
 
 Ting. Bạn đứng giữa siêu thị và mỉm cười với một cái điện thoại. Không ai hiểu vì sao.
@@ -1762,9 +1906,19 @@ Bạn đọc tin nhắn trong giờ nghỉ trưa, bên phần cơm mua bằng l�
 
 Hôm nay là mùng 5. Bạn mua thêm một hộp sữa, chỉ vì mua được.
 
+*Nếu nghỉ sớm:*
+
+Rồi một buổi sáng, anh Huấn nhắn, lần đầu từ hôm bạn nghỉ. Kèm một tấm ảnh: tờ "Bản cam kết đồng hành". Không có ngày thanh toán, không có số tiền, chỉ có chỗ ký tên.
+
+**Anh Huấn:** Hôm nay Chủ tịch tới tận tầng mình. Trước 5 giờ chiều ai cũng phải chọn. Uyên có kế hoạch của Uyên, anh Roger có niềm tin của anh Roger. Em đi rồi nên anh mới hỏi thật: nếu còn ở đây, em chọn gì?
+
+Bạn gõ rồi xóa, gõ rồi xóa. Có những câu chỉ người ở lại mới trả lời được.
+
+*Các nhánh trên gặp lại ở đây:*
+
 Một năm sau, quán cà phê gần công ty mới. Đồng nghiệp hỏi: "Công ty cũ của ông có dự án lớn lắm hả, giờ sao rồi?". Bạn nói: "Không biết. Nghe nói tuần sau có tiền".
 
-*Nếu nhận chức Trưởng nhóm:*
+*Nếu nhận chức Trưởng nhóm HOẶC đã nêu tên Uyên với chị HR HOẶC đã ký tờ "không khiếu nại":*
 
 Điện thoại rung, tin nhắn của Dân: "C* đang tuyển 20 người, ông ạ. Phúc lợi vẫn có trái cây thứ Sáu". Bạn nhắn lại: "Trái cây vẫn còn à?". Dân: "Còn. Chắc mùa này được mùa".
 
@@ -1796,6 +1950,12 @@ Anh Roger đứng ở hàng cuối, vỗ tay rất khẽ, và không nhìn lên 
 *Nếu không:*
 
 **Anh Roger:** Anh đã bảo mà. Next week là có thôi, rồi còn cổ phiếu nữa. Anh em mình chỉ cần tin thêm một chút.
+
+*Nếu đã kể thật với mẹ:*
+
+Mẹ xem ảnh tấm bằng khen bạn gửi về, rồi gọi hỏi: "Thế họ trả con chưa?". Bạn nói: "Next week, mẹ ạ". Câu đó bạn học ở đâu, bạn biết rõ.
+
+*Các nhánh trên gặp lại ở đây:*
 
 Một năm sau. Bạn lên chức, có danh thiếp mới, có cả một cái bằng khen thứ hai. Anh Huni đã nộp đơn từ lâu, bàn giao đủ từng việc. Nhóm của bạn còn đúng một người là bạn. Trên tường, tấm ảnh tập thể mới chụp vừa khít trong khung nhỏ.
 
@@ -1959,6 +2119,7 @@ Mỗi lượt Làm task trả lời vài ticket: làm ngay, hay đẩy sang spri
 - **Các thông báo của HR:** Mọi thông báo gửi chung về lương, xếp theo ngày. Không cái nào có con số.
 - **Email đòi quyền lợi:** Bản bạn gửi công ty, nêu rõ từng khoản bị nợ, cùng mọi hồi âm. Ghi rõ ngày bạn đã đòi.
 - **Phiếu lương bị thiếu:** Phiếu lương những tháng công ty không gửi, cô Kế toán đưa tận tay.
+- **Tờ "không khiếu nại":** Tờ công ty đưa để đổi lấy 15 triệu. Chính nó ghi "các khoản lương còn nợ".
 - **Bảng đối chiếu của nhóm:** Ai, tháng nào, được hứa gì, đã nhận bao nhiêu, còn thiếu bao nhiêu.
 
 ### Số liệu
@@ -1978,7 +2139,7 @@ Mỗi lượt Làm task trả lời vài ticket: làm ngay, hay đẩy sang spri
 - **Lương:** kỳ nào không đủ 15 triệu thì tính là kỳ thiếu: mất 8 niềm tin, thêm 12 căng thẳng. Khoản trả giữa chừng (10 hoặc 5 triệu) cộng 4 niềm tin và trừ vào tháng lương cũ nhất còn thiếu, kể cả khi nó được gọi là "benefit".
 - **Niềm tin:** các mức trong cốt truyện, như -6 ở `ch4-six-months`, là khoản riêng, cộng thêm vào luật trên.
 - **KPI:** tiền KPI là 30% lương theo hợp đồng, cố định, chỉ trả tháng 1 rồi bị giữ. Chỉ tiêu tháng tính bằng điểm ticket (chọn đúng 1 điểm, "Làm cho có" 2 điểm) và chỉ ảnh hưởng đánh giá của sếp và căng thẳng.
-- **Giấy tờ:** 9 loại, mỗi loại tính một lần dù nhận từ hai nguồn.
+- **Giấy tờ:** 10 loại, mỗi loại tính một lần dù nhận từ hai nguồn.
 - **Quan hệ:** mọi mối quan hệ đều đổi được truyện: thân với Khoa, Roger, cô Kế toán, chị HR, Uyên, anh Huni, Dân mở hoặc đóng những đoạn riêng.
 - **Gia hạn hợp đồng (vòng lặp):** giữ nguyên số công ty nợ, khoản đang vay, tên người chơi. Làm lại từ đầu tiền trong ví, sức khỏe, quan hệ, giấy tờ, cờ sự kiện.
 - **Nhánh:** ở mỗi cụm điều kiện chỉ chạy nhánh đầu tiên đúng, nên một người đủ nhiều điều kiện vẫn chỉ nhận một khoản.

@@ -60,6 +60,13 @@ export const evidence: readonly EvidenceItem[] = [
     requires: { type: 'flag', flag: 'gotLostSlips' },
   },
   {
+    id: 'waiver-offer',
+    title: 'Tờ "không khiếu nại"',
+    description: 'Tờ công ty đưa để đổi lấy 15 triệu. Chính nó ghi "các khoản lương còn nợ".',
+    fromMonth: 8,
+    requires: { type: 'flag', flag: 'copiedWaiver' },
+  },
+  {
     id: 'debt-table',
     title: 'Bảng đối chiếu của nhóm',
     description: 'Ai, tháng nào, được hứa gì, đã nhận bao nhiêu, còn thiếu bao nhiêu.',

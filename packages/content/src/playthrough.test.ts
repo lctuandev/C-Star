@@ -92,7 +92,7 @@ const playRandomly = (seed: number, game: GameWorld = world, loner = false) => {
 };
 
 describe('a random player', () => {
-  // Half of them take the way out in month 4 and never see the rest: hence so many.
+  // Many take the way out in month 4 and never see the rest: hence so many.
   const runs = Array.from({ length: 240 }, (_, index) => playRandomly(index + 1));
   /** Starts with nothing, so the money crisis is reached too. */
   const poor: GameWorld = { ...world, rules: { ...world.rules, startingCash: 0 } };

@@ -103,6 +103,11 @@ const FLAGS = {
   rogerDoubts: 'anh Roger bắt đầu nghi ngờ',
   tableHasError: 'bảng của nhóm còn lỗi',
   askedDialogue: 'đã đề nghị đối thoại chính thức',
+  namedUyen: 'đã nêu tên Uyên với chị HR',
+  stoodWithUyen: 'đã nhận có phần trong bảng đối chiếu',
+  toldMom: 'đã kể thật với mẹ',
+  signedWaiver: 'đã ký tờ "không khiếu nại"',
+  copiedWaiver: 'đã chụp lại tờ "không khiếu nại"',
 };
 
 const STATS = {
@@ -140,13 +145,13 @@ const MONTHS = [
   ],
   [
     '7',
-    'Bảng đối chiếu, bảng cũng có thể sai, email đòi quyền lợi, công ty lần đầu lo lắng, lời mời làm Trưởng nhóm.',
+    'Bảng đối chiếu, bảng cũng có thể sai, email đòi quyền lợi, chị HR dò ai lập bảng, công ty lần đầu lo lắng, lời mời làm Trưởng nhóm, cuộc gọi của mẹ.',
     '5 triệu nếu vào Vượt thác, nhận chức hoặc ra điều kiện',
   ],
   [
     '8',
-    'Văn phòng vắng, Khoa trả nợ, Chủ tịch tới, Bản cam kết đồng hành, quyết định cuối.',
-    'Tùy kết thúc',
+    'Văn phòng vắng, Khoa trả nợ, Chủ tịch tới, Bản cam kết đồng hành, 15 triệu đổi lấy tờ "không khiếu nại", quyết định cuối.',
+    '15 triệu nếu ký tờ "không khiếu nại"; phần còn lại tùy kết thúc',
   ],
 ];
 
@@ -167,7 +172,7 @@ const ARCS = [
     'Uyên',
     'Cẩn thận vì công ty cũ đóng cửa (`ch1-team-lunch`)',
     'Gom người, gom giấy tờ (`ch4-different-debts`, `ch4-group`)',
-    'Sai một lần và học cách để người khác soát cùng (`ch5-wrong-number`)',
+    'Sai một lần và học cách để người khác soát cùng (`ch5-wrong-number`). Bị người chơi nêu tên, hoặc được đứng cùng (`ch5-company-reply`, `ch6-empty-office`)',
   ],
   [
     'Anh Huni',

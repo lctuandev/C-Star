@@ -144,6 +144,61 @@ export const chapter5Scenes = {
       'hr-2': {
         speaker: 'hr',
         text: 'Sự đồng hành đó công ty rất trân trọng ạ.',
+        next: 'who-made',
+      },
+      'who-made': {
+        speaker: 'hr',
+        text: 'À, chị hỏi riêng em câu này, không ghi biên bản gì đâu. Cái bảng đối chiếu mọi người đang chuyền tay nhau ấy, ai đứng ra lập vậy em?',
+        choices: [
+          {
+            id: 'name-uyen',
+            text: 'Nêu tên: "Dạ... chắc là Uyên ạ"',
+            effects: [
+              { type: 'setFlag', flag: 'namedUyen' },
+              { type: 'addRelation', npc: 'hr', amount: 4 },
+              { type: 'addRelation', npc: 'boss', amount: 6 },
+              { type: 'addStress', amount: 6 },
+            ],
+            next: 'named',
+          },
+          {
+            id: 'not-sure',
+            text: 'Lảng đi: "Dạ em không rõ ạ"',
+            next: 'dodged',
+          },
+          {
+            id: 'own-it',
+            text: 'Nhận luôn: "Bọn em cùng làm, có phần của em trong đó"',
+            requires: { type: 'flag', flag: 'joinedGroup' },
+            lockedReason: 'Bạn không ở trong nhóm',
+            effects: [
+              { type: 'setFlag', flag: 'stoodWithUyen' },
+              { type: 'addRelation', npc: 'uyen', amount: 10 },
+              { type: 'addRelation', npc: 'hr', amount: -6 },
+              { type: 'addRelation', npc: 'boss', amount: -8 },
+              { type: 'addAwareness', amount: 4 },
+              { type: 'addStress', amount: 4 },
+            ],
+            next: 'owned',
+          },
+        ],
+      },
+      named: {
+        text: 'Cái tên ra khỏi miệng bạn nhẹ hơn bạn tưởng. Chị HR không ghi gì, đúng như đã nói. Chị chỉ gật đầu, rồi rót thêm nước cho bạn.',
+        next: 'accountant',
+      },
+      dodged: {
+        speaker: 'hr',
+        text: 'Ừ, chị hỏi vậy thôi. Em uống nước đi.',
+        next: 'accountant',
+      },
+      owned: {
+        speaker: 'player',
+        text: 'Chị muốn kiểm tra khoản nào thì em gửi khoản đó. Bọn em lưu nguồn hết ạ.',
+        next: 'hr-silent',
+      },
+      'hr-silent': {
+        text: 'Chị HR nhìn bạn một lúc, rồi cúi xuống gập cuốn sổ.',
         next: 'accountant',
       },
       accountant: {
@@ -212,7 +267,17 @@ export const chapter5Scenes = {
       'why-check': {
         routes: [
           { when: { type: 'flag', flag: 'askedDialogue' }, next: 'why-asked' },
-          { when: { type: 'flag', flag: 'keptNegotiating' }, next: 'why-calm' },
+          { when: { type: 'flag', flag: 'stoodWithUyen' }, next: 'why-stood' },
+          {
+            when: {
+              type: 'any',
+              conditions: [
+                { type: 'flag', flag: 'keptNegotiating' },
+                { type: 'flag', flag: 'namedUyen' },
+              ],
+            },
+            next: 'why-calm',
+          },
           { when: { type: 'flag', flag: 'clappedForBoss' }, next: 'why-clap' },
           {
             when: {
@@ -226,6 +291,11 @@ export const chapter5Scenes = {
           },
         ],
         otherwise: 'title',
+      },
+      'why-stood': {
+        speaker: 'boss',
+        text: 'Chị HR kể rồi: chị hỏi ai lập bảng, em nhận luôn phần của mình. Anh nghĩ em hiểu chuyện này hơn nhiều người.',
+        next: 'title',
       },
       'why-calm': {
         speaker: 'boss',
@@ -346,9 +416,23 @@ export const chapter5Scenes = {
         routes: [
           { when: { type: 'flag', flag: 'tookPromotion' }, next: 'crumb-title' },
           { when: { type: 'flag', flag: 'heldOutForPay' }, next: 'crumb-held' },
+          {
+            when: {
+              type: 'all',
+              conditions: [
+                { type: 'flag', flag: 'joinedDragons' },
+                { type: 'flag', flag: 'stoodWithUyen' },
+              ],
+            },
+            next: 'crumb-cut',
+          },
           { when: { type: 'flag', flag: 'joinedDragons' }, next: 'crumb' },
         ],
         otherwise: 'no-crumb',
+      },
+      'crumb-cut': {
+        text: 'Công ty vừa trả một phần ba tháng lương cho nhóm Vượt thác. Danh sách do chị HR gửi xuống, và tên bạn không có trong đó. Không ai giải thích vì sao. Bạn biết vì sao.',
+        next: 'mom',
       },
       'crumb-title': {
         text: 'Ting. 5.000.000 đ, nội dung "HO TRO TRUONG NHOM". Vẫn là một phần ba tháng lương, chỉ là giờ nó có tên khác. Phần còn lại được nợ tiếp.',
@@ -378,8 +462,49 @@ export const chapter5Scenes = {
         next: 'mom-calls',
       },
       'mom-calls': {
-        text: 'Mẹ gọi hỏi tháng này có về không, rồi hỏi: "Công ty tốt không con?". Bạn nói công ty đang vào giai đoạn quan trọng. Câu đó bạn học ở đâu, bạn biết rõ.',
+        text: 'Mẹ gọi hỏi tháng này có về không, rồi hỏi: "Công ty tốt không con?".',
+        next: 'mom-answer',
+      },
+      'mom-answer': {
+        speaker: 'player',
+        text: 'Trả lời mẹ thế nào đây?',
+        choices: [
+          {
+            id: 'say-fine',
+            text: '"Dạ, công ty đang vào giai đoạn quan trọng ạ"',
+            effects: [{ type: 'addStress', amount: 2 }],
+            next: 'said-fine',
+          },
+          {
+            id: 'tell-mom',
+            text: 'Kể thật: công ty đã nợ lương con nhiều tháng rồi',
+            effects: [
+              { type: 'setFlag', flag: 'toldMom' },
+              { type: 'addStress', amount: -4 },
+            ],
+            next: 'told-mom',
+          },
+        ],
+      },
+      'said-fine': {
+        text: 'Câu đó bạn học ở đâu, bạn biết rõ.',
         next: 'mom-check',
+      },
+      'told-mom': {
+        text: 'Bạn kể hết. Đầu dây bên kia im một lúc lâu. Rồi mẹ hỏi: "Thế con có ăn uống đủ không?". Bạn đã chuẩn bị câu trả lời cho mọi câu hỏi, trừ câu đó.',
+        next: 'told-check',
+      },
+      'told-check': {
+        routes: [{ when: { type: 'flag', flag: 'sentHome' }, next: 'mom-returns' }],
+        otherwise: 'mom-worries',
+      },
+      'mom-returns': {
+        text: 'Sáng hôm sau, ting. 2.000.000 đ, nội dung "ME GUI LAI. AN UONG DAY DU NHA CON". Đúng hai triệu tháng đầu bạn gửi về. Mẹ chưa tiêu đồng nào.',
+        effects: [{ type: 'addCash', amount: 2_000_000 }],
+        next: 'mom-worries',
+      },
+      'mom-worries': {
+        text: 'Từ hôm đó tối nào mẹ cũng gọi, chỉ để hỏi ăn chưa. Bạn không còn giấu được mẹ rằng mình đang không ổn.',
       },
       'mom-check': {
         routes: [
@@ -473,7 +598,28 @@ export const chapter5Scenes = {
       boss: {
         speaker: 'boss',
         text: 'Nhóm đó đang làm gì?',
-        next: 'hr',
+        next: 'name-check',
+      },
+      'name-check': {
+        routes: [
+          { when: { type: 'flag', flag: 'namedUyen' }, next: 'hr-named' },
+          { when: { type: 'flag', flag: 'stoodWithUyen' }, next: 'hr-stood' },
+        ],
+        otherwise: 'hr',
+      },
+      'hr-named': {
+        speaker: 'hr',
+        text: 'Bạn Uyên đứng ra lập bảng anh ạ. Họ chỉ đối chiếu số liệu thôi.',
+        next: 'heard-name',
+      },
+      'heard-name': {
+        text: 'Bạn đứng im ngoài cửa. Cái tên đó sáng nay đi từ miệng bạn lên tới đây, nhanh hơn mọi kỳ lương.',
+        next: 'boss-2',
+      },
+      'hr-stood': {
+        speaker: 'hr',
+        text: 'Họ chỉ đối chiếu số liệu thôi anh. Em hỏi rồi, khoản nào cũng có nguồn.',
+        next: 'boss-2',
       },
       hr: {
         speaker: 'hr',

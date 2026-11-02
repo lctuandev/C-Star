@@ -12,12 +12,12 @@ tháng. Web, PWA chơi được offline, điện thoại dọc là chính. Khôn
 
 - **Game hoàn chỉnh**: 53 cảnh, 6 kết thúc, văn phòng 3D bake ánh sáng, 10 nhân vật có tên, âm thanh từng hành động và nhạc đổi theo tháng (ADR-006), cài đặt, save v5, PWA offline, màn cảnh báo, điền tên người chơi, bố cục riêng cho điện thoại, tablet và PC.
 - Art dựng bằng Blender từ code: `tools/art-pipeline`, ADR-005.
-- Kịch bản từng dòng để review: `docs/kich-ban-day-du.md`, sinh bằng `pnpm --filter @cstar/content story:doc`. GPT đã review hai vòng, kết luận ĐẠT (FEAT-042).
+- Kịch bản từng dòng để review: `docs/kich-ban-day-du.md`, sinh bằng `pnpm --filter @cstar/content story:doc`. GPT đã review ba vòng, kết luận ĐẠT (FEAT-042, FEAT-045).
 - Đang chạy công khai: <https://c-star.lctuan.space> (Docker `127.0.0.1:6000`, Cloudflare Tunnel, cách phát hành ở `.tasks/completed/TECH-004-production-deploy/result.md`).
 - Repo: <https://github.com/lctuandev/C-Star>, nhánh `main`, **public**.
 - Toàn bộ roadmap xong trừ phần cần owner, ghi ở `backlog.md`.
 - Số liệu, điều kiện ending, giọng văn, câu chữ cảnh báo đều chưa được owner duyệt.
-- Bản đang chạy công khai: `3088b75` (tới BUG-001). Sau mỗi lần phát hành, chạy `E2E_EXTERNAL_URL=https://c-star.lctuan.space pnpm exec playwright test tests/home.spec.ts tests/disclaimer.spec.ts` trong `apps/e2e`.
+- Bản đang chạy công khai: `3088b75` (tới BUG-001). `main` có thêm FEAT-045, chưa phát hành. Sau mỗi lần phát hành, chạy `E2E_EXTERNAL_URL=https://c-star.lctuan.space pnpm exec playwright test tests/home.spec.ts tests/disclaimer.spec.ts` trong `apps/e2e`.
 
 ## Active Task
 
