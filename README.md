@@ -111,6 +111,25 @@ git checkout <commit>
 docker compose -f deploy/docker-compose.prod.yml up -d --build
 ```
 
+### Tắt site
+
+Tạm dừng, giữ container, bật lại nhanh bằng `start`:
+
+```bash
+docker compose -f deploy/docker-compose.prod.yml stop
+docker compose -f deploy/docker-compose.prod.yml start
+```
+
+Tắt hẳn, xóa container và network (image vẫn còn, lần `up` sau nhanh hơn):
+
+```bash
+docker compose -f deploy/docker-compose.prod.yml down
+```
+
+Thêm `--rmi local` vào `down` để xóa luôn image đã build. Container đặt `restart: unless-stopped`, nên sau `stop`
+hoặc `down` nó không tự chạy lại khi khởi động máy. Tunnel vẫn chạy riêng: trong lúc tắt, người vào site thấy trang lỗi
+của Cloudflare, người đã cài PWA vẫn chơi được offline. Muốn tắt cả tunnel: `sudo systemctl stop cloudflared`.
+
 ### Khi site không vào được
 
 - `docker compose -f deploy/docker-compose.prod.yml ps` và `… logs web`: container còn chạy không.
